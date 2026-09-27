@@ -545,3 +545,263 @@ h1, h2, h3, h4, h5 {
   color: var(--red-brick);
   margin-right: 0.4rem;
 }
+
+.recipe-header {
+    margin-bottom: 25px;
+}
+
+.recipe-label {
+    color: #b63227;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+}
+
+.recipe-header h2 {
+    color: #4b2923;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.recipe-header p {
+    color: #6d5b55;
+    line-height: 1.8;
+    margin-bottom: 0;
+}
+
+.recipe-box {
+    background: #fffaf5;
+    border: 1px solid #eadbd2;
+    border-radius: 14px;
+    padding: 25px 28px;
+    margin-top: 20px;
+}
+
+.recipe-box h3 {
+    color: #6b1d16;
+    font-size: 21px;
+    margin-bottom: 15px;
+    font-weight: 700;
+}
+
+.recipe-box ul,
+.recipe-box ol {
+    margin-bottom: 0;
+    padding-left: 22px;
+}
+
+.recipe-box li {
+    color: #594843;
+    line-height: 1.8;
+    margin-bottom: 7px;
+}
+
+.recipe-box li:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   CONTACT
+========================= */
+
+.contact-section {
+    padding: 10px 0;
+}
+
+.contact-title {
+    max-width: 700px;
+}
+
+.contact-title h2 {
+    color: #4b2923;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.contact-title > p:last-child {
+    color: #6d5b55;
+    line-height: 1.8;
+}
+
+.contact-card {
+    height: 100%;
+    background: #fffaf5;
+    border: 1px solid #eadbd2;
+    border-radius: 14px;
+    padding: 25px;
+    text-align: center;
+    transition: 0.2s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-3px);
+}
+
+.contact-card i {
+    color: #b63227;
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.contact-card h3 {
+    color: #4b2923;
+    font-size: 19px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.contact-card p {
+    color: #74615a;
+    margin: 0;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer-green {
+    background: #402621;
+    color: #fff;
+    padding: 35px 0 18px;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-content h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.footer-content p {
+    color: #e8d9d2;
+    margin-bottom: 18px;
+}
+
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.footer-social a {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #cdb8ae;
+    border-radius: 50%;
+    color: #fff;
+    text-decoration: none;
+    transition: 0.2s ease;
+}
+
+.footer-social a:hover {
+    background: #b63227;
+    border-color: #b63227;
+}
+
+.footer-social i {
+    font-size: 19px;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin-top: 25px;
+    padding-top: 15px;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #d9c8c1;
+    font-size: 14px;
+    margin: 0;
+}
+
+.recipe-source {
+    margin-top: 22px;
+    padding: 12px 16px;
+    background: #f4e8df;
+    border-left: 4px solid #b63227;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+}
+
+.recipe-source span {
+    color: #806d65;
+}
+
+.recipe-source a {
+    color: #6b1d16;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.recipe-source a:hover {
+    text-decoration: underline;
+}
+
+.recipe-source i {
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.cta-card {
+  background: #fff;
+  border: 1px solid #ecdfd1;
+  border-radius: 14px;
+  padding: 28px 30px;
+  text-align: center;
+  position: sticky;
+  top: 100px;
+  box-shadow: 0 6px 20px rgba(62, 39, 35, 0.06);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.cta-card h3 {
+    color: #6d1812;
+    font-family: Georgia, serif;
+    font-size: 24px;
+    margin-top: 0;
+    margin-bottom: 18px;
+    text-align: left;
+}
+
+.cta-card p {
+    color: #5d4a45;
+    font-size: 16px;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.cta-card ul {
+    padding-left: 22px;
+    margin: 15px 0 20px;
+}
+
+.cta-card li {
+    color: #5d4a45;
+    font-size: 16px;
+    line-height: 1.8;
+    margin-bottom: 3px;
+    text-align: left;
+}
+
+.row {
+    width: 100%;
+}
+
+.col-lg-4 {
+    width: 33.333333%;
+}
