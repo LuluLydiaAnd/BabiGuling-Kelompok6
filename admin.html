@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Babi Guling </title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="admin-body">
+  <div class="admin-login-wrap" id="loginWrap">
+    <div class="admin-login-card">
+
+      <a href="index.html" class="admin-back">
+        <i class='bx bx-arrow-back'></i> Kembali ke Beranda
+      </a>
+
+      <div class="admin-logo">
+        <i class='bx bxs-food-menu'></i>
+      </div>
+
+      <h1 class="admin-title">Admin Panel</h1>
+      <p class="admin-subtitle">Login untuk mengelola artikel babi guling </p>
+
+      <form id="loginForm" class="admin-form">
+        <div class="mb-3">
+          <label class="form-label" for="username">Username</label>
+          <div class="input-icon">
+            <i class='bx bx-user'></i>
+            <input type="text" id="username" class="form-control" placeholder="Masukkan username" required>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" for="password">Password</label>
+          <div class="input-icon">
+            <i class='bx bx-lock-alt'></i>
+            <input type="password" id="password" class="form-control" placeholder="Masukkan password" required>
+          </div>
+        </div>
+
+        <div id="loginError" class="login-error d-none">
+          <i class='bx bx-error-circle'></i> Username atau password salah.
+        </div>
+
+        <button type="submit" class="btn btn-admin-login w-100">
+          Masuk <i class='bx bx-log-in'></i>
+        </button>
+
+        <p class="admin-hint">
+          <i class='bx bx-info-circle'></i>
+          Demo login: <b>admin</b> / <b>admin123</b>
+        </p>
+      </form>
+
+    </div>
+  </div>
+
+  <div id="dashboard" class="admin-dashboard d-none">
+    <div class="container py-5">
+      <div class="section-box" style="margin-bottom: 2rem;">
+        <span>DASHBOARD ADMIN</span>
+      </div>
+      <div class="text-center">
+        <button id="logoutBtn" class="btn btn-outline-dark mt-3">
+          <i class='bx bx-log-out'></i> Logout
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
