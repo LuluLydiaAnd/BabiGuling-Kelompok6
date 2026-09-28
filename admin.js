@@ -1,58 +1,76 @@
 $(document).ready(function () {
 
-  const validUser = 'admin';
-  const validPass = 'admin123';
+    // ========================================
+    // LOGIN ADMIN
+    // ========================================
 
-  // =========================
-  // LOGIN
-  // =========================
+    const validUser = 'admin';
+    const validPass = 'admin123';
 
-  $('#loginForm').on('submit', function (event) {
-    event.preventDefault();
+    $('#loginForm').on('submit', function (event) {
+        event.preventDefault();
 
-    const inputUser = $('#username').val().trim();
-    const inputPass = $('#password').val().trim();
+        const inputUser = $('#username').val().trim();
+        const inputPass = $('#password').val().trim();
 
-    if (inputUser === validUser && inputPass === validPass) {
+        // Cek username dan password
+        if (inputUser === validUser && inputPass === validPass) {
 
-      $('#loginWrap').addClass('d-none');
-      $('#dashboard').removeClass('d-none');
-      $('#loginError').addClass('d-none');
+            // Sembunyikan login
+            $('#loginWrap').addClass('d-none');
 
-    } else {
+            // Tampilkan dashboard
+            $('#dashboard').removeClass('d-none');
 
-      $('#loginError').removeClass('d-none');
+            // Hilangkan pesan error
+            $('#loginError').addClass('d-none');
 
-    }
-  });
+        } else {
 
+            // Tampilkan pesan error
+            $('#loginError').removeClass('d-none');
 
-  // =========================
-  // LOGOUT
-  // =========================
-
-  $('#logoutBtn').on('click', function () {
-
-    $('#dashboard').addClass('d-none');
-    $('#loginWrap').removeClass('d-none');
-
-    $('#loginForm')[0].reset();
-    $('#loginError').addClass('d-none');
-
-  });
+        }
+    });
 
 
-  // =========================
-  // SIDEBAR ACTIVE
-  // =========================
+    // ========================================
+    // LOGOUT
+    // ========================================
 
-  $('.admin-nav-link').on('click', function (event) {
+    $('#logoutBtn').on('click', function () {
 
-    event.preventDefault();
+        // Sembunyikan dashboard
+        $('#dashboard').addClass('d-none');
 
-    $('.admin-nav-link').removeClass('active');
-    $(this).addClass('active');
+        // Tampilkan kembali login
+        $('#loginWrap').removeClass('d-none');
 
-  });
+        // Reset form login
+        $('#loginForm')[0].reset();
+
+        // Hilangkan pesan error
+        $('#loginError').addClass('d-none');
+
+    });
+
+
+    // ========================================
+    // SIDEBAR MENU
+    // ========================================
+
+    $('.sidebar-link').on('click', function (event) {
+
+        // Supaya link "#" tidak reload / loncat ke atas
+        event.preventDefault();
+
+        // Hapus active dari semua menu
+        $('.sidebar-link').removeClass('active');
+
+        // Tambahkan active ke menu yang diklik
+        $(this).addClass('active');
+
+    });
+
 
 });
