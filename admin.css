@@ -1036,3 +1036,146 @@ body.admin-body:has(.admin-dashboard:not(.d-none)) {
     display: block;
     background: #f8f3ee;
 }
+
+/* 
+   ADMIN POSTING */
+.admin-post-section {
+    margin-bottom: 2rem;
+}
+
+.admin-post-list {
+    margin-bottom: 2rem;
+}
+
+.post-form-group {
+    margin-bottom: 1.2rem;
+}
+
+.post-form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--brown-dark);
+}
+
+.post-form-group small {
+    display: block;
+    margin-top: 0.4rem;
+}
+
+.btn-admin-post {
+    background-color: var(--red-brick);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 8px;
+}
+
+.btn-admin-post:hover {
+    background-color: var(--red-brick-dark);
+    color: white;
+}
+
+
+/*
+   POST CARD */
+.admin-post-item {
+    display: flex;
+    gap: 1.2rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid #ecdfd1;
+}
+
+.admin-post-item:last-child {
+    border-bottom: none;
+}
+
+.admin-post-image {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.admin-post-content {
+    flex: 1;
+}
+
+.admin-post-category {
+    display: inline-block;
+    background-color: #f5e3d0;
+    color: var(--brown);
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    margin-bottom: 0.4rem;
+}
+
+.admin-post-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 0.5rem;
+}
+
+.admin-post-description {
+    color: var(--text-gray);
+    line-height: 1.6;
+    margin-bottom: 0.8rem;
+}
+
+.admin-post-description a {
+    color: var(--red-brick);
+    text-decoration: underline;
+}
+
+.btn-delete-post {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-delete-post:hover {
+    background-color: #b02a37;
+}
+
+
+/*
+   MOBILE */
+@media (max-width: 768px) {
+
+    .admin-post-item {
+        flex-direction: column;
+    }
+
+    .admin-post-image {
+        width: 100%;
+        height: 200px;
+    }
+
+}
+.post-form-button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.btn-admin-post {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #a93226;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-admin-post:hover {
+    background-color: #7b241c;
+}

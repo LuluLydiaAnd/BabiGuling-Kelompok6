@@ -154,6 +154,64 @@
 
         </header>
 
+        <div class="admin-post-section">
+            <div class="dashboard-card full-card">
+              <div class="card-header">
+                <div>
+                  <h3>Create New Post</h3>
+                </div>
+                <i class='bx bx-news card-header-icon'></i>
+                </div>
+
+                <form id="postForm">
+                   <div class="post-form-group">
+                    <label for="postTitle">Post Title</label>
+                    <input type="text" id="postTitle" class="form-control" placeholder="Enter post title" required>
+                  </div>
+
+                  <div class="post-form-group">
+                    <label for="postImage">Post Content</label>
+                    <input type="file" id="postImage" class="form-control" accept="image/*" required>
+                  </div>
+                  
+                  <div class="post-form-group">
+                    <label for="postDescription">Post Description</label>
+                    <textarea id="postDescription" class="form-control" rows="5" placeholder="Enter post description" required></textarea>
+                    <small class="text-muted">You can add a link such as https://example.com</small>
+                  </div>
+                  
+                  <div class="post-form-group">
+                    <label for="postCategory">Post Category</label>
+                    <select id="postCategory" class="form-select" required>
+                      <option value="">Select a category</option>
+                      <option value="Reccomendation">Reccomendation</option>
+                      <option value="Promotions">Promotions</option>
+                      <option value="Lainnya">Lainnya</option>
+                    </select>
+                  </div>
+
+                   <div class="post-form-button">
+                    <button type="submit" class="btn btn-admin-post">
+                      <i class='bx bx-send'></i> Create Post
+                    </button>
+                   </div>
+                </form>
+            </div>
+
+            <div class="dashboard-card full-card">
+                <div class="card-header">
+                    <div>
+                        <h3>Recent Posts</h3>
+                    </div>
+                    <i class='bx bx-news card-header-icon'></i>
+                </div>
+
+             <div id="postList">
+              <p class="text-muted">No posts available. Create a new post above.</p>
+              </div><!-- Posts will be dynamically added here -->
+            </div>
+        </div>
+
 
         <!-- STAT CARDS -->
         <section class="admin-stats">
