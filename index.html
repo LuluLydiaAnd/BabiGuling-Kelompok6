@@ -281,6 +281,9 @@
                 <i class='bx bx-link-external'></i>
             </a>
             </div>
+                <div class="tab-photos">
+                    <figure><img src="base-genep-final.jpg" alt="Bumbu base genep" onerror="this.closest('figure').remove()"><figcaption>Bumbu base genep</figcaption></figure>
+                </div>
 
             <div class="tab-photos">
                 <figure>
@@ -406,51 +409,99 @@
     </div>
     </section>
 
-    <section id="kontak" class="section-alt py-5">
-        <div class="container">
+    <section id="kontak" class="contact-wrap">
+    <div class="container">
 
-            <div class="contact-section">
+        <div class="contact-head text-center">
+            <p class="recipe-label">HUBUNGI KAMI</p>
+            <h2>Ada Pertanyaan?</h2>
+            <p>Punya pertanyaan atau ingin tahu lebih banyak tentang Babi Guling? Kirim pesan, kami senang membantu.</p>
+        </div>
 
-                <div class="contact-title">
-                    <p class="recipe-label">HUBUNGI KAMI</p>
-                    <h2>Contact</h2>
-                    <p>
-                        Punya pertanyaan atau ingin mengetahui lebih banyak
-                        tentang Babi Guling? Hubungi kami melalui kontak
-                        yang tersedia di bawah ini.
-                    </p>
-                </div>
+        <div class="contact-grid">
 
-                <div class="row g-4 mt-3">
+            <div class="contact-info">
+                <h3>Informasi Kontak</h3>
+                <p class="contact-info-sub">Kamu bisa menghubungi kami lewat salah satu kontak di bawah ini.</p>
 
-                    <div class="col-md-4">
-                        <div class="contact-card">
-                            <i class='bx bx-map'></i>
-                            <h3>Alamat</h3>
+                <ul class="contact-list">
+                    <li>
+                        <span class="ci-icon"><i class='bx bx-map'></i></span>
+                        <div>
+                            <small>Alamat</small>
                             <p>Bali, Indonesia</p>
                         </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="contact-card">
-                            <i class='bx bx-envelope'></i>
-                            <h3>Email</h3>
+                    </li>
+                    <li>
+                        <span class="ci-icon"><i class='bx bx-envelope'></i></span>
+                        <div>
+                            <small>Email</small>
                             <p>babiguling@example.com</p>
                         </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="contact-card">
-                            <i class='bx bx-phone'></i>
-                            <h3>Telepon</h3>
+                    </li>
+                    <li>
+                        <span class="ci-icon"><i class='bx bx-phone'></i></span>
+                        <div>
+                            <small>Telepon</small>
                             <p>+62 812-3456-7890</p>
+                        </div>
+                    </li>
+                    <li>
+                        <span class="ci-icon"><i class='bx bx-time-five'></i></span>
+                        <div>
+                            <small>Jam Layanan</small>
+                            <p>Senin – Sabtu, 09.00 – 17.00</p>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="contact-social">
+                    <a href="#"><i class='bx bxl-instagram'></i></a>
+                    <a href="#"><i class='bx bxl-facebook'></i></a>
+                    <a href="#"><i class='bx bxl-whatsapp'></i></a>
+                </div>
+            </div>
+
+            <div class="contact-form-card">
+                <h3>Kirim Pesan</h3>
+
+                <form id="contactForm" novalidate>
+                    <div class="cf-row">
+                        <div class="cf-group">
+                            <label for="cfNama">Nama</label>
+                            <input type="text" id="cfNama" placeholder="Nama lengkap">
+                        </div>
+                        <div class="cf-group">
+                            <label for="cfEmail">Email</label>
+                            <input type="email" id="cfEmail" placeholder="nama@email.com">
                         </div>
                     </div>
 
-                </div>
+                    <div class="cf-group">
+                        <label for="cfSubjek">Subjek</label>
+                        <input type="text" id="cfSubjek" placeholder="Tentang apa pesanmu?">
+                    </div>
+
+                    <div class="cf-group">
+                        <label for="cfPesan">Pesan</label>
+                        <textarea id="cfPesan" rows="5" placeholder="Tulis pesanmu di sini..."></textarea>
+                    </div>
+
+                    <p class="cf-error" id="cfError"></p>
+
+                    <button type="submit" class="cf-submit">
+                        Kirim Pesan <i class='bx bx-send'></i>
+                    </button>
+
+                    <p class="cf-success" id="cfSuccess">
+                        <i class='bx bx-check-circle'></i> Terima kasih! Pesanmu sudah terkirim.
+                    </p>
+                </form>
             </div>
+
         </div>
-    </section>
+    </div>
+</section>
 
     <section class="py-5">
     <div class="container">

@@ -116,6 +116,38 @@ $(document).ready(function () {
     if (e.key === 'ArrowRight') showItem(current + 1);
   });
 
+  // ===== Form kontak =====
+  $('#contactForm').on('submit', function (event) {
+    event.preventDefault();
+
+    const $fields = $('#cfNama, #cfEmail, #cfSubjek, #cfPesan');
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let error = '';
+
+    $fields.removeClass('invalid');
+    $('#cfSuccess').hide();
+
+    $fields.each(function () {
+      if (!$(this).val().trim()) {
+        $(this).addClass('invalid');
+        error = 'Semua kolom wajib diisi.';
+      }
+    });
+
+    if (!error && !emailPattern.test($('#cfEmail').val().trim())) {
+      $('#cfEmail').addClass('invalid');
+      error = 'Format email belum benar.';
+    }
+
+    $('#cfError').text(error);
+
+    if (!error) {
+      this.reset();
+      $('#cfSuccess').fadeIn(300);
+      setTimeout(function () { $('#cfSuccess').fadeOut(300); }, 4000);
+    }
+  });
+  
   // ===== Back to top =====
   $(window).on('scroll', function () {
     if ($(this).scrollTop() > 300) {
