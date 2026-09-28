@@ -1,5 +1,6 @@
 $(document).ready(function () {
 
+  // ===== Tab =====
   $('.tab-link').on('click', function (event) {
     event.preventDefault();
 
@@ -12,6 +13,7 @@ $(document).ready(function () {
     $('#tab-' + targetTab).addClass('active');
   });
 
+  // ===== Smooth scroll navbar =====
   $('.navbar-nav a[href^="#"]').on('click', function (event) {
     const targetHash = $(this).attr('href');
 
@@ -114,8 +116,8 @@ $(document).ready(function () {
     if (e.key === 'ArrowRight') showItem(current + 1);
   });
 
-});
-   $(window).on('scroll', function () {
+  // ===== Back to top =====
+  $(window).on('scroll', function () {
     if ($(this).scrollTop() > 300) {
       $('#backToTop').fadeIn(300);
     } else {
@@ -129,22 +131,4 @@ $(document).ready(function () {
     }, 60);
   });
 
-  $('.gallery-image').on('click', function () {
-
-    const imageSrc = $(this).attr('src');
-    const imageAlt = $(this).attr('alt');
-
-    $('#galleryModalImage').attr('src', imageSrc);
-    $('#galleryModalImage').attr('alt', imageAlt);
-
-    $('#galleryModalTitle').text(imageAlt);
-
-    const galleryModal = new bootstrap.Modal(
-        document.getElementById('galleryModal')
-    );
-
-    galleryModal.show();
-
-  });
-
-
+});
