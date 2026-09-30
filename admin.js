@@ -1,3 +1,70 @@
+$(document).ready(function() {
+  const postListKey = 'babiguling_posts';
+
+  // Load existing posts ke list admin
+  function loadPosts() {
+    const posts = JSON.parse(localStorage.getItem(postListKey)) || [];
+    const postList = $('#postList');
+    postList.empty();
+
+    if (posts.length === 0) {
+      postList.html('<p class="text-muted">No posts available. Create a new post above.</p>');
+    } else {
+      posts.forEach((post, index) => {
+        postList.append(`
+          <div class="post-item" data-index="${index}">
+            <h5>${post.title}</h5>
+            <p>${post.description}</p>
+            <small>Category: ${post.category}</small>
+          </div>
+        `);
+      });
+    }
+  }
+
+  // Simpan post baru
+  $('#postForm').submit(function(e){
+    e.preventDefault();
+
+    const title = $('#postTitle').val().trim();
+    const description = $('#postDescription').val().trim();
+    const category = $('#postCategory').val();
+
+    if (!title || !description || !category) {
+      alert('Please fill all fields');
+      return;
+    }
+
+    // Ambil file gambar (hanya nama filenya saja untuk demo)
+    const fileInput = $('#postImage')[0];
+    let imageName = '';
+    if (fileInput.files.length > 0) {
+      imageName = fileInput.files[0].name;
+    }
+
+    const posts = JSON.parse(localStorage.getItem(postListKey)) || [];
+
+    posts.push({
+      title,
+      description,
+      category,
+      image: imageName,
+      likes: 0,
+      comments: []
+    });
+
+    localStorage.setItem(postListKey, JSON.stringify(posts));
+
+    // Reset form
+    this.reset();
+    loadPosts();
+
+    alert('Post created successfully!');
+  });
+
+  loadPosts();
+});
+
 $(document).ready(function () {
 
     // LOGIN ADMIN
