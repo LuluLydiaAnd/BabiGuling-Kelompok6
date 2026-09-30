@@ -792,6 +792,7 @@ h1, h2, h3, h4, h5 {
   margin-bottom: 6px;
 }
 .cf-group input,
+.cf-group select,
 .cf-group textarea {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -806,11 +807,13 @@ h1, h2, h3, h4, h5 {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .cf-group input:focus,
+.cf-group select:focus,
 .cf-group textarea:focus {
   border-color: var(--red-brick);
   box-shadow: 0 0 0 3px rgba(169, 50, 38, 0.12);
 }
 .cf-group input.invalid,
+.cf-group select.invalid,
 .cf-group textarea.invalid { border-color: #d9534f; }
 
 .cf-error {
@@ -850,6 +853,91 @@ h1, h2, h3, h4, h5 {
   font-size: 0.9rem;
 }
 .cf-success i { vertical-align: middle; font-size: 1.2rem; }
+
+.cf-msg {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: #c0392b;
+}
+.cf-msg:empty { display: none; }
+
+.cf-count {
+  float: right;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-gray);
+}
+
+.cf-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.contact-list li.copyable { cursor: pointer; }
+.ci-copy {
+  margin-left: auto;
+  font-size: 1.1rem;
+  color: var(--gold);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.contact-list li.copyable:hover .ci-copy { opacity: 1; }
+
+.open-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 9px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border-radius: 20px;
+  vertical-align: middle;
+  background: rgba(255, 255, 255, 0.15);
+  color: #f0dcd5;
+}
+.open-badge.open { background: #e8f5ec; color: #2f6b45; }
+
+.cf-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translate(-50%, 20px);
+  padding: 0.6rem 1.2rem;
+  background: var(--brown-dark);
+  color: #fff;
+  font-size: 0.85rem;
+  border-radius: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+  z-index: 2000;
+}
+.cf-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+.faq-wrap { max-width: 760px; margin: 2.5rem auto 0; }
+.faq-wrap h4 {
+  color: #4b2923;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.faq-wrap .accordion-item { border-color: #ecdfd1; background: #fffdfa; }
+.faq-wrap .accordion-button {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--brown-dark);
+  background: #fffdfa;
+}
+.faq-wrap .accordion-button:not(.collapsed) {
+  color: var(--red-brick-dark);
+  background: var(--bg-soft);
+  box-shadow: none;
+}
+.faq-wrap .accordion-button:focus { box-shadow: 0 0 0 3px rgba(169, 50, 38, 0.12); }
+.faq-wrap .accordion-body { font-size: 0.9rem; color: var(--text-gray); }
 
 @media (max-width: 991.98px) {
   .contact-grid { grid-template-columns: 1fr; }

@@ -117,37 +117,88 @@ $(document).ready(function () {
   });
 
   // ===== Form kontak =====
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const $fields = $('#cfNama, #cfEmail, #cfSubjek, #cfPesan');
+  let toastTimer;
+
+  function cekField($el) {
+    const val = $el.val().trim();
+    const id = $el.attr('id');
+    let msg = '';
+
+    if (!val) msg = id === 'cfSubjek' ? 'Pilih salah satu subjek.' : 'Kolom ini wajib diisi.';
+    else if (id === 'cfEmail' && !emailPattern.test(val)) msg = 'Format email belum benar.';
+    else if (id === 'cfPesan' && val.length < 10) msg = 'Pesan minimal 10 karakter.';
+
+    $el.toggleClass('invalid', !!msg);
+    $el.closest('.cf-group').find('.cf-msg').text(msg);
+    return !msg;
+  }
+
+  $fields.on('blur change', function () { cekField($(this)); });
+  $fields.on('input', function () {
+    if ($(this).hasClass('invalid')) cekField($(this));
+  });
+
+  $('#cfPesan').on('input', function () {
+    $('#cfCount').text($(this).val().length + ' / 500');
+  });
+
   $('#contactForm').on('submit', function (event) {
     event.preventDefault();
+    const form = this;
+    let valid = true;
 
-    const $fields = $('#cfNama, #cfEmail, #cfSubjek, #cfPesan');
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let error = '';
-
-    $fields.removeClass('invalid');
     $('#cfSuccess').hide();
-
     $fields.each(function () {
-      if (!$(this).val().trim()) {
-        $(this).addClass('invalid');
-        error = 'Semua kolom wajib diisi.';
-      }
+      if (!cekField($(this))) valid = false;
     });
 
-    if (!error && !emailPattern.test($('#cfEmail').val().trim())) {
-      $('#cfEmail').addClass('invalid');
-      error = 'Format email belum benar.';
-    }
+    $('#cfError').text(valid ? '' : 'Periksa kembali kolom yang masih salah.');
+    if (!valid) return;
 
-    $('#cfError').text(error);
+    const $btn = $('#cfBtn');
+    $btn.prop('disabled', true).html("Mengirim... <i class='bx bx-loader-alt bx-spin'></i>");
 
-    if (!error) {
-      this.reset();
+    setTimeout(function () {
+      form.reset();
+      $('#cfCount').text('0 / 500');
+      $btn.prop('disabled', false).html("Kirim Pesan <i class='bx bx-send'></i>");
       $('#cfSuccess').fadeIn(300);
       setTimeout(function () { $('#cfSuccess').fadeOut(300); }, 4000);
+    }, 1200);
+  });
+
+  // salin email / telepon
+  function tampilToast(teks) {
+    $('#cfToast').text(teks).addClass('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { $('#cfToast').removeClass('show'); }, 2000);
+  }
+
+  $('.copyable').on('click', function () {
+    const teks = $(this).data('copy');
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(teks).then(function () { tampilToast('Disalin: ' + teks); });
+    } else {
+      const $tmp = $('<input>').val(teks).appendTo('body');
+      $tmp[0].select();
+      document.execCommand('copy');
+      $tmp.remove();
+      tampilToast('Disalin: ' + teks);
     }
   });
-  
+
+  // status jam layanan
+  (function () {
+    const now = new Date();
+    const hari = now.getDay();
+    const jam = now.getHours() + now.getMinutes() / 60;
+    const buka = hari >= 1 && hari <= 6 && jam >= 9 && jam < 17;
+    $('#openBadge').text(buka ? 'Sedang buka' : 'Sedang tutup').toggleClass('open', buka);
+  })();
+
   // ===== Back to top =====
   $(window).on('scroll', function () {
     if ($(this).scrollTop() > 300) {
