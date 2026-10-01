@@ -792,6 +792,7 @@ h1, h2, h3, h4, h5 {
   margin-bottom: 6px;
 }
 .cf-group input,
+.cf-group select,
 .cf-group textarea {
   width: 100%;
   padding: 0.75rem 1rem;
@@ -806,11 +807,13 @@ h1, h2, h3, h4, h5 {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .cf-group input:focus,
+.cf-group select:focus,
 .cf-group textarea:focus {
   border-color: var(--red-brick);
   box-shadow: 0 0 0 3px rgba(169, 50, 38, 0.12);
 }
 .cf-group input.invalid,
+.cf-group select.invalid,
 .cf-group textarea.invalid { border-color: #d9534f; }
 
 .cf-error {
@@ -850,6 +853,68 @@ h1, h2, h3, h4, h5 {
   font-size: 0.9rem;
 }
 .cf-success i { vertical-align: middle; font-size: 1.2rem; }
+
+.cf-msg {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+  color: #c0392b;
+}
+.cf-msg:empty { display: none; }
+
+.cf-count {
+  float: right;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--text-gray);
+}
+
+.cf-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.contact-list li.copyable { cursor: pointer; }
+.ci-copy {
+  margin-left: auto;
+  font-size: 1.1rem;
+  color: var(--gold);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+.contact-list li.copyable:hover .ci-copy { opacity: 1; }
+
+.open-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 1px 9px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border-radius: 20px;
+  vertical-align: middle;
+  background: rgba(255, 255, 255, 0.15);
+  color: #f0dcd5;
+}
+.open-badge.open { background: #e8f5ec; color: #2f6b45; }
+
+.cf-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 30px;
+  transform: translate(-50%, 20px);
+  padding: 0.6rem 1.2rem;
+  background: var(--brown-dark);
+  color: #fff;
+  font-size: 0.85rem;
+  border-radius: 30px;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s ease;
+  z-index: 2000;
+}
+.cf-toast.show { opacity: 1; transform: translate(-50%, 0); }
 
 @media (max-width: 991.98px) {
   .contact-grid { grid-template-columns: 1fr; }
@@ -999,3 +1064,70 @@ h1, h2, h3, h4, h5 {
 @media (max-width: 575.98px) {
   .tab-photos { grid-template-columns: repeat(2, 1fr); }
 }
+.kontak-box a {
+  color: var(--red-brick);
+  word-break: break-all;
+}
+.kontak-box a:hover { color: var(--red-brick-dark); }
+
+/* POSTINGAN DARI ADMIN */
+.posts-section {
+  padding: 4.5rem 0 3rem;
+  background: linear-gradient(180deg, #fefaf5 0%, #faf0e3 100%);
+}
+.posts-head { max-width: 620px; margin: 0 auto 1.5rem; }
+.posts-head h2 { color: #4b2923; font-size: 34px; font-weight: 700; margin-bottom: 10px; }
+.posts-head p:last-child { color: #6d5b55; line-height: 1.8; }
+ 
+.p-filter {
+  border: 1px solid #d9c3b6;
+  background: #fff;
+  color: #6b1d16;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.p-filter:hover { border-color: var(--red-brick); }
+.p-filter.active { background: var(--red-brick); border-color: var(--red-brick); color: #fff; }
+ 
+.posts-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.post-card {
+  background: #fff;
+  border: 1px solid #ecdfd1;
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(62, 39, 35, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.post-card:hover { transform: translateY(-4px); box-shadow: 0 14px 32px rgba(62, 39, 35, 0.15); }
+.post-card img { width: 100%; height: 200px; object-fit: cover; display: block; }
+.post-card-body { padding: 1.1rem 1.2rem 1.3rem; }
+.post-badge {
+  display: inline-block;
+  background: var(--bg-soft);
+  color: var(--red-brick);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  margin-bottom: 0.5rem;
+}
+.post-card h4 { color: var(--brown-dark); font-size: 1.15rem; margin-bottom: 0.4rem; }
+.post-card p { color: var(--text-gray); font-size: 0.9rem; line-height: 1.7; margin: 0; word-break: break-word; }
+.post-card p a { color: var(--red-brick); }
+ 
+.posts-empty { display: none; text-align: center; color: var(--text-gray); margin-top: 1rem; }
+ 
+@media (max-width: 991.98px) { .posts-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 575.98px) { .posts-grid { grid-template-columns: 1fr; } }
+ 

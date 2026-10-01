@@ -29,6 +29,7 @@
             <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
             <li class="nav-item"><a class="nav-link" href="#galeri">Galeri</a></li>
             <li class="nav-item"><a class="nav-link" href="#kontak">Contact</a></li>
+            <li class="nav-item"><a class="nav-link" href="#postingan">Postingan</a></li>
             <li class="nav-item"><a class="nav-link login-link" href="admin.html">Log In (Admin Only)</a></li>
         </ul>
         </div>
@@ -408,6 +409,34 @@
 
     </div>
     </section>
+        <section id="postingan" class="posts-section">
+             <div class="container">
+        <div class="posts-head text-center">
+            <p class="recipe-label">POSTINGAN</p>
+            <h2>Kabar &amp; Rekomendasi Terbaru</h2>
+            <p>Postingan terbaru dari admin seputar
+               rekomendasi, promo, dan info babi guling.</p>
+        </div>
+
+        <div class="gallery-filter justify-content-center"
+             id="postFilter">
+            <button type="button" class="p-filter active"
+                    data-cat="all">Semua</button>
+            <button type="button" class="p-filter"
+                    data-cat="Reccomendation">Reccomendation</button>
+            <button type="button" class="p-filter"
+                    data-cat="Promotions">Promotions</button>
+            <button type="button" class="p-filter"
+                    data-cat="Lainnya">Lainnya</button>
+        </div>
+
+        <div class="posts-grid" id="publicPosts"></div>
+        <p class="posts-empty" id="postsEmpty">
+            Belum ada postingan.
+        </p>
+        
+    </div>
+    </section>
 
     <section id="kontak" class="contact-wrap">
     <div class="container">
@@ -432,25 +461,27 @@
                             <p>Bali, Indonesia</p>
                         </div>
                     </li>
-                    <li>
+                    <li class="copyable" data-copy="babiguling@example.com" title="Klik untuk menyalin">
                         <span class="ci-icon"><i class='bx bx-envelope'></i></span>
                         <div>
                             <small>Email</small>
                             <p>babiguling@example.com</p>
                         </div>
+                        <i class='bx bx-copy ci-copy'></i>
                     </li>
-                    <li>
+                    <li class="copyable" data-copy="+62 812-3456-7890" title="Klik untuk menyalin">
                         <span class="ci-icon"><i class='bx bx-phone'></i></span>
                         <div>
                             <small>Telepon</small>
                             <p>+62 812-3456-7890</p>
                         </div>
+                        <i class='bx bx-copy ci-copy'></i>
                     </li>
                     <li>
                         <span class="ci-icon"><i class='bx bx-time-five'></i></span>
                         <div>
                             <small>Jam Layanan</small>
-                            <p>Senin – Sabtu, 09.00 – 17.00</p>
+                            <p>Senin – Sabtu, 09.00 – 17.00 <span class="open-badge" id="openBadge"></span></p>
                         </div>
                     </li>
                 </ul>
@@ -458,7 +489,6 @@
                 <div class="contact-social">
                     <a href="#"><i class='bx bxl-instagram'></i></a>
                     <a href="#"><i class='bx bxl-facebook'></i></a>
-                    <a href="#"><i class='bx bxl-whatsapp'></i></a>
                 </div>
             </div>
 
@@ -470,26 +500,36 @@
                         <div class="cf-group">
                             <label for="cfNama">Nama</label>
                             <input type="text" id="cfNama" placeholder="Nama lengkap">
+                            <small class="cf-msg"></small>
                         </div>
                         <div class="cf-group">
                             <label for="cfEmail">Email</label>
                             <input type="email" id="cfEmail" placeholder="nama@email.com">
+                            <small class="cf-msg"></small>
                         </div>
                     </div>
 
                     <div class="cf-group">
                         <label for="cfSubjek">Subjek</label>
-                        <input type="text" id="cfSubjek" placeholder="Tentang apa pesanmu?">
+                        <select id="cfSubjek">
+                            <option value="">Pilih subjek</option>
+                            <option>Pertanyaan Umum</option>
+                            <option>Koreksi Informasi</option>
+                            <option>Saran &amp; Masukan</option>
+                            <option>Lainnya</option>
+                        </select>
+                        <small class="cf-msg"></small>
                     </div>
 
                     <div class="cf-group">
-                        <label for="cfPesan">Pesan</label>
-                        <textarea id="cfPesan" rows="5" placeholder="Tulis pesanmu di sini..."></textarea>
+                        <label for="cfPesan">Pesan <span class="cf-count" id="cfCount">0 / 500</span></label>
+                        <textarea id="cfPesan" rows="5" maxlength="500" placeholder="Tulis pesanmu di sini..."></textarea>
+                        <small class="cf-msg"></small>
                     </div>
 
                     <p class="cf-error" id="cfError"></p>
 
-                    <button type="submit" class="cf-submit">
+                    <button type="submit" class="cf-submit" id="cfBtn">
                         Kirim Pesan <i class='bx bx-send'></i>
                     </button>
 
@@ -500,6 +540,7 @@
             </div>
 
         </div>
+
     </div>
 </section>
 
@@ -517,7 +558,7 @@
             <div class="col-md-6">
                 <div class="kontak-box">
                     <h5>Sumber &amp; Referensi</h5>
-                    <p class="ph-text">[ tambahkan daftar sumber referensi yang dipakai di sini ]</p>
+                    <p>Bali Chef &amp; Bar. <em>Balinese Babi Guling (whole pig on the spit)</em>. <a href="https://www.balichefhire.com/balinese-babi-guling.html" target="_blank" rel="noopener">balichefhire.com/balinese-babi-guling.html</a></p>
                 </div>
             </div>
         </div>
@@ -534,7 +575,6 @@
             <div class="footer-social">
                 <a href="#"><i class='bx bxl-instagram'></i></a>
                 <a href="#"><i class='bx bxl-facebook'></i></a>
-                <a href="#"><i class='bx bxl-whatsapp'></i></a>
             </div>
         </div>
 
@@ -544,6 +584,8 @@
 
     </div>
     </footer>
+
+    <div class="cf-toast" id="cfToast"></div>
 
     <div class="modal fade" id="galleryModal" tabindex="-1" aria-labelledby="galleryModalTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg">

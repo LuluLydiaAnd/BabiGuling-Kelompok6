@@ -149,7 +149,12 @@ $(document).ready(function () {
             let posts = JSON.parse(localStorage.getItem('posts')) || [];
             posts.push(post);
 
-            localStorage.setItem('posts', JSON.stringify(posts));
+            try {
+                localStorage.setItem('posts', JSON.stringify(posts));
+            } catch (err) {
+                alert('Gagal menyimpan, ukuran gambar terlalu besar. Coba gambar yang lebih kecil.');
+                return;
+            }
             // Reset form
             $('#postForm')[0].reset();
             // Tampilkan postingan

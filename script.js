@@ -1,67 +1,74 @@
 $(document).ready(function () {
-
   // ===== Tab =====
-  $('.tab-link').on('click', function (event) {
+  $(".tab-link").on("click", function (event) {
     event.preventDefault();
 
-    const targetTab = $(this).data('tab');
+    const targetTab = $(this).data("tab");
 
-    $('.tab-link').removeClass('active');
-    $('.tab-content').removeClass('active');
+    $(".tab-link").removeClass("active");
+    $(".tab-content").removeClass("active");
 
-    $(this).addClass('active');
-    $('#tab-' + targetTab).addClass('active');
+    $(this).addClass("active");
+    $("#tab-" + targetTab).addClass("active");
   });
 
   // ===== Smooth scroll navbar =====
-  $('.navbar-nav a[href^="#"]').on('click', function (event) {
-    const targetHash = $(this).attr('href');
+  $('.navbar-nav a[href^="#"]').on("click", function (event) {
+    const targetHash = $(this).attr("href");
 
-    if (targetHash && targetHash !== '#') {
+    if (targetHash && targetHash !== "#") {
       const $target = $(targetHash);
 
       if ($target.length) {
         event.preventDefault();
 
-        $('html, body').animate({
-          scrollTop: $target.offset().top - 70
-        }, 500);
+        $("html, body").animate(
+          {
+            scrollTop: $target.offset().top - 70,
+          },
+          500,
+        );
 
-        $('#navMenu').collapse('hide');
+        $("#navMenu").collapse("hide");
       }
     }
   });
 
   // ===== Galeri =====
-  const $items = $('.g-item');
+  const $items = $(".g-item");
 
   // fallback kalau foto belum ada
   $items.each(function () {
     const $item = $(this);
-    const $img = $item.find('img');
+    const $img = $item.find("img");
     const showFallback = function () {
-      if ($item.find('.g-fallback').length) return;
-      $item.addClass('no-img')
-           .prepend("<div class='g-fallback'><i class='bx " + $item.data('icon') + "'></i></div>");
+      if ($item.find(".g-fallback").length) return;
+      $item
+        .addClass("no-img")
+        .prepend(
+          "<div class='g-fallback'><i class='bx " +
+            $item.data("icon") +
+            "'></i></div>",
+        );
     };
-    $img.on('error', showFallback);
+    $img.on("error", showFallback);
     if ($img[0].complete && $img[0].naturalWidth === 0) showFallback();
   });
 
   // filter
-  $('.g-filter').on('click', function () {
-    const filter = $(this).data('filter');
-    $('.g-filter').removeClass('active');
-    $(this).addClass('active');
+  $(".g-filter").on("click", function () {
+    const filter = $(this).data("filter");
+    $(".g-filter").removeClass("active");
+    $(this).addClass("active");
 
     $items.each(function () {
-      const match = filter === 'all' || $(this).data('cat') === filter;
-      $(this).toggleClass('g-hide', !match).toggleClass('g-show', match);
+      const match = filter === "all" || $(this).data("cat") === filter;
+      $(this).toggleClass("g-hide", !match).toggleClass("g-show", match);
     });
   });
 
   // lightbox
-  $('body').append(
+  $("body").append(
     "<div class='lightbox' id='lightbox'>" +
       "<button class='lb-btn lb-close'><i class='bx bx-x'></i></button>" +
       "<button class='lb-btn lb-prev'><i class='bx bx-chevron-left'></i></button>" +
@@ -69,13 +76,13 @@ $(document).ready(function () {
       "<div id='lbMedia'></div>" +
       "<p class='lightbox-caption' id='lbCaption'></p>" +
       "<p class='lightbox-count' id='lbCount'></p>" +
-    "</div>"
+      "</div>",
   );
 
   let current = 0;
 
   function visibleItems() {
-    return $('.g-item:not(.g-hide)');
+    return $(".g-item:not(.g-hide)");
   }
 
   function showItem(index) {
@@ -83,84 +90,242 @@ $(document).ready(function () {
     current = (index + list.length) % list.length;
     const $item = list.eq(current);
 
-    if ($item.hasClass('no-img')) {
-      $('#lbMedia').html("<div class='lightbox-box'><i class='bx " + $item.data('icon') + "'></i></div>");
+    if ($item.hasClass("no-img")) {
+      $("#lbMedia").html(
+        "<div class='lightbox-box'><i class='bx " +
+          $item.data("icon") +
+          "'></i></div>",
+      );
     } else {
-      $('#lbMedia').html("<img class='lightbox-img' src='" + $item.find('img').attr('src') + "' alt=''>");
+      $("#lbMedia").html(
+        "<img class='lightbox-img' src='" +
+          $item.find("img").attr("src") +
+          "' alt=''>",
+      );
     }
-    $('#lbCaption').text($item.find('img').attr('alt'));
-    $('#lbCount').text((current + 1) + ' / ' + list.length);
+    $("#lbCaption").text($item.find("img").attr("alt"));
+    $("#lbCount").text(current + 1 + " / " + list.length);
   }
 
-  $items.on('click', function () {
+  $items.on("click", function () {
     const idx = visibleItems().index(this);
     showItem(idx);
-    $('#lightbox').addClass('open');
-    $('body').css('overflow', 'hidden');
+    $("#lightbox").addClass("open");
+    $("body").css("overflow", "hidden");
   });
 
   function closeLightbox() {
-    $('#lightbox').removeClass('open');
-    $('body').css('overflow', '');
+    $("#lightbox").removeClass("open");
+    $("body").css("overflow", "");
   }
 
-  $('.lb-close').on('click', closeLightbox);
-  $('#lightbox').on('click', function (e) { if (e.target === this) closeLightbox(); });
-  $('.lb-prev').on('click', function () { showItem(current - 1); });
-  $('.lb-next').on('click', function () { showItem(current + 1); });
+  $(".lb-close").on("click", closeLightbox);
+  $("#lightbox").on("click", function (e) {
+    if (e.target === this) closeLightbox();
+  });
+  $(".lb-prev").on("click", function () {
+    showItem(current - 1);
+  });
+  $(".lb-next").on("click", function () {
+    showItem(current + 1);
+  });
 
-  $(document).on('keydown', function (e) {
-    if (!$('#lightbox').hasClass('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') showItem(current - 1);
-    if (e.key === 'ArrowRight') showItem(current + 1);
+  $(document).on("keydown", function (e) {
+    if (!$("#lightbox").hasClass("open")) return;
+    if (e.key === "Escape") closeLightbox();
+    if (e.key === "ArrowLeft") showItem(current - 1);
+    if (e.key === "ArrowRight") showItem(current + 1);
   });
 
   // ===== Form kontak =====
-  $('#contactForm').on('submit', function (event) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const $fields = $("#cfNama, #cfEmail, #cfSubjek, #cfPesan");
+  let toastTimer;
+
+  function cekField($el) {
+    const val = $el.val().trim();
+    const id = $el.attr("id");
+    let msg = "";
+
+    if (!val)
+      msg =
+        id === "cfSubjek"
+          ? "Pilih salah satu subjek."
+          : "Kolom ini wajib diisi.";
+    else if (id === "cfEmail" && !emailPattern.test(val))
+      msg = "Format email belum benar.";
+    else if (id === "cfPesan" && val.length < 10)
+      msg = "Pesan minimal 10 karakter.";
+
+    $el.toggleClass("invalid", !!msg);
+    $el.closest(".cf-group").find(".cf-msg").text(msg);
+    return !msg;
+  }
+
+  $fields.on("blur change", function () {
+    cekField($(this));
+  });
+  $fields.on("input", function () {
+    if ($(this).hasClass("invalid")) cekField($(this));
+  });
+
+  $("#cfPesan").on("input", function () {
+    $("#cfCount").text($(this).val().length + " / 500");
+  });
+
+  $("#contactForm").on("submit", function (event) {
     event.preventDefault();
+    const form = this;
+    let valid = true;
 
-    const $fields = $('#cfNama, #cfEmail, #cfSubjek, #cfPesan');
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    let error = '';
-
-    $fields.removeClass('invalid');
-    $('#cfSuccess').hide();
-
+    $("#cfSuccess").hide();
     $fields.each(function () {
-      if (!$(this).val().trim()) {
-        $(this).addClass('invalid');
-        error = 'Semua kolom wajib diisi.';
-      }
+      if (!cekField($(this))) valid = false;
     });
 
-    if (!error && !emailPattern.test($('#cfEmail').val().trim())) {
-      $('#cfEmail').addClass('invalid');
-      error = 'Format email belum benar.';
-    }
+    $("#cfError").text(valid ? "" : "Periksa kembali kolom yang masih salah.");
+    if (!valid) return;
 
-    $('#cfError').text(error);
+    const $btn = $("#cfBtn");
+    $btn
+      .prop("disabled", true)
+      .html("Mengirim... <i class='bx bx-loader-alt bx-spin'></i>");
 
-    if (!error) {
-      this.reset();
-      $('#cfSuccess').fadeIn(300);
-      setTimeout(function () { $('#cfSuccess').fadeOut(300); }, 4000);
-    }
+    setTimeout(function () {
+      form.reset();
+      $("#cfCount").text("0 / 500");
+      $btn
+        .prop("disabled", false)
+        .html("Kirim Pesan <i class='bx bx-send'></i>");
+      $("#cfSuccess").fadeIn(300);
+      setTimeout(function () {
+        $("#cfSuccess").fadeOut(300);
+      }, 4000);
+    }, 1200);
   });
-  
-  // ===== Back to top =====
-  $(window).on('scroll', function () {
-    if ($(this).scrollTop() > 300) {
-      $('#backToTop').fadeIn(300);
+
+  // salin email / telepon
+  function tampilToast(teks) {
+    $("#cfToast").text(teks).addClass("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () {
+      $("#cfToast").removeClass("show");
+    }, 2000);
+  }
+
+  $(".copyable").on("click", function () {
+    const teks = $(this).data("copy");
+
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(teks).then(function () {
+        tampilToast("Disalin: " + teks);
+      });
     } else {
-      $('#backToTop').fadeOut(300);
+      const $tmp = $("<input>").val(teks).appendTo("body");
+      $tmp[0].select();
+      document.execCommand("copy");
+      $tmp.remove();
+      tampilToast("Disalin: " + teks);
     }
   });
 
-  $('#backToTop').on('click', function () {
-    $('html, body').animate({
-      scrollTop: 0
-    }, 60);
+  // status jam layanan
+  (function () {
+    const now = new Date();
+    const hari = now.getDay();
+    const jam = now.getHours() + now.getMinutes() / 60;
+    const buka = hari >= 1 && hari <= 6 && jam >= 9 && jam < 17;
+    $("#openBadge")
+      .text(buka ? "Sedang buka" : "Sedang tutup")
+      .toggleClass("open", buka);
+  })();
+
+  // ===== Postingan dari admin =====
+  let postFilter = "all";
+
+  function escapeHtml(text) {
+    return String(text == null ? "" : text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function linkify(text) {
+    return escapeHtml(text)
+      .replace(
+        /(https?:\/\/[^\s]+)/g,
+        '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>',
+      )
+      .replace(/\n/g, "<br>");
+  }
+
+  function renderPosts() {
+    let posts = [];
+    try {
+      posts = JSON.parse(localStorage.getItem("posts")) || [];
+    } catch (e) {
+      posts = [];
+    }
+
+    posts = posts
+      .slice()
+      .reverse()
+      .filter(function (p) {
+        return postFilter === "all" || p.category === postFilter;
+      });
+
+    const $list = $("#publicPosts").empty();
+    $("#postsEmpty").toggle(posts.length === 0);
+
+    posts.forEach(function (post) {
+      const $card = $('<article class="post-card"></article>');
+      if (post.image) {
+        $card.append(
+          $("<img>").attr({ src: post.image, alt: post.title || "Postingan" }),
+        );
+      }
+      const $body = $('<div class="post-card-body"></div>');
+      $body.append(
+        $('<span class="post-badge"></span>').text(post.category || "Lainnya"),
+      );
+      $body.append($("<h4></h4>").text(post.title || ""));
+      $body.append($("<p></p>").html(linkify(post.description || "")));
+      $card.append($body);
+      $list.append($card);
+    });
+  }
+
+  $(".p-filter").on("click", function () {
+    postFilter = $(this).data("cat");
+    $(".p-filter").removeClass("active");
+    $(this).addClass("active");
+    renderPosts();
   });
 
+  // kalau admin nambah/hapus post di tab lain, langsung ikut update
+  $(window).on("storage", function (e) {
+    if (e.originalEvent.key === "posts") renderPosts();
+  });
+
+  renderPosts();
+
+  // ===== Back to top =====
+  $(window).on("scroll", function () {
+    if ($(this).scrollTop() > 300) {
+      $("#backToTop").fadeIn(300);
+    } else {
+      $("#backToTop").fadeOut(300);
+    }
+  });
+
+  $("#backToTop").on("click", function () {
+    $("html, body").animate(
+      {
+        scrollTop: 0,
+      },
+      60,
+    );
+  });
 });
