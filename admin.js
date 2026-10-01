@@ -1,695 +1,638 @@
 $(document).ready(function () {
 
-    /* ==================================================
-       LOCAL STORAGE REVIEW
-    ================================================== */
+    // ==================================================
+    // LOGIN
+    // ==================================================
 
-    const REVIEW_KEYS = [
-        "reviews",
-        "reviewsData",
-        "userReviews",
-        "ratings",
-        "userRatings",
-        "comments"
-    ];
+    const validUser = "admin";
+    const validPass = "admin123";
 
+
+    $("#loginForm").on("submit", function (event) {
+
+        event.preventDefault();
+
+        const inputUser = $("#username").val().trim();
+        const inputPass = $("#password").val().trim();
+
+
+        if (
+            inputUser === validUser &&
+            inputPass === validPass
+        ) {
+
+            // Sembunyikan login
+            $("#loginWrap").addClass("d-none");
+
+            // Tampilkan dashboard
+            $("#dashboard").removeClass("d-none");
+
+            // Hilangkan error
+            $("#loginError").addClass("d-none");
+
+            // Pastikan Dashboard aktif
+            showPage("dashboardSection");
+
+        } else {
+
+            // Tampilkan error
+            $("#loginError").removeClass("d-none");
+
+        }
+
+    });
+
+
+
+    // ==================================================
+    // SIDEBAR MENU
+    // ==================================================
+
+    $(".sidebar-link").on("click", function (event) {
+
+        event.preventDefault();
+
+        const target = $(this).data("target");
+
+        if (!target) {
+            return;
+        }
+
+
+        // Hapus active dari semua menu
+        $(".sidebar-link").removeClass("active");
+
+        // Aktifkan menu yang dipilih
+        $(this).addClass("active");
+
+
+        // Tampilkan halaman yang dipilih
+        showPage(target);
+
+
+        // Kalau mobile, tutup sidebar setelah klik
+        if (window.innerWidth <= 992) {
+
+            $(".admin-sidebar").removeClass("mobile-open");
+
+        }
+
+    });
+
+
+
+    // ==================================================
+    // FUNGSI PINDAH HALAMAN
+    // ==================================================
+
+    function showPage(target) {
+
+        // Sembunyikan semua halaman
+        $(".admin-page").addClass("d-none");
+
+        // Tampilkan halaman yang dipilih
+        $("#" + target).removeClass("d-none");
+
+        // Scroll ke atas
+        $(".admin-main").scrollTop(0);
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }
+
+
+
+    // ==================================================
+    // SIDEBAR TOGGLE
+    // ==================================================
+
+    const sidebar = document.querySelector(".admin-sidebar");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+
+
+    if (sidebar && sidebarToggle) {
+
+        sidebarToggle.addEventListener("click", function () {
+
+            if (window.innerWidth <= 992) {
+
+                // MOBILE
+                sidebar.classList.toggle("mobile-open");
+
+            } else {
+
+                // DESKTOP
+                sidebar.classList.toggle("collapsed");
+
+            }
+
+        });
+
+    }
+
+
+
+    // ==================================================
+    // LOGOUT
+    // ==================================================
+
+    $("#logoutBtn").on("click", function () {
+
+        // Sembunyikan dashboard
+        $("#dashboard").addClass("d-none");
+
+        // Tampilkan login
+        $("#loginWrap").removeClass("d-none");
+
+        // Reset login
+        $("#loginForm")[0].reset();
+
+        // Hilangkan error
+        $("#loginError").addClass("d-none");
+
+
+        // Kembali ke dashboard
+        showPage("dashboardSection");
+
+
+        // Reset active menu
+        $(".sidebar-link").removeClass("active");
+
+        $(
+            '.sidebar-link[data-target="dashboardSection"]'
+        ).addClass("active");
+
+
+        // Reset sidebar
+        $(".admin-sidebar")
+            .removeClass("collapsed")
+            .removeClass("mobile-open");
+
+    });
+
+
+
+    // ==================================================
+    // DATA KOMENTAR / RATING
+    // ==================================================
 
     function getReviews() {
 
-        for (const key of REVIEW_KEYS) {
+        /*
+         * Bisa membaca beberapa kemungkinan
+         * nama localStorage yang dipakai website.
+         */
+
+        const possibleKeys = [
+            "reviews",
+            "ratings",
+            "comments",
+            "userReviews",
+            "babiguling_reviews"
+        ];
+
+
+        for (const key of possibleKeys) {
+
+            const data = localStorage.getItem(key);
+
+            if (!data) {
+                continue;
+            }
+
 
             try {
 
-                const raw = localStorage.getItem(key);
+                const parsed = JSON.parse(data);
 
-                if (!raw) {
-                    continue;
-                }
-
-                const data = JSON.parse(raw);
-
-                if (Array.isArray(data)) {
-                    return data;
+                if (Array.isArray(parsed)) {
+                    return parsed;
                 }
 
             } catch (error) {
 
                 console.log(
-                    "LocalStorage error:",
-                    error
+                    "Data localStorage tidak valid:",
+                    key
                 );
 
             }
 
         }
+
 
         return [];
 
     }
 
 
-    function normalizeReview(item) {
 
-        const rating = Number(
-            item.rating ??
-            item.rate ??
-            item.stars ??
-            item.nilai ??
-            0
-        );
+    // ==================================================
+    // ESCAPE HTML
+    // ==================================================
 
+    function escapeHtml(text) {
 
-        const name =
-            item.name ??
-            item.username ??
-            item.user ??
-            item.nama ??
-            "User";
-
-
-        const comment =
-            item.comment ??
-            item.review ??
-            item.ulasan ??
-            item.komentar ??
-            item.message ??
-            "";
-
-
-        const date =
-            item.date ??
-            item.createdAt ??
-            item.time ??
-            item.tanggal ??
-            "Baru";
-
-
-        return {
-
-            name: String(name),
-
-            rating: Math.max(
-                0,
-                Math.min(5, rating)
-            ),
-
-            comment: String(comment),
-
-            date: String(date)
-
-        };
-
-    }
-
-
-    function reviews() {
-
-        return getReviews()
-
-            .map(normalizeReview)
-
-            .filter(function (review) {
-
-                return (
-                    review.rating > 0 ||
-                    review.comment
-                );
-
-            });
-
-    }
-
-
-    /* ==================================================
-       SECURITY
-    ================================================== */
-
-    function escapeHTML(text) {
-
-        return String(text)
-
+        return String(text ?? "")
             .replace(/&/g, "&amp;")
-
             .replace(/</g, "&lt;")
-
             .replace(/>/g, "&gt;")
-
             .replace(/"/g, "&quot;")
-
             .replace(/'/g, "&#039;");
 
     }
 
 
-    /* ==================================================
-       STAR
-    ================================================== */
 
-    function stars(rating) {
+    // ==================================================
+    // AMBIL NAMA USER
+    // ==================================================
 
-        const full =
-            Math.round(rating);
+    function getReviewName(review) {
 
         return (
-            "⭐".repeat(full) +
-            "☆".repeat(5 - full)
+            review.name ||
+            review.username ||
+            review.user ||
+            review.nama ||
+            "User"
         );
 
     }
 
 
-    /* ==================================================
-       RENDER REVIEW
-    ================================================== */
 
-    function renderReviews() {
+    // ==================================================
+    // AMBIL KOMENTAR
+    // ==================================================
 
-        const data = reviews();
+    function getReviewComment(review) {
 
-
-        $("#commentCount").text(
-            data.length
+        return (
+            review.comment ||
+            review.review ||
+            review.message ||
+            review.text ||
+            review.komentar ||
+            ""
         );
 
-
-        const average = data.length
-
-            ? data.reduce(
-                function (sum, review) {
-
-                    return sum + review.rating;
-
-                },
-                0
-            ) / data.length
-
-            : 4.8;
+    }
 
 
-        $("#avgRating").text(
-            average.toFixed(1)
+
+    // ==================================================
+    // AMBIL RATING
+    // ==================================================
+
+    function getReviewRating(review) {
+
+        const rating = Number(
+            review.rating ||
+            review.stars ||
+            review.nilai ||
+            0
         );
 
+        return rating;
 
-        let html = "";
+    }
 
 
-        if (!data.length) {
 
-            html = `
+    // ==================================================
+    // BUAT BINTANG
+    // ==================================================
 
-                <div class="empty-section">
+    function createStars(rating) {
 
-                    <i class='bx bx-comment-x'></i>
+        const roundedRating = Math.round(rating);
+
+        if (roundedRating <= 0) {
+            return "☆☆☆☆☆";
+        }
+
+        return "⭐".repeat(
+            Math.min(roundedRating, 5)
+        );
+
+    }
+
+
+
+    // ==================================================
+    // RENDER KOMENTAR
+    // ==================================================
+
+    function renderComments() {
+
+        const reviews = getReviews();
+
+        const dashboardComments =
+            $("#dashboardComments");
+
+        const allComments =
+            $("#allComments");
+
+
+        // Reset
+        dashboardComments.empty();
+        allComments.empty();
+
+
+        // Kalau belum ada komentar
+        if (reviews.length === 0) {
+
+            const emptyHTML = `
+                <div class="empty-section small-empty">
+
+                    <i class='bx bx-message-x'></i>
 
                     <h3>
                         Belum ada komentar
                     </h3>
 
                     <p>
-                        Komentar dan rating user
-                        akan muncul di sini.
+                        Komentar dan rating user akan muncul di sini.
                     </p>
 
                 </div>
-
             `;
 
-        }
 
-        else {
-
-            data
-                .slice()
-                .reverse()
-                .forEach(function (review) {
-
-                    const initial =
-                        escapeHTML(
-                            review.name
-                                .charAt(0)
-                                .toUpperCase()
-                        );
+            dashboardComments.html(
+                emptyHTML
+            );
 
 
-                    html += `
+            allComments.html(`
+                <div class="empty-section">
 
-                        <div class="comment-item">
+                    <i class='bx bx-message-x'></i>
 
-                            <div class="comment-avatar">
-                                ${initial}
-                            </div>
+                    <h3>
+                        Belum ada komentar
+                    </h3>
 
+                    <p>
+                        Komentar dan rating user akan muncul di sini.
+                    </p>
 
-                            <div class="comment-content">
-
-                                <strong>
-                                    ${escapeHTML(
-                                        review.name
-                                    )}
-                                </strong>
-
-
-                                <div class="comment-rating">
-                                    ${stars(
-                                        review.rating
-                                    )}
-                                </div>
+                </div>
+            `);
 
 
-                                <p>
-                                    ${escapeHTML(
-                                        review.comment ||
-                                        "Tidak ada komentar."
-                                    )}
-                                </p>
+            $("#commentCount").text("0");
 
-                            </div>
+            $("#averageRating").text("0");
 
 
-                            <span class="comment-time">
-                                ${escapeHTML(
-                                    review.date
-                                )}
-                            </span>
-
-                        </div>
-
-                    `;
-
-                });
+            return;
 
         }
 
 
-        $("#recentComments")
-            .html(html);
+
+        // ==================================================
+        // HITUNG DATA
+        // ==================================================
+
+        let totalRating = 0;
+
+        let ratingCount = 0;
 
 
-        $("#allComments")
-            .html(html);
+        reviews.forEach(function (review) {
 
-    }
+            const rating =
+                getReviewRating(review);
 
+            if (rating > 0) {
 
-    /* ==================================================
-       RATING STATISTICS
-    ================================================== */
+                totalRating += rating;
 
-    function renderRatingStats() {
+                ratingCount++;
 
-        const data = reviews();
-
-        const total = data.length;
-
-
-        const counts = {
-
-            5: 0,
-            4: 0,
-            3: 0,
-            2: 0,
-            1: 0
-
-        };
-
-
-        data.forEach(function (review) {
-
-            const value =
-                Math.max(
-                    1,
-                    Math.min(
-                        5,
-                        Math.round(
-                            review.rating
-                        )
-                    )
-                );
-
-
-            counts[value]++;
+            }
 
         });
 
 
-        let html = "";
+        const average =
+            ratingCount > 0
+                ? (totalRating / ratingCount).toFixed(1)
+                : "0";
 
 
-        [5, 4, 3, 2, 1]
-            .forEach(function (value) {
+        $("#averageRating").text(
+            average
+        );
 
-                const percentage = total
-
-                    ? Math.round(
-                        (
-                            counts[value] /
-                            total
-                        ) * 100
-                    )
-
-                    : 0;
+        $("#commentCount").text(
+            reviews.length
+        );
 
 
-                html += `
 
-                    <div class="rating-row">
+        // ==================================================
+        // STATISTIK RATING
+        // ==================================================
 
-                        <span>
-                            ${value} ⭐
-                        </span>
-
-
-                        <div class="rating-bar">
-
-                            <div
-                                style="
-                                    width:
-                                    ${percentage}%;
-                                ">
-                            </div>
-
-                        </div>
+        const ratingTotals = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0
+        };
 
 
-                        <strong>
-                            ${percentage}%
-                        </strong>
+        reviews.forEach(function (review) {
 
-                    </div>
+            const rating =
+                getReviewRating(review);
 
-                `;
+            if (rating >= 1 && rating <= 5) {
+
+                ratingTotals[rating]++;
+
+            }
+
+        });
+
+
+        const totalRatings =
+            reviews.length;
+
+
+        $(".rating-row").each(
+            function () {
+
+                const row =
+                    $(this);
+
+                const rating =
+                    Number(
+                        row
+                            .find("span")
+                            .text()
+                            .charAt(0)
+                    );
+
+
+                const count =
+                    ratingTotals[rating] || 0;
+
+
+                const percentage =
+                    totalRatings > 0
+                        ? Math.round(
+                            (count / totalRatings) * 100
+                        )
+                        : 0;
+
+
+                row.find(".rating-bar div")
+                    .css(
+                        "width",
+                        percentage + "%"
+                    );
+
+
+                row.find("strong")
+                    .text(
+                        percentage + "%"
+                    );
+
+            }
+        );
+
+
+
+        // ==================================================
+        // URUTKAN TERBARU
+        // ==================================================
+
+        const sortedReviews =
+            [...reviews].reverse();
+
+
+
+        // ==================================================
+        // DASHBOARD
+        // CUMA 2 KOMENTAR
+        // ==================================================
+
+        sortedReviews
+            .slice(0, 2)
+            .forEach(function (review) {
+
+                dashboardComments.append(
+                    createCommentHTML(review)
+                );
 
             });
 
 
-        $("#ratingStats")
-            .html(html);
 
-    }
+        // ==================================================
+        // HALAMAN KOMENTAR
+        // TAMPIL SEMUA
+        // ==================================================
 
+        sortedReviews.forEach(
+            function (review) {
 
-    /* ==================================================
-       RESTAURANT
-    ================================================== */
-
-    function renderRestaurants() {
-
-        const restaurants = [
-
-            [
-                "Babi Guling Pak Made",
-                "124 ulasan",
-                "4.9"
-            ],
-
-            [
-                "Babi Guling Bu Wayan",
-                "98 ulasan",
-                "4.8"
-            ],
-
-            [
-                "Babi Guling Candra",
-                "76 ulasan",
-                "4.7"
-            ]
-
-        ];
-
-
-        let html = "";
-
-
-        restaurants.forEach(
-            function (restaurant, index) {
-
-                html += `
-
-                    <div class="restaurant-item">
-
-                        <div class="restaurant-number">
-                            ${index + 1}
-                        </div>
-
-
-                        <div class="restaurant-info">
-
-                            <strong>
-                                ${restaurant[0]}
-                            </strong>
-
-                            <span>
-                                ${restaurant[1]}
-                            </span>
-
-                        </div>
-
-
-                        <div class="restaurant-rating">
-                            ⭐ ${restaurant[2]}
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-        );
-
-
-        $("#favoriteRestaurants")
-            .html(html);
-
-
-        $("#restaurantPage")
-            .html(html);
-
-    }
-
-
-    /* ==================================================
-       LOGIN
-    ================================================== */
-
-    $("#loginForm").on(
-        "submit",
-        function (event) {
-
-            event.preventDefault();
-
-
-            const username =
-                $("#username")
-                    .val()
-                    .trim();
-
-
-            const password =
-                $("#password")
-                    .val();
-
-
-            if (
-                username === "admin" &&
-                password === "admin123"
-            ) {
-
-                $("#loginWrap")
-                    .addClass("d-none");
-
-
-                $("#dashboard")
-                    .removeClass("d-none");
-
-
-                $("#loginError")
-                    .addClass("d-none");
-
-
-                renderReviews();
-
-                renderRatingStats();
-
-                renderRestaurants();
-
-            }
-
-            else {
-
-                $("#loginError")
-                    .removeClass("d-none");
-
-            }
-
-        }
-    );
-
-
-    /* ==================================================
-       SIDEBAR NAVIGATION
-    ================================================== */
-
-    $(".sidebar-link").on(
-        "click",
-        function (event) {
-
-            event.preventDefault();
-
-
-            const target =
-                $(this).data("target");
-
-
-            $(".sidebar-link")
-                .removeClass("active");
-
-
-            $(this)
-                .addClass("active");
-
-
-            $(".admin-page")
-                .addClass("d-none");
-
-
-            $("#" + target)
-                .removeClass("d-none");
-
-
-            if (window.innerWidth <= 992) {
-
-                $(".admin-sidebar")
-                    .removeClass(
-                        "mobile-open"
-                    );
-
-            }
-
-
-            renderReviews();
-
-            renderRatingStats();
-
-            renderRestaurants();
-
-        }
-    );
-
-
-    /* ==================================================
-       SIDEBAR TOGGLE
-    ================================================== */
-
-    const sidebar =
-        document.querySelector(
-            ".admin-sidebar"
-        );
-
-
-    const sidebarToggle =
-        document.getElementById(
-            "sidebarToggle"
-        );
-
-
-    if (
-        sidebar &&
-        sidebarToggle
-    ) {
-
-        sidebarToggle.addEventListener(
-            "click",
-            function () {
-
-                if (
-                    window.innerWidth <= 992
-                ) {
-
-                    sidebar.classList.toggle(
-                        "mobile-open"
-                    );
-
-                }
-
-                else {
-
-                    sidebar.classList.toggle(
-                        "collapsed"
-                    );
-
-                }
-
-            }
-        );
-
-    }
-
-
-    /* ==================================================
-       LOGOUT
-    ================================================== */
-
-    $("#logoutBtn").on(
-        "click",
-        function () {
-
-            $("#dashboard")
-                .addClass("d-none");
-
-
-            $("#loginWrap")
-                .removeClass("d-none");
-
-
-            $("#loginForm")[0]
-                .reset();
-
-
-            $("#loginError")
-                .addClass("d-none");
-
-
-            $(".admin-page")
-                .addClass("d-none");
-
-
-            $("#dashboardSection")
-                .removeClass("d-none");
-
-
-            $(".sidebar-link")
-                .removeClass("active");
-
-
-            $(
-                '.sidebar-link[data-target="dashboardSection"]'
-            )
-                .addClass("active");
-
-
-            $(".admin-sidebar")
-                .removeClass(
-                    "collapsed mobile-open"
+                allComments.append(
+                    createCommentHTML(review)
                 );
 
-        }
-    );
+            }
+        );
+
+    }
 
 
-    /* ==================================================
-       UPDATE JIKA LOCAL STORAGE BERUBAH
-    ================================================== */
 
+    // ==================================================
+    // HTML KOMENTAR
+    // ==================================================
+
+    function createCommentHTML(review) {
+
+        const name =
+            escapeHtml(
+                getReviewName(review)
+            );
+
+
+        const comment =
+            escapeHtml(
+                getReviewComment(review)
+            );
+
+
+        const rating =
+            getReviewRating(review);
+
+
+        const firstLetter =
+            name
+                .charAt(0)
+                .toUpperCase();
+
+
+        const stars =
+            createStars(rating);
+
+
+        return `
+            <div class="comment-item">
+
+                <div class="comment-avatar">
+                    ${firstLetter}
+                </div>
+
+                <div class="comment-content">
+
+                    <strong>
+                        ${name}
+                    </strong>
+
+                    <div class="comment-rating">
+                        ${stars}
+                    </div>
+
+                    <p>
+                        ${comment || "Tidak ada komentar."}
+                    </p>
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+
+
+    // ==================================================
+    // UPDATE DATA
+    // ==================================================
+
+    renderComments();
+
+
+
+    // Kalau localStorage berubah dari tab lain
     window.addEventListener(
         "storage",
         function () {
 
-            renderReviews();
-
-            renderRatingStats();
-
-            renderRestaurants();
+            renderComments();
 
         }
     );
