@@ -1,79 +1,1086 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Login — Babi Guling </title>
+<html lang="id">
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Login — Babi Guling</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <!-- Boxicons -->
+    <link
+        href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+        rel="stylesheet">
+
+    <!-- CSS Admin -->
+    <link rel="stylesheet" href="admin.css">
 </head>
 
+
 <body class="admin-body">
-  <div class="admin-login-wrap" id="loginWrap">
-    <div class="admin-login-card">
 
-      <a href="index.html" class="admin-back">
-        <i class='bx bx-arrow-back'></i> Kembali ke Beranda
-      </a>
+    <!-- ==================================================
+         LOGIN
+    ================================================== -->
 
-      <div class="admin-logo">
-        <i class='bx bxs-food-menu'></i>
-      </div>
+    <div class="admin-login-wrap" id="loginWrap">
 
-      <h1 class="admin-title">Admin Panel</h1>
-      <p class="admin-subtitle">Login untuk mengelola artikel babi guling </p>
+        <div class="admin-login-card">
 
-      <form id="loginForm" class="admin-form">
-        <div class="mb-3">
-          <label class="form-label" for="username">Username</label>
-          <div class="input-icon">
-            <i class='bx bx-user'></i>
-            <input type="text" id="username" class="form-control" placeholder="Masukkan username" required>
-          </div>
+            <a href="index.html" class="admin-back">
+                <i class='bx bx-arrow-back'></i>
+                Kembali ke Beranda
+            </a>
+
+
+            <!-- LOGO LOGIN -->
+            <div class="admin-logo">
+                <i class='bx bxs-food-menu'></i>
+            </div>
+
+
+            <h1 class="admin-title">
+                Admin Panel
+            </h1>
+
+
+            <p class="admin-subtitle">
+                Login untuk mengelola website Babi Guling
+            </p>
+
+
+            <!-- FORM LOGIN -->
+            <form id="loginForm" class="admin-form">
+
+                <!-- USERNAME -->
+                <div class="mb-3">
+
+                    <label
+                        class="form-label"
+                        for="username">
+
+                        Username
+
+                    </label>
+
+                    <div class="input-icon">
+
+                        <i class='bx bx-user'></i>
+
+                        <input
+                            type="text"
+                            id="username"
+                            class="form-control"
+                            placeholder="Masukkan username"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PASSWORD -->
+                <div class="mb-3">
+
+                    <label
+                        class="form-label"
+                        for="password">
+
+                        Password
+
+                    </label>
+
+                    <div class="input-icon">
+
+                        <i class='bx bx-lock-alt'></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            placeholder="Masukkan password"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ERROR LOGIN -->
+                <div
+                    id="loginError"
+                    class="login-error d-none">
+
+                    <i class='bx bx-error-circle'></i>
+
+                    Username atau password salah.
+
+                </div>
+
+
+                <!-- BUTTON LOGIN -->
+                <button
+                    type="submit"
+                    class="btn btn-admin-login">
+
+                    Masuk
+
+                    <i class='bx bx-log-in'></i>
+
+                </button>
+
+
+                <!-- DEMO LOGIN -->
+                <p class="admin-hint">
+
+                    <i class='bx bx-info-circle'></i>
+
+                    Demo login:
+                    <b>admin</b> /
+                    <b>admin123</b>
+
+                </p>
+
+            </form>
+
         </div>
-
-        <div class="mb-3">
-          <label class="form-label" for="password">Password</label>
-          <div class="input-icon">
-            <i class='bx bx-lock-alt'></i>
-            <input type="password" id="password" class="form-control" placeholder="Masukkan password" required>
-          </div>
-        </div>
-
-        <div id="loginError" class="login-error d-none">
-          <i class='bx bx-error-circle'></i> Username atau password salah.
-        </div>
-
-        <button type="submit" class="btn btn-admin-login w-100">
-          Masuk <i class='bx bx-log-in'></i>
-        </button>
-
-        <p class="admin-hint">
-          <i class='bx bx-info-circle'></i>
-          Demo login: <b>admin</b> / <b>admin123</b>
-        </p>
-      </form>
 
     </div>
-  </div>
 
-  <div id="dashboard" class="admin-dashboard d-none">
-    <div class="container py-5">
-      <div class="section-box" style="margin-bottom: 2rem;">
-        <span>DASHBOARD ADMIN</span>
-      </div>
-      <div class="text-center">
-        <button id="logoutBtn" class="btn btn-outline-dark mt-3">
-          <i class='bx bx-log-out'></i> Logout
+
+
+    <!-- ==================================================
+         DASHBOARD
+    ================================================== -->
+
+    <div
+        id="dashboard"
+        class="admin-dashboard d-none">
+
+
+        <!-- ==================================================
+             TOGGLE SIDEBAR
+             INI SATU-SATUNYA TOMBOL SIDEBAR
+        ================================================== -->
+
+        <button
+            id="sidebarToggle"
+            class="sidebar-toggle"
+            type="button"
+            aria-label="Toggle sidebar">
+
+            <i class='bx bxs-food-menu'></i>
+
         </button>
-      </div>
-    </div>
-  </div>
 
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="admin.js"></script>
+
+
+        <!-- ==================================================
+             SIDEBAR
+        ================================================== -->
+
+        <aside class="admin-sidebar">
+
+
+            <!-- SIDEBAR BRAND -->
+            <div class="sidebar-brand">
+
+                <div>
+
+                    <h3>
+                        Babi Guling
+                    </h3>
+
+                    <span>
+                        Admin Panel
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 NAVIGATION
+            ================================================== -->
+
+            <nav class="sidebar-nav">
+
+
+                <!-- DASHBOARD -->
+                <a
+                    href="#"
+                    class="sidebar-link active"
+                    data-target="dashboardSection">
+
+                    <i class='bx bxs-dashboard'></i>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </a>
+
+
+                <!-- MENU -->
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="menuSection">
+
+                    <i class='bx bx-restaurant'></i>
+
+                    <span>
+                        Menu
+                    </span>
+
+                </a>
+
+
+                <!-- KOMENTAR & RATING -->
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="commentSection">
+
+                    <i class='bx bx-comment-detail'></i>
+
+                    <span>
+                        Komentar & Rating
+                    </span>
+
+                </a>
+
+
+                <!-- RESTO TERFAVORIT -->
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="restaurantSection">
+
+                    <i class='bx bx-trophy'></i>
+
+                    <span>
+                        Resto Terfavorit
+                    </span>
+
+                </a>
+
+
+                <!-- USER -->
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="userSection">
+
+                    <i class='bx bx-user'></i>
+
+                    <span>
+                        User
+                    </span>
+
+                </a>
+
+
+                <!-- ARTIKEL -->
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="articleSection">
+
+                    <i class='bx bx-news'></i>
+
+                    <span>
+                        Artikel
+                    </span>
+
+                </a>
+
+
+                <!-- PENGATURAN -->
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="settingSection">
+
+                    <i class='bx bx-cog'></i>
+
+                    <span>
+                        Pengaturan
+                    </span>
+
+                </a>
+
+            </nav>
+
+
+
+            <!-- ==================================================
+                 LOGOUT
+            ================================================== -->
+
+            <button
+                id="logoutBtn"
+                class="sidebar-logout"
+                type="button">
+
+                <i class='bx bx-log-out'></i>
+
+                <span>
+                    Logout
+                </span>
+
+            </button>
+
+        </aside>
+
+
+
+        <!-- ==================================================
+             MAIN CONTENT
+        ================================================== -->
+
+        <main class="admin-main">
+
+
+            <!-- ==================================================
+                 DASHBOARD
+            ================================================== -->
+
+            <section
+                id="dashboardSection"
+                class="admin-page">
+
+
+                <!-- HEADER -->
+                <div class="admin-header">
+
+                    <div>
+
+                        <p class="admin-welcome">
+                            Selamat datang kembali 👋
+                        </p>
+
+                        <h1>
+                            Dashboard Admin
+                        </h1>
+
+                        <p>
+                            Ringkasan informasi website Babi Guling.
+                        </p>
+
+                    </div>
+
+
+                    <!-- PROFILE -->
+                    <div class="admin-profile">
+
+                        <div class="profile-icon">
+
+                            <i class='bx bx-user'></i>
+
+                        </div>
+
+                        <div>
+
+                            <strong>
+                                Admin
+                            </strong>
+
+                            <span>
+                                Administrator
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     STAT CARDS
+                ================================================== -->
+
+                <div class="admin-stats">
+
+
+                    <!-- RATING -->
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class='bx bxs-star'></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Rating Resto
+                            </span>
+
+                            <h2>
+                                4.8
+                            </h2>
+
+                            <small>
+                                Rata-rata rating user
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- KOMENTAR -->
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class='bx bx-comment'></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Komentar
+                            </span>
+
+                            <h2>
+                                328
+                            </h2>
+
+                            <small>
+                                Total komentar user
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- USER -->
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class='bx bx-group'></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Total User
+                            </span>
+
+                            <h2>
+                                245
+                            </h2>
+
+                            <small>
+                                User terdaftar
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- GALERI -->
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+
+                            <i class='bx bx-image'></i>
+
+                        </div>
+
+                        <div>
+
+                            <span>
+                                Foto Galeri
+                            </span>
+
+                            <h2>
+                                36
+                            </h2>
+
+                            <small>
+                                Foto galeri
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ==================================================
+                     DASHBOARD SUMMARY
+                ================================================== -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- STATISTIK RATING -->
+                    <div class="dashboard-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Statistik Rating
+                                </h3>
+
+                                <p>
+                                    Rating dari user
+                                </p>
+
+                            </div>
+
+                            <i class='bx bxs-star card-header-icon'></i>
+
+                        </div>
+
+
+                        <div class="rating-list">
+
+
+                            <!-- 5 -->
+                            <div class="rating-row">
+
+                                <span>
+                                    5 ⭐
+                                </span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 85%;"></div>
+                                </div>
+
+                                <strong>
+                                    85%
+                                </strong>
+
+                            </div>
+
+
+                            <!-- 4 -->
+                            <div class="rating-row">
+
+                                <span>
+                                    4 ⭐
+                                </span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 10%;"></div>
+                                </div>
+
+                                <strong>
+                                    10%
+                                </strong>
+
+                            </div>
+
+
+                            <!-- 3 -->
+                            <div class="rating-row">
+
+                                <span>
+                                    3 ⭐
+                                </span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 3%;"></div>
+                                </div>
+
+                                <strong>
+                                    3%
+                                </strong>
+
+                            </div>
+
+
+                            <!-- 2 -->
+                            <div class="rating-row">
+
+                                <span>
+                                    2 ⭐
+                                </span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 1%;"></div>
+                                </div>
+
+                                <strong>
+                                    1%
+                                </strong>
+
+                            </div>
+
+
+                            <!-- 1 -->
+                            <div class="rating-row">
+
+                                <span>
+                                    1 ⭐
+                                </span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 1%;"></div>
+                                </div>
+
+                                <strong>
+                                    1%
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- KOMENTAR TERBARU -->
+                    <div class="dashboard-card">
+
+                        <div class="card-header">
+
+                            <div>
+
+                                <h3>
+                                    Komentar Terbaru
+                                </h3>
+
+                                <p>
+                                    Komentar dari user
+                                </p>
+
+                            </div>
+
+                            <i class='bx bx-comment-detail card-header-icon'></i>
+
+                        </div>
+
+
+                        <div class="comment-list">
+
+
+                            <!-- KOMENTAR 1 -->
+                            <div class="comment-item">
+
+                                <div class="comment-avatar">
+                                    A
+                                </div>
+
+                                <div class="comment-content">
+
+                                    <strong>
+                                        Andi Pratama
+                                    </strong>
+
+                                    <div class="comment-rating">
+                                        ⭐⭐⭐⭐⭐
+                                    </div>
+
+                                    <p>
+                                        Babi gulingnya enak banget.
+                                    </p>
+
+                                </div>
+
+                                <span class="comment-time">
+                                    Hari ini
+                                </span>
+
+                            </div>
+
+
+                            <!-- KOMENTAR 2 -->
+                            <div class="comment-item">
+
+                                <div class="comment-avatar">
+                                    C
+                                </div>
+
+                                <div class="comment-content">
+
+                                    <strong>
+                                        Clara Julieta
+                                    </strong>
+
+                                    <div class="comment-rating">
+                                        ⭐⭐⭐⭐
+                                    </div>
+
+                                    <p>
+                                        Rasanya enak dan porsinya cukup banyak.
+                                    </p>
+
+                                </div>
+
+                                <span class="comment-time">
+                                    Kemarin
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 MENU
+            ================================================== -->
+
+            <section
+                id="menuSection"
+                class="admin-page d-none">
+
+                <div class="page-title">
+
+                    <h1>
+                        Menu
+                    </h1>
+
+                    <p>
+                        Kelola daftar menu Babi Guling.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="empty-section">
+
+                        <i class='bx bx-restaurant'></i>
+
+                        <h3>
+                            Daftar Menu
+                        </h3>
+
+                        <p>
+                            Data menu akan ditampilkan di sini.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 KOMENTAR & RATING
+            ================================================== -->
+
+            <section
+                id="commentSection"
+                class="admin-page d-none">
+
+                <div class="page-title">
+
+                    <h1>
+                        Komentar & Rating
+                    </h1>
+
+                    <p>
+                        Lihat komentar dan rating dari user.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="comment-list">
+
+
+                        <div class="comment-item">
+
+                            <div class="comment-avatar">
+                                A
+                            </div>
+
+                            <div class="comment-content">
+
+                                <strong>
+                                    Andi Pratama
+                                </strong>
+
+                                <div class="comment-rating">
+                                    ⭐⭐⭐⭐⭐
+                                </div>
+
+                                <p>
+                                    Babi gulingnya enak banget,
+                                    dagingnya empuk.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 RESTO TERFAVORIT
+            ================================================== -->
+
+            <section
+                id="restaurantSection"
+                class="admin-page d-none">
+
+                <div class="page-title">
+
+                    <h1>
+                        Resto Terfavorit
+                    </h1>
+
+                    <p>
+                        Daftar resto berdasarkan rating user.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="restaurant-list">
+
+
+                        <!-- RESTO 1 -->
+                        <div class="restaurant-item">
+
+                            <div class="restaurant-number">
+                                1
+                            </div>
+
+                            <div class="restaurant-info">
+
+                                <strong>
+                                    Babi Guling Pak Made
+                                </strong>
+
+                                <span>
+                                    124 ulasan
+                                </span>
+
+                            </div>
+
+                            <div class="restaurant-rating">
+                                ⭐ 4.9
+                            </div>
+
+                        </div>
+
+
+                        <!-- RESTO 2 -->
+                        <div class="restaurant-item">
+
+                            <div class="restaurant-number">
+                                2
+                            </div>
+
+                            <div class="restaurant-info">
+
+                                <strong>
+                                    Babi Guling Bu Wayan
+                                </strong>
+
+                                <span>
+                                    98 ulasan
+                                </span>
+
+                            </div>
+
+                            <div class="restaurant-rating">
+                                ⭐ 4.8
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 USER
+            ================================================== -->
+
+            <section
+                id="userSection"
+                class="admin-page d-none">
+
+                <div class="page-title">
+
+                    <h1>
+                        User
+                    </h1>
+
+                    <p>
+                        Daftar user website.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="empty-section">
+
+                        <i class='bx bx-group'></i>
+
+                        <h3>
+                            Total User: 245
+                        </h3>
+
+                        <p>
+                            Data user akan ditampilkan di sini.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 ARTIKEL
+            ================================================== -->
+
+            <section
+                id="articleSection"
+                class="admin-page d-none">
+
+                <div class="page-title">
+
+                    <h1>
+                        Artikel
+                    </h1>
+
+                    <p>
+                        Kelola artikel Babi Guling.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="empty-section">
+
+                        <i class='bx bx-news'></i>
+
+                        <h3>
+                            Kelola Artikel
+                        </h3>
+
+                        <p>
+                            Artikel website akan dikelola di sini.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==================================================
+                 PENGATURAN
+            ================================================== -->
+
+            <section
+                id="settingSection"
+                class="admin-page d-none">
+
+                <div class="page-title">
+
+                    <h1>
+                        Pengaturan
+                    </h1>
+
+                    <p>
+                        Pengaturan admin.
+                    </p>
+
+                </div>
+
+
+                <div class="dashboard-card">
+
+                    <div class="empty-section">
+
+                        <i class='bx bx-cog'></i>
+
+                        <h3>
+                            Pengaturan Admin
+                        </h3>
+
+                        <p>
+                            Pengaturan akan tersedia di sini.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </main>
+
+    </div>
+
+
+
+    <!-- ==================================================
+         JAVASCRIPT
+    ================================================== -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <script src="admin.js"></script>
+
 </body>
+
 </html>
