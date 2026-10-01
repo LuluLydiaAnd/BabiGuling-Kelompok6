@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Admin Login — Babi Guling</title>
+    <title>Admin Panel — Babi Guling</title>
 
     <!-- Bootstrap -->
     <link
@@ -20,7 +20,6 @@
     <!-- CSS Admin -->
     <link rel="stylesheet" href="admin.css">
 </head>
-
 
 <body class="admin-body">
 
@@ -37,81 +36,56 @@
                 Kembali ke Beranda
             </a>
 
-
-            <!-- LOGO LOGIN -->
             <div class="admin-logo">
                 <i class='bx bxs-food-menu'></i>
             </div>
-
 
             <h1 class="admin-title">
                 Admin Panel
             </h1>
 
-
             <p class="admin-subtitle">
                 Login untuk mengelola website Babi Guling
             </p>
 
-
-            <!-- FORM LOGIN -->
             <form id="loginForm" class="admin-form">
 
-                <!-- USERNAME -->
-                <div class="mb-3">
+                <label class="form-label" for="username">
+                    Username
+                </label>
 
-                    <label
-                        class="form-label"
-                        for="username">
+                <div class="input-icon mb-3">
 
-                        Username
+                    <i class='bx bx-user'></i>
 
-                    </label>
-
-                    <div class="input-icon">
-
-                        <i class='bx bx-user'></i>
-
-                        <input
-                            type="text"
-                            id="username"
-                            class="form-control"
-                            placeholder="Masukkan username"
-                            required>
-
-                    </div>
+                    <input
+                        type="text"
+                        id="username"
+                        class="form-control"
+                        placeholder="Masukkan username"
+                        required>
 
                 </div>
 
 
-                <!-- PASSWORD -->
-                <div class="mb-3">
+                <label class="form-label" for="password">
+                    Password
+                </label>
 
-                    <label
-                        class="form-label"
-                        for="password">
+                <div class="input-icon mb-3">
 
-                        Password
+                    <i class='bx bx-lock-alt'></i>
 
-                    </label>
-
-                    <div class="input-icon">
-
-                        <i class='bx bx-lock-alt'></i>
-
-                        <input
-                            type="password"
-                            id="password"
-                            class="form-control"
-                            placeholder="Masukkan password"
-                            required>
-
-                    </div>
+                    <input
+                        type="password"
+                        id="password"
+                        class="form-control"
+                        placeholder="Masukkan password"
+                        required>
 
                 </div>
 
 
-                <!-- ERROR LOGIN -->
                 <div
                     id="loginError"
                     class="login-error d-none">
@@ -123,7 +97,6 @@
                 </div>
 
 
-                <!-- BUTTON LOGIN -->
                 <button
                     type="submit"
                     class="btn btn-admin-login">
@@ -135,7 +108,6 @@
                 </button>
 
 
-                <!-- DEMO LOGIN -->
                 <p class="admin-hint">
 
                     <i class='bx bx-info-circle'></i>
@@ -153,7 +125,6 @@
     </div>
 
 
-
     <!-- ==================================================
          DASHBOARD
     ================================================== -->
@@ -163,10 +134,7 @@
         class="admin-dashboard d-none">
 
 
-        <!-- ==================================================
-             TOGGLE SIDEBAR
-             INI SATU-SATUNYA TOMBOL SIDEBAR
-        ================================================== -->
+        <!-- TOGGLE SIDEBAR -->
 
         <button
             id="sidebarToggle"
@@ -174,10 +142,9 @@
             type="button"
             aria-label="Toggle sidebar">
 
-            <i class='bx bxs-food-menu'></i>
+            <i class='bx bx-menu'></i>
 
         </button>
-
 
 
         <!-- ==================================================
@@ -186,34 +153,22 @@
 
         <aside class="admin-sidebar">
 
-
-            <!-- SIDEBAR BRAND -->
             <div class="sidebar-brand">
 
+                <div class="brand-icon">
+                    <i class='bx bxs-food-menu'></i>
+                </div>
+
                 <div>
-
-                    <h3>
-                        Babi Guling
-                    </h3>
-
-                    <span>
-                        Admin Panel
-                    </span>
-
+                    <h3>Babi Guling</h3>
+                    <span>Admin Panel</span>
                 </div>
 
             </div>
 
 
-
-            <!-- ==================================================
-                 NAVIGATION
-            ================================================== -->
-
             <nav class="sidebar-nav">
 
-
-                <!-- DASHBOARD -->
                 <a
                     href="#"
                     class="sidebar-link active"
@@ -228,7 +183,6 @@
                 </a>
 
 
-                <!-- MENU -->
                 <a
                     href="#"
                     class="sidebar-link"
@@ -243,7 +197,6 @@
                 </a>
 
 
-                <!-- KOMENTAR & RATING -->
                 <a
                     href="#"
                     class="sidebar-link"
@@ -258,7 +211,6 @@
                 </a>
 
 
-                <!-- RESTO TERFAVORIT -->
                 <a
                     href="#"
                     class="sidebar-link"
@@ -273,7 +225,6 @@
                 </a>
 
 
-                <!-- USER -->
                 <a
                     href="#"
                     class="sidebar-link"
@@ -288,7 +239,6 @@
                 </a>
 
 
-                <!-- ARTIKEL -->
                 <a
                     href="#"
                     class="sidebar-link"
@@ -303,7 +253,6 @@
                 </a>
 
 
-                <!-- PENGATURAN -->
                 <a
                     href="#"
                     class="sidebar-link"
@@ -319,11 +268,6 @@
 
             </nav>
 
-
-
-            <!-- ==================================================
-                 LOGOUT
-            ================================================== -->
 
             <button
                 id="logoutBtn"
@@ -341,16 +285,15 @@
         </aside>
 
 
-
         <!-- ==================================================
-             MAIN CONTENT
+             MAIN
         ================================================== -->
 
         <main class="admin-main">
 
 
             <!-- ==================================================
-                 DASHBOARD
+                 DASHBOARD SECTION
             ================================================== -->
 
             <section
@@ -359,7 +302,8 @@
 
 
                 <!-- HEADER -->
-                <div class="admin-header">
+
+                <header class="admin-header">
 
                     <div>
 
@@ -378,13 +322,10 @@
                     </div>
 
 
-                    <!-- PROFILE -->
                     <div class="admin-profile">
 
                         <div class="profile-icon">
-
                             <i class='bx bx-user'></i>
-
                         </div>
 
                         <div>
@@ -401,24 +342,20 @@
 
                     </div>
 
-                </div>
-
+                </header>
 
 
                 <!-- ==================================================
                      STAT CARDS
                 ================================================== -->
 
-                <div class="admin-stats">
+                <section class="admin-stats">
 
 
-                    <!-- RATING -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
-
                             <i class='bx bxs-star'></i>
-
                         </div>
 
                         <div>
@@ -427,7 +364,7 @@
                                 Rating Resto
                             </span>
 
-                            <h2>
+                            <h2 id="avgRating">
                                 4.8
                             </h2>
 
@@ -440,13 +377,10 @@
                     </div>
 
 
-                    <!-- KOMENTAR -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
-
                             <i class='bx bx-comment'></i>
-
                         </div>
 
                         <div>
@@ -455,8 +389,8 @@
                                 Komentar
                             </span>
 
-                            <h2>
-                                328
+                            <h2 id="commentCount">
+                                0
                             </h2>
 
                             <small>
@@ -468,13 +402,10 @@
                     </div>
 
 
-                    <!-- USER -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
-
                             <i class='bx bx-group'></i>
-
                         </div>
 
                         <div>
@@ -496,13 +427,10 @@
                     </div>
 
 
-                    <!-- GALERI -->
                     <div class="stat-card">
 
                         <div class="stat-icon">
-
                             <i class='bx bx-image'></i>
-
                         </div>
 
                         <div>
@@ -516,25 +444,25 @@
                             </h2>
 
                             <small>
-                                Foto galeri
+                                Foto yang ditampilkan
                             </small>
 
                         </div>
 
                     </div>
 
-                </div>
-
+                </section>
 
 
                 <!-- ==================================================
-                     DASHBOARD SUMMARY
+                     RATING + RESTO
                 ================================================== -->
 
-                <div class="dashboard-grid">
+                <section class="dashboard-grid">
 
 
                     <!-- STATISTIK RATING -->
+
                     <div class="dashboard-card">
 
                         <div class="card-header">
@@ -546,7 +474,7 @@
                                 </h3>
 
                                 <p>
-                                    Rating dari user
+                                    Rating yang diberikan oleh user
                                 </p>
 
                             </div>
@@ -556,105 +484,17 @@
                         </div>
 
 
-                        <div class="rating-list">
-
-
-                            <!-- 5 -->
-                            <div class="rating-row">
-
-                                <span>
-                                    5 ⭐
-                                </span>
-
-                                <div class="rating-bar">
-                                    <div style="width: 85%;"></div>
-                                </div>
-
-                                <strong>
-                                    85%
-                                </strong>
-
-                            </div>
-
-
-                            <!-- 4 -->
-                            <div class="rating-row">
-
-                                <span>
-                                    4 ⭐
-                                </span>
-
-                                <div class="rating-bar">
-                                    <div style="width: 10%;"></div>
-                                </div>
-
-                                <strong>
-                                    10%
-                                </strong>
-
-                            </div>
-
-
-                            <!-- 3 -->
-                            <div class="rating-row">
-
-                                <span>
-                                    3 ⭐
-                                </span>
-
-                                <div class="rating-bar">
-                                    <div style="width: 3%;"></div>
-                                </div>
-
-                                <strong>
-                                    3%
-                                </strong>
-
-                            </div>
-
-
-                            <!-- 2 -->
-                            <div class="rating-row">
-
-                                <span>
-                                    2 ⭐
-                                </span>
-
-                                <div class="rating-bar">
-                                    <div style="width: 1%;"></div>
-                                </div>
-
-                                <strong>
-                                    1%
-                                </strong>
-
-                            </div>
-
-
-                            <!-- 1 -->
-                            <div class="rating-row">
-
-                                <span>
-                                    1 ⭐
-                                </span>
-
-                                <div class="rating-bar">
-                                    <div style="width: 1%;"></div>
-                                </div>
-
-                                <strong>
-                                    1%
-                                </strong>
-
-                            </div>
+                        <div
+                            class="rating-list"
+                            id="ratingStats">
 
                         </div>
 
                     </div>
 
 
+                    <!-- RESTO TERFAVORIT -->
 
-                    <!-- KOMENTAR TERBARU -->
                     <div class="dashboard-card">
 
                         <div class="card-header">
@@ -662,90 +502,122 @@
                             <div>
 
                                 <h3>
-                                    Komentar Terbaru
+                                    Resto Terfavorit
                                 </h3>
 
                                 <p>
-                                    Komentar dari user
+                                    Berdasarkan rating dari user
                                 </p>
 
                             </div>
 
-                            <i class='bx bx-comment-detail card-header-icon'></i>
+                            <i class='bx bx-trophy card-header-icon'></i>
 
                         </div>
 
 
-                        <div class="comment-list">
-
-
-                            <!-- KOMENTAR 1 -->
-                            <div class="comment-item">
-
-                                <div class="comment-avatar">
-                                    A
-                                </div>
-
-                                <div class="comment-content">
-
-                                    <strong>
-                                        Andi Pratama
-                                    </strong>
-
-                                    <div class="comment-rating">
-                                        ⭐⭐⭐⭐⭐
-                                    </div>
-
-                                    <p>
-                                        Babi gulingnya enak banget.
-                                    </p>
-
-                                </div>
-
-                                <span class="comment-time">
-                                    Hari ini
-                                </span>
-
-                            </div>
-
-
-                            <!-- KOMENTAR 2 -->
-                            <div class="comment-item">
-
-                                <div class="comment-avatar">
-                                    C
-                                </div>
-
-                                <div class="comment-content">
-
-                                    <strong>
-                                        Clara Julieta
-                                    </strong>
-
-                                    <div class="comment-rating">
-                                        ⭐⭐⭐⭐
-                                    </div>
-
-                                    <p>
-                                        Rasanya enak dan porsinya cukup banyak.
-                                    </p>
-
-                                </div>
-
-                                <span class="comment-time">
-                                    Kemarin
-                                </span>
-
-                            </div>
+                        <div
+                            class="restaurant-list"
+                            id="favoriteRestaurants">
 
                         </div>
 
                     </div>
 
-                </div>
+                </section>
+
+
+                <!-- ==================================================
+                     KOMENTAR TERBARU
+                ================================================== -->
+
+                <section class="dashboard-card full-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Komentar Terbaru
+                            </h3>
+
+                            <p>
+                                Komentar dan rating yang diberikan user
+                            </p>
+
+                        </div>
+
+                        <i class='bx bx-comment-detail card-header-icon'></i>
+
+                    </div>
+
+
+                    <div
+                        class="comment-list"
+                        id="recentComments">
+
+                    </div>
+
+                </section>
+
+
+                <!-- ==================================================
+                     GALERI
+                ================================================== -->
+
+                <section class="dashboard-card full-card">
+
+                    <div class="card-header">
+
+                        <div>
+
+                            <h3>
+                                Galeri Terbaru
+                            </h3>
+
+                            <p>
+                                Foto yang ditampilkan pada website
+                            </p>
+
+                        </div>
+
+                        <i class='bx bx-images card-header-icon'></i>
+
+                    </div>
+
+
+                    <div class="admin-gallery">
+
+                        <div class="admin-gallery-item">
+                            <img
+                                src="Babi_guling.jpg"
+                                alt="Babi Guling">
+                        </div>
+
+                        <div class="admin-gallery-item">
+                            <img
+                                src="base-genep-final.jpg"
+                                alt="Base Genep">
+                        </div>
+
+                        <div class="admin-gallery-item">
+                            <img
+                                src="upacara.jpg"
+                                alt="Upacara">
+                        </div>
+
+                        <div class="admin-gallery-item">
+                            <img
+                                src="lengkap1.jpg"
+                                alt="Hidangan">
+
+                        </div>
+
+                    </div>
+
+                </section>
 
             </section>
-
 
 
             <!-- ==================================================
@@ -769,30 +641,25 @@
                 </div>
 
 
-                <div class="dashboard-card">
+                <div class="dashboard-card empty-section">
 
-                    <div class="empty-section">
+                    <i class='bx bx-restaurant'></i>
 
-                        <i class='bx bx-restaurant'></i>
+                    <h3>
+                        Daftar Menu
+                    </h3>
 
-                        <h3>
-                            Daftar Menu
-                        </h3>
-
-                        <p>
-                            Data menu akan ditampilkan di sini.
-                        </p>
-
-                    </div>
+                    <p>
+                        Data menu akan ditampilkan di sini.
+                    </p>
 
                 </div>
 
             </section>
 
 
-
             <!-- ==================================================
-                 KOMENTAR & RATING
+                 KOMENTAR
             ================================================== -->
 
             <section
@@ -814,33 +681,9 @@
 
                 <div class="dashboard-card">
 
-                    <div class="comment-list">
-
-
-                        <div class="comment-item">
-
-                            <div class="comment-avatar">
-                                A
-                            </div>
-
-                            <div class="comment-content">
-
-                                <strong>
-                                    Andi Pratama
-                                </strong>
-
-                                <div class="comment-rating">
-                                    ⭐⭐⭐⭐⭐
-                                </div>
-
-                                <p>
-                                    Babi gulingnya enak banget,
-                                    dagingnya empuk.
-                                </p>
-
-                            </div>
-
-                        </div>
+                    <div
+                        class="comment-list"
+                        id="allComments">
 
                     </div>
 
@@ -849,9 +692,8 @@
             </section>
 
 
-
             <!-- ==================================================
-                 RESTO TERFAVORIT
+                 RESTO
             ================================================== -->
 
             <section
@@ -873,66 +715,15 @@
 
                 <div class="dashboard-card">
 
-                    <div class="restaurant-list">
-
-
-                        <!-- RESTO 1 -->
-                        <div class="restaurant-item">
-
-                            <div class="restaurant-number">
-                                1
-                            </div>
-
-                            <div class="restaurant-info">
-
-                                <strong>
-                                    Babi Guling Pak Made
-                                </strong>
-
-                                <span>
-                                    124 ulasan
-                                </span>
-
-                            </div>
-
-                            <div class="restaurant-rating">
-                                ⭐ 4.9
-                            </div>
-
-                        </div>
-
-
-                        <!-- RESTO 2 -->
-                        <div class="restaurant-item">
-
-                            <div class="restaurant-number">
-                                2
-                            </div>
-
-                            <div class="restaurant-info">
-
-                                <strong>
-                                    Babi Guling Bu Wayan
-                                </strong>
-
-                                <span>
-                                    98 ulasan
-                                </span>
-
-                            </div>
-
-                            <div class="restaurant-rating">
-                                ⭐ 4.8
-                            </div>
-
-                        </div>
+                    <div
+                        class="restaurant-list"
+                        id="restaurantPage">
 
                     </div>
 
                 </div>
 
             </section>
-
 
 
             <!-- ==================================================
@@ -956,26 +747,21 @@
                 </div>
 
 
-                <div class="dashboard-card">
+                <div class="dashboard-card empty-section">
 
-                    <div class="empty-section">
+                    <i class='bx bx-group'></i>
 
-                        <i class='bx bx-group'></i>
+                    <h3>
+                        Total User: 245
+                    </h3>
 
-                        <h3>
-                            Total User: 245
-                        </h3>
-
-                        <p>
-                            Data user akan ditampilkan di sini.
-                        </p>
-
-                    </div>
+                    <p>
+                        Data user akan ditampilkan di sini.
+                    </p>
 
                 </div>
 
             </section>
-
 
 
             <!-- ==================================================
@@ -999,26 +785,21 @@
                 </div>
 
 
-                <div class="dashboard-card">
+                <div class="dashboard-card empty-section">
 
-                    <div class="empty-section">
+                    <i class='bx bx-news'></i>
 
-                        <i class='bx bx-news'></i>
+                    <h3>
+                        Kelola Artikel
+                    </h3>
 
-                        <h3>
-                            Kelola Artikel
-                        </h3>
-
-                        <p>
-                            Artikel website akan dikelola di sini.
-                        </p>
-
-                    </div>
+                    <p>
+                        Artikel website akan dikelola di sini.
+                    </p>
 
                 </div>
 
             </section>
-
 
 
             <!-- ==================================================
@@ -1042,42 +823,32 @@
                 </div>
 
 
-                <div class="dashboard-card">
+                <div class="dashboard-card empty-section">
 
-                    <div class="empty-section">
+                    <i class='bx bx-cog'></i>
 
-                        <i class='bx bx-cog'></i>
+                    <h3>
+                        Pengaturan Admin
+                    </h3>
 
-                        <h3>
-                            Pengaturan Admin
-                        </h3>
-
-                        <p>
-                            Pengaturan akan tersedia di sini.
-                        </p>
-
-                    </div>
+                    <p>
+                        Pengaturan akan tersedia di sini.
+                    </p>
 
                 </div>
 
             </section>
-
 
         </main>
 
     </div>
 
 
-
-    <!-- ==================================================
-         JAVASCRIPT
-    ================================================== -->
+    <!-- JS -->
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="admin.js"></script>
 
