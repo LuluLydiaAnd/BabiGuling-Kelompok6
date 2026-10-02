@@ -31,7 +31,6 @@ body {
   line-height: 1.6;
 }
 
-/* Supaya footer selalu di bawah, kecuali halaman admin */
 body:not(.admin-body) {
   min-height: 100vh;
   display: flex;
@@ -111,7 +110,7 @@ h1, h2, h3, h4, h5 {
   margin: 0;
 }
 
-/* BANNER*/
+/* BANNER */
 .banner-section {
   background: #ffece6;
   padding: 4rem 0 4.5rem;
@@ -277,7 +276,6 @@ h1, h2, h3, h4, h5 {
 }
 .g-item:hover figcaption { transform: translateY(0); opacity: 1; }
 
-/* Fallback kalau foto belum ada */
 .g-item.no-img img { display: none; }
 .g-item .g-fallback {
   position: absolute;
@@ -674,7 +672,6 @@ h1, h2, h3, h4, h5 {
   background: #fff;
 }
 
-/* panel kiri */
 .contact-info {
   position: relative;
   padding: 2.5rem 2.2rem;
@@ -767,7 +764,6 @@ h1, h2, h3, h4, h5 {
   transform: translateY(-3px);
 }
 
-/* form kanan */
 .contact-form-card {
   padding: 2.5rem 2.2rem;
   background: #fffdfa;
@@ -950,7 +946,13 @@ h1, h2, h3, h4, h5 {
   margin-right: 0.4rem;
 }
 
-/*FOOTER*/
+.kontak-box a {
+  color: var(--red-brick);
+  word-break: break-all;
+}
+.kontak-box a:hover { color: var(--red-brick-dark); }
+
+/* FOOTER */
 .footer-green {
   background: #402621;
   color: #fff;
@@ -1014,7 +1016,7 @@ h1, h2, h3, h4, h5 {
   margin: 0;
 }
 
-/*BACK TO TOP*/
+/* BACK TO TOP */
 .back-to-top {
   position: fixed;
   right: 25px;
@@ -1034,6 +1036,7 @@ h1, h2, h3, h4, h5 {
   background-color: #24483e;
 }
 
+/* TAB PHOTOS */
 .tab-photos {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1064,11 +1067,6 @@ h1, h2, h3, h4, h5 {
 @media (max-width: 575.98px) {
   .tab-photos { grid-template-columns: repeat(2, 1fr); }
 }
-.kontak-box a {
-  color: var(--red-brick);
-  word-break: break-all;
-}
-.kontak-box a:hover { color: var(--red-brick-dark); }
 
 /* POSTINGAN DARI ADMIN */
 .posts-section {
@@ -1078,7 +1076,7 @@ h1, h2, h3, h4, h5 {
 .posts-head { max-width: 620px; margin: 0 auto 1.5rem; }
 .posts-head h2 { color: #4b2923; font-size: 34px; font-weight: 700; margin-bottom: 10px; }
 .posts-head p:last-child { color: #6d5b55; line-height: 1.8; }
- 
+
 .p-filter {
   border: 1px solid #d9c3b6;
   background: #fff;
@@ -1092,7 +1090,7 @@ h1, h2, h3, h4, h5 {
 }
 .p-filter:hover { border-color: var(--red-brick); }
 .p-filter.active { background: var(--red-brick); border-color: var(--red-brick); color: #fff; }
- 
+
 .posts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1125,9 +1123,176 @@ h1, h2, h3, h4, h5 {
 .post-card h4 { color: var(--brown-dark); font-size: 1.15rem; margin-bottom: 0.4rem; }
 .post-card p { color: var(--text-gray); font-size: 0.9rem; line-height: 1.7; margin: 0; word-break: break-word; }
 .post-card p a { color: var(--red-brick); }
- 
+
 .posts-empty { display: none; text-align: center; color: var(--text-gray); margin-top: 1rem; }
- 
+
 @media (max-width: 991.98px) { .posts-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 575.98px) { .posts-grid { grid-template-columns: 1fr; } }
- 
+
+/* Interaksi post (like, comment, fav) */
+.post-actions {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #ecdfd1;
+}
+.pa-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: transparent;
+  border: 1px solid #ecdfd1;
+  color: var(--text-gray);
+  font-size: 0.82rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+.pa-btn:hover {
+  border-color: var(--red-brick);
+  color: var(--red-brick);
+}
+.pa-btn.active {
+  background: var(--red-brick);
+  border-color: var(--red-brick);
+  color: #fff;
+}
+
+/* COMMENT SECTION */
+.comments-section {
+  display: none;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ecdfd1;
+  animation: fadeIn 0.3s ease;
+}
+.comments-section.open {
+  display: block;
+}
+
+.cs-list {
+  max-height: 260px;
+  overflow-y: auto;
+  margin-bottom: 0.9rem;
+  padding-right: 4px;
+}
+.cs-list::-webkit-scrollbar { width: 6px; }
+.cs-list::-webkit-scrollbar-thumb {
+  background: #d9c3b6;
+  border-radius: 10px;
+}
+
+.cs-empty {
+  font-size: 0.82rem;
+  color: #b09c92;
+  font-style: italic;
+  margin: 0 0 0.6rem;
+  text-align: center;
+}
+
+.cs-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0.6rem 0;
+  border-bottom: 1px dashed #f0e8e3;
+  position: relative;
+}
+.cs-item:last-child { border-bottom: none; }
+
+.cs-avatar {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #a93226, #c9a227);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.cs-content { flex: 1; min-width: 0; }
+
+.cs-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.cs-head strong {
+  font-size: 0.82rem;
+  color: var(--brown-dark);
+}
+.cs-time {
+  font-size: 0.7rem;
+  color: #b09c92;
+}
+
+.cs-text {
+  font-size: 0.85rem;
+  color: var(--text-gray);
+  margin: 0;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+
+.cs-del {
+  background: transparent;
+  border: none;
+  color: #c9b8a8;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+.cs-del:hover { color: #dc3545; }
+
+/* Form komentar */
+.cs-form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.cs-input {
+  flex: 1;
+  resize: none;
+  border: 1px solid #e3d3c6;
+  border-radius: 10px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.cs-input:focus {
+  border-color: var(--red-brick);
+  box-shadow: 0 0 0 3px rgba(169, 50, 38, 0.1);
+}
+
+.cs-submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--red-brick);
+  color: #fff;
+  border: none;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+.cs-submit:hover {
+  background: var(--red-brick-dark);
+  transform: translateY(-1px);
+}
+.cs-submit i { font-size: 1rem; }

@@ -1,6 +1,4 @@
-/* ================================
-   ADMIN LOGIN
-================================ */
+/* ADMIN LOGIN */
 
 .admin-body {
     min-height: 100vh;
@@ -46,9 +44,7 @@
 }
 
 
-/* ================================
-   BACK TO HOME
-================================ */
+/* BACK TO HOME */
 
 .admin-back {
     display: inline-flex;
@@ -71,9 +67,7 @@
 }
 
 
-/* ================================
-   LOGO
-================================ */
+/* LOGO */
 
 .admin-logo {
     width: 70px;
@@ -94,9 +88,7 @@
 }
 
 
-/* ================================
-   TITLE
-================================ */
+/* TITLE */
 
 .admin-title {
     text-align: center;
@@ -117,6 +109,56 @@
     font-size: 14px;
 
     margin: 0 0 28px;
+}
+
+
+/* AUTH TABS (Login / Daftar) */
+
+.auth-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1.8rem;
+    margin: 0 0 1.6rem;
+    border-bottom: 1px solid #ecdfd1;
+    position: relative;
+}
+
+.auth-tab {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 0.2rem 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #a08b80;
+    text-decoration: none;
+    transition: color 0.25s ease;
+    cursor: pointer;
+}
+
+.auth-tab:hover {
+    color: #a93226;
+}
+
+.auth-tab.active {
+    color: #a93226;
+}
+
+.auth-tab::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2.5px;
+    background: #a93226;
+    border-radius: 3px;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.auth-tab.active::after {
+    transform: scaleX(1);
 }
 
 
