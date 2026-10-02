@@ -3,6 +3,7 @@
     --red-dark: #7b241c;
     --red-light: #f4e2dd;
 
+/* ADMIN LOGIN */
     --brown-dark: #3e2723;
     --brown-hover: #5a302a;
 
@@ -73,6 +74,7 @@ a {
         0 15px 40px rgba(62, 39, 35, 0.12);
 }
 
+/* BACK TO HOME */
 .admin-back {
     display: inline-flex;
 
@@ -91,6 +93,7 @@ a {
     color: var(--red-dark);
 }
 
+/* LOGO */
 .admin-logo {
     width: 70px;
     height: 70px;
@@ -110,6 +113,7 @@ a {
     font-size: 34px;
 }
 
+/* TITLE */
 .admin-title {
     margin: 0;
 
@@ -123,12 +127,66 @@ a {
 
 .admin-subtitle {
     margin: 8px 0 28px;
-
     text-align: center;
-
     color: var(--text-muted);
-
     font-size: 14px;
+    margin: 0 0 28px;
+}
+
+/* AUTH TABS (Login / Daftar) */
+.auth-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1.8rem;
+    margin: 0 0 1.6rem;
+    border-bottom: 1px solid #ecdfd1;
+    position: relative;
+}
+
+.auth-tab {
+    position: relative;
+    display: inline-block;
+    padding: 0.5rem 0.2rem 0.85rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #a08b80;
+    text-decoration: none;
+    transition: color 0.25s ease;
+    cursor: pointer;
+}
+
+.auth-tab:hover {
+    color: #a93226;
+}
+
+.auth-tab.active {
+    color: #a93226;
+}
+
+.auth-tab::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2.5px;
+    background: #a93226;
+    border-radius: 3px;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+}
+
+.auth-tab.active::after {
+    transform: scaleX(1);
+}
+
+.admin-form {
+    width: 100%;
+}
+
+.admin-form .mb-3 {
+    margin-bottom: 18px !important;
 }
 
 .admin-form .form-label {
