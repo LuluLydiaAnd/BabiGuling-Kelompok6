@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  // ===== Tab =====
+  // Tab 
   $(".tab-link").on("click", function (event) {
     event.preventDefault();
 
@@ -12,7 +12,7 @@ $(document).ready(function () {
     $("#tab-" + targetTab).addClass("active");
   });
 
-  // ===== Smooth scroll navbar =====
+  // Smooth scroll navbar
   $('.navbar-nav a[href^="#"]').on("click", function (event) {
     const targetHash = $(this).attr("href");
 
@@ -34,7 +34,7 @@ $(document).ready(function () {
     }
   });
 
-  // ===== Galeri =====
+  // Galeri 
   const $items = $(".g-item");
 
   // fallback kalau foto belum ada
@@ -137,7 +137,7 @@ $(document).ready(function () {
     if (e.key === "ArrowRight") showItem(current + 1);
   });
 
-  // ===== Form kontak =====
+  // Form kontak
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const $fields = $("#cfNama, #cfEmail, #cfSubjek, #cfPesan");
   let toastTimer;
@@ -240,7 +240,7 @@ $(document).ready(function () {
       .toggleClass("open", buka);
   })();
 
-  // ===== Postingan dari admin =====
+  // POSTINGAN (dari admin)
   let postFilter = "all";
 
   function escapeHtml(text) {
@@ -261,13 +261,52 @@ $(document).ready(function () {
       .replace(/\n/g, "<br>");
   }
 
-  function renderPosts() {
+  // Ambil session user yang login
+  function getSession() {
+    try {
+      return JSON.parse(sessionStorage.getItem("loggedIn") || "null");
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Ambil data user by id
+  function getUserById(id) {
+    try {
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      return users.find((u) => u.id === id) || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // Format waktu relatif
+  function formatTime(iso) {
+    if (!iso) return "";
+    const now = new Date();
+    const t = new Date(iso);
+    const diff = Math.floor((now - t) / 1000);
+    if (diff < 60) return "Baru saja";
+    if (diff < 3600) return Math.floor(diff / 60) + " menit lalu";
+    if (diff < 86400) return Math.floor(diff / 3600) + " jam lalu";
+    if (diff < 604800) return Math.floor(diff / 86400) + " hari lalu";
+    return t.toLocaleDateString("id-ID");
+  }
+
+  function renderPosts(openMap) {
     let posts = [];
     try {
       posts = JSON.parse(localStorage.getItem("posts")) || [];
     } catch (e) {
       posts = [];
     }
+
+    const session = getSession();
+    const userId = session ? session.id : null;
+
+    const likes = JSON.parse(localStorage.getItem("likes") || "[]");
+    const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+    const favs = JSON.parse(localStorage.getItem("favorites") || "[]");
 
     posts = posts
       .slice()
@@ -286,15 +325,102 @@ $(document).ready(function () {
           $("<img>").attr({ src: post.image, alt: post.title || "Postingan" }),
         );
       }
+
       const $body = $('<div class="post-card-body"></div>');
       $body.append(
         $('<span class="post-badge"></span>').text(post.category || "Lainnya"),
       );
       $body.append($("<h4></h4>").text(post.title || ""));
       $body.append($("<p></p>").html(linkify(post.description || "")));
+
+      // Hitung interaksi
+      const likeCount = likes.filter((l) => l.postId === post.id).length;
+      const commentCount = comments.filter((c) => c.postId === post.id).length;
+      const isLiked =
+        userId &&
+        likes.some((l) => l.postId === post.id && l.userId === userId);
+      const isFav =
+        userId &&
+        favs.some((f) => f.postId === post.id && f.userId === userId);
+
+      // Tombol aksi
+      const $actions = $(`
+        <div class="post-actions">
+          <button type="button" class="pa-btn like-btn ${isLiked ? "active" : ""}" data-post="${post.id}">
+            <i class='bx ${isLiked ? "bxs-heart" : "bx-heart"}'></i>
+            <span>${likeCount}</span>
+          </button>
+          <button type="button" class="pa-btn comment-btn ${commentCount > 0 ? "active" : ""}" data-post="${post.id}">
+            <i class='bx bx-comment'></i>
+            <span>${commentCount}</span>
+          </button>
+          <button type="button" class="pa-btn fav-btn ${isFav ? "active" : ""}" data-post="${post.id}">
+            <i class='bx ${isFav ? "bxs-bookmark" : "bx-bookmark"}'></i>
+          </button>
+        </div>
+      `);
+      $body.append($actions);
+
+      // COMMENT SECTION
+      const postComments = comments
+        .filter((c) => c.postId === post.id)
+        .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+
+      let commentsHTML = "";
+      if (postComments.length === 0) {
+        commentsHTML = `<p class="cs-empty">Belum ada komentar. Jadi yang pertama!</p>`;
+      } else {
+        postComments.forEach(function (c) {
+          const userData = getUserById(c.userId);
+          const name = userData
+            ? userData.nama || userData.username
+            : "Pengguna";
+          const initial = name.charAt(0).toUpperCase();
+          const time = formatTime(c.createdAt);
+          const text = escapeHtml(c.text);
+          const isOwn = userId && c.userId === userId;
+
+          commentsHTML += `
+            <div class="cs-item" data-cid="${c.id}">
+              <div class="cs-avatar">${initial}</div>
+              <div class="cs-content">
+                <div class="cs-head">
+                  <strong>${escapeHtml(name)}</strong>
+                  <span class="cs-time">${time}</span>
+                </div>
+                <p class="cs-text">${text}</p>
+              </div>
+              ${isOwn ? `<button type="button" class="cs-del" data-cid="${c.id}" title="Hapus"><i class='bx bx-trash'></i></button>` : ""}
+            </div>
+          `;
+        });
+      }
+
+      const $comments = $(`
+        <div class="comments-section" data-post="${post.id}">
+          <div class="cs-list">${commentsHTML}</div>
+          <form class="cs-form">
+            <textarea class="cs-input" rows="2" maxlength="300" placeholder="Tulis komentar..."></textarea>
+            <button type="submit" class="cs-submit">
+              <i class='bx bx-send'></i> Kirim
+            </button>
+          </form>
+        </div>
+      `);
+      $body.append($comments);
+
       $card.append($body);
       $list.append($card);
     });
+
+    // Buka panel komentar yang diminta
+    if (openMap) {
+      Object.keys(openMap).forEach(function (pid) {
+        if (openMap[pid]) {
+          $(`.comments-section[data-post="${pid}"]`).addClass("open");
+        }
+      });
+    }
   }
 
   $(".p-filter").on("click", function () {
@@ -304,14 +430,150 @@ $(document).ready(function () {
     renderPosts();
   });
 
-  // kalau admin nambah/hapus post di tab lain, langsung ikut update
+  // Sinkron kalau ada perubahan dari tab lain
   $(window).on("storage", function (e) {
-    if (e.originalEvent.key === "posts") renderPosts();
+    if (
+      e.originalEvent.key === "posts" ||
+      e.originalEvent.key === "likes" ||
+      e.originalEvent.key === "comments" ||
+      e.originalEvent.key === "favorites"
+    ) {
+      renderPosts();
+    }
   });
 
   renderPosts();
 
-  // ===== Back to top =====
+  // INTERAKSI POST
+  function requireLogin() {
+    if (!getSession()) {
+      alert("Silakan login dulu untuk berinteraksi.");
+      window.location.href = "login.html";
+      return false;
+    }
+    return true;
+  }
+
+  // LIKE
+  $(document).on("click", ".like-btn", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!requireLogin()) return;
+
+    const postId = Number($(this).data("post"));
+    const userId = getSession().id;
+
+    let likes = JSON.parse(localStorage.getItem("likes") || "[]");
+    const idx = likes.findIndex(
+      (l) => l.postId === postId && l.userId === userId,
+    );
+
+    if (idx >= 0) likes.splice(idx, 1);
+    else likes.push({ postId: postId, userId: userId });
+
+    localStorage.setItem("likes", JSON.stringify(likes));
+
+    // Simpan panel yang terbuka
+    const openMap = {};
+    $(".comments-section.open").each(function () {
+      openMap[$(this).data("post")] = true;
+    });
+    renderPosts(openMap);
+  });
+
+  // FAVORIT
+  $(document).on("click", ".fav-btn", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!requireLogin()) return;
+
+    const postId = Number($(this).data("post"));
+    const userId = getSession().id;
+
+    let favs = JSON.parse(localStorage.getItem("favorites") || "[]");
+    const idx = favs.findIndex(
+      (f) => f.postId === postId && f.userId === userId,
+    );
+
+    if (idx >= 0) favs.splice(idx, 1);
+    else favs.push({ postId: postId, userId: userId });
+
+    localStorage.setItem("favorites", JSON.stringify(favs));
+
+    const openMap = {};
+    $(".comments-section.open").each(function () {
+      openMap[$(this).data("post")] = true;
+    });
+    renderPosts(openMap);
+  });
+
+  // KOMENTAR — buka/tutup panel
+  $(document).on("click", ".comment-btn", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    const postId = Number($(this).data("post"));
+    $(`.comments-section[data-post="${postId}"]`).toggleClass("open");
+  });
+
+  // SUBMIT KOMENTAR
+  $(document).on("submit", ".cs-form", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!requireLogin()) return;
+
+    const $form = $(this);
+    const $section = $form.closest(".comments-section");
+    const postId = Number($section.data("post"));
+    const userId = getSession().id;
+    const text = $form.find(".cs-input").val().trim();
+
+    if (!text) return;
+
+    const comments = JSON.parse(localStorage.getItem("comments") || "[]");
+    comments.push({
+      id: Date.now(),
+      postId: postId,
+      userId: userId,
+      text: text,
+      createdAt: new Date().toISOString(),
+    });
+    localStorage.setItem("comments", JSON.stringify(comments));
+
+    // Buka panel setelah render
+    const openMap = {};
+    openMap[postId] = true;
+    renderPosts(openMap);
+  });
+
+  // HAPUS KOMENTAR (hanya milik sendiri)
+  $(document).on("click", ".cs-del", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!requireLogin()) return;
+    if (!confirm("Hapus komentar ini?")) return;
+
+    const cid = Number($(this).data("cid"));
+    let comments = JSON.parse(localStorage.getItem("comments") || "[]");
+    const target = comments.find((c) => c.id === cid);
+    const me = getSession();
+
+    if (!target || target.userId !== me.id) return;
+
+    comments = comments.filter((c) => c.id !== cid);
+    localStorage.setItem("comments", JSON.stringify(comments));
+
+    const openMap = {};
+    $(".comments-section.open").each(function () {
+      openMap[$(this).data("post")] = true;
+    });
+    renderPosts(openMap);
+  });
+
+  // Back to top
   $(window).on("scroll", function () {
     if ($(this).scrollTop() > 300) {
       $("#backToTop").fadeIn(300);
