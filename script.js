@@ -17,7 +17,7 @@ $(document).ready(function () {
     const targetHash = $(this).attr("href");
 
     if (targetHash && targetHash !== "#") {
-      const $target = $(targetHash);
+      const $target =$(targetHash);
 
       if ($target.length) {
         event.preventDefault();
@@ -35,12 +35,12 @@ $(document).ready(function () {
   });
 
   // Galeri 
-  const $items = $(".g-item");
+  const $items =$(".g-item");
 
   // fallback kalau foto belum ada
   $items.each(function () {
-    const $item = $(this);
-    const $img = $item.find("img");
+    const $item =$(this);
+    const $img =$item.find("img");
     const showFallback = function () {
       if ($item.find(".g-fallback").length) return;
       $item
@@ -52,7 +52,7 @@ $(document).ready(function () {
         );
     };
     $img.on("error", showFallback);
-    if ($img[0].complete && $img[0].naturalWidth === 0) showFallback();
+    if ($img[0].complete &&$img[0].naturalWidth === 0) showFallback();
   });
 
   // filter
@@ -139,7 +139,7 @@ $(document).ready(function () {
 
   // Form kontak
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const $fields = $("#cfNama, #cfEmail, #cfSubjek, #cfPesan");
+  const $fields =$("#cfNama, #cfEmail, #cfSubjek, #cfPesan");
   let toastTimer;
 
   function cekField($el) {
@@ -186,7 +186,7 @@ $(document).ready(function () {
     $("#cfError").text(valid ? "" : "Periksa kembali kolom yang masih salah.");
     if (!valid) return;
 
-    const $btn = $("#cfBtn");
+    const $btn =$("#cfBtn");
     $btn
       .prop("disabled", true)
       .html("Mengirim... <i class='bx bx-loader-alt bx-spin'></i>");
@@ -221,7 +221,7 @@ $(document).ready(function () {
         tampilToast("Disalin: " + teks);
       });
     } else {
-      const $tmp = $("<input>").val(teks).appendTo("body");
+      const $tmp =$("<input>").val(teks).appendTo("body");
       $tmp[0].select();
       document.execCommand("copy");
       $tmp.remove();
@@ -315,21 +315,17 @@ $(document).ready(function () {
         return postFilter === "all" || p.category === postFilter;
       });
 
-    const $list = $("#publicPosts").empty();
+    const $list =$("#publicPosts").empty();
     $("#postsEmpty").toggle(posts.length === 0);
 
     posts.forEach(function (post) {
-      const $card = $('<article class="post-card"></article>');
+      const $card =$('<article class="post-card"></article>');
       if (post.image) {
-        $card.append(
-          $("<img>").attr({ src: post.image, alt: post.title || "Postingan" }),
-        );
+        $card.append($("<img>").attr({ src: post.image, alt: post.title || "Postingan" }));
       }
 
-      const $body = $('<div class="post-card-body"></div>');
-      $body.append(
-        $('<span class="post-badge"></span>').text(post.category || "Lainnya"),
-      );
+      const $body =$('<div class="post-card-body"></div>');
+      $body.append($('<span class="post-badge"></span>').text(post.category || "Lainnya"));
       $body.append($("<h4></h4>").text(post.title || ""));
       $body.append($("<p></p>").html(linkify(post.description || "")));
 
@@ -344,7 +340,7 @@ $(document).ready(function () {
         favs.some((f) => f.postId === post.id && f.userId === userId);
 
       // Tombol aksi
-      const $actions = $(`
+      const $actions =$(`
         <div class="post-actions">
           <button type="button" class="pa-btn like-btn ${isLiked ? "active" : ""}" data-post="${post.id}">
             <i class='bx ${isLiked ? "bxs-heart" : "bx-heart"}'></i>
@@ -396,7 +392,7 @@ $(document).ready(function () {
         });
       }
 
-      const $comments = $(`
+      const $comments =$(`
         <div class="comments-section" data-post="${post.id}">
           <div class="cs-list">${commentsHTML}</div>
           <form class="cs-form">
@@ -524,8 +520,8 @@ $(document).ready(function () {
 
     if (!requireLogin()) return;
 
-    const $form = $(this);
-    const $section = $form.closest(".comments-section");
+    const $form =$(this);
+    const $section =$form.closest(".comments-section");
     const postId = Number($section.data("post"));
     const userId = getSession().id;
     const text = $form.find(".cs-input").val().trim();
@@ -573,10 +569,199 @@ $(document).ready(function () {
     renderPosts(openMap);
   });
 
+  // ==========================================
+  // LOGIKA & DATA DUMMY RESTO FAVORIT BABI GULING
+  // ==========================================
+  const rawRestoList = [
+    "Babi Guling Bunderan Renon - Denpasar",
+    "Babi Guling Candra - Denpasar",
+    "Babi Guling Pan Ana - Denpasar",
+    "Babi Guling Jero Kawan - Mengwi",
+    "Babi Guling Slingsing Bu Suci - Mengwi",
+    "Babi Guling Bu Dayu Kencani - Kuta",
+    "Babi Guling Karya Rebo - Kuta",
+    "Babi Guling Bu Ning - Kuta",
+    "Babi Guling MAde Sekar - Kuta",
+    "Babi Guling Krasan - Kuta",
+    "Babi Guling Men Agus - Canggu",
+    "Babi Guling Swari - Canggu",
+    "Babi Guling Men Lari - Canggu",
+    "Babi Guling Pak Malen - Seminyak",
+    "Babi Guling Sari Dewi Bp. Dobiel - Nusa Dua",
+    "Babi Guling Ibu Oka - Gianyar",
+    "Babi Guling Pande Egi - Gianyar",
+    "Babi Guling Bu Desak - Gianyar",
+    "Babi Guling Depot Betty - Bedugul",
+    "Babi Guling Men Janji - Bedugul",
+    "Babi Guling Sembung - Tabanan",
+    "Babi Guling Pak Yana - Ubud",
+    "Babi Guling Bu Agung - Ubud",
+    "Babi Guling Diirr - Ubud",
+    "Babi Guling Vengkung - Ubud",
+    "Babi Guling Bu Gendut - Ubud",
+    "Babi Guling Dek Cing - Ubud",
+    "Babi Guling Bu Suna - Ubud",
+    "Babi Guling Payangan bu Ari - Payangan",
+    "Babi Guling Dek Opa - Klungkung",
+    "Babi Guling Ardani - Klungkung",
+    "Ajik Guling - Klungkung",
+    "Babi Guling Sarin Paon - Klungkung",
+    "Babi Guling Men Arta - Klungkung",
+    "Babi Guling Ki Mokoh - Klungkung",
+    "Babi Guling Pak Sena - Klungkung",
+    "Babi Guling Bu Dewa - Klungkung",
+    "Babi Guling Men Margi - Klungkung",
+    "Babi Guling Dex Anix - Klungkung",
+    "Babi Guling Pan Egi - Klungkung",
+    "Babi Guling Mek Gede - Klungkung",
+    "Babi Guling Sederhana - Klungkung",
+    "Babi Guling Mertha Segara - Klungkung"
+  ];
+
+  const sampleComments = [
+    "Bumbu genepnya kerasa banget!",
+    "Kulitnya super krispi!",
+    "Porsi melimpah, sambal matahnya mantap.",
+    "Kuah balungnya seger dan nagih.",
+    "Dagingnya empuk bumbu meresap sempurna.",
+    "Tempatnya bersih, pelayanan ramah."
+  ];
+
+  // Mapping array ke Array of Objects dan Sorting Berdasarkan Likes & Rating Logis
+  const restaurants = rawRestoList.map(function (item, index) {
+    const parts = item.split(" - ");
+    const name = parts[0];
+    const location = parts[1] || "Bali";
+    
+    //nentuin jumlah likes terlebih dahulu
+    const likes = 45 + ((index * 7) % 350);
+    
+    //ngitung rating  berdasarkan likes (likes tinggi = rating otomatis tinggi)
+    //rumusnya =Rating minimum 4.1, nambah  sesuai proporsi likes (max bertambah 0.8)
+    const rating = (4.1 + (likes / 400) * 0.8).toFixed(1);
+    
+    const comment1 = sampleComments[index % sampleComments.length];
+    const comment2 = sampleComments[(index + 3) % sampleComments.length];
+
+    return {
+      id: index + 1,
+      name: name,
+      location: location,
+      rating: rating,
+      likes: likes,
+      comments: [
+        { user: "Wayan", text: comment1 },
+        { user: "Made", text: comment2 }
+      ]
+    };
+  }).sort(function(a, b) {
+    // Urutkan besar ke kecil berdasarkan likes
+    return b.likes - a.likes;
+  });
+
+  // Render Resto Cards ke DOM
+  function renderRestoDirectory() {
+    const $grid =$("#restoGrid");
+    if (!$grid.length) return;
+
+    $grid.empty();
+
+    restaurants.forEach(function (resto) {
+      let commentsHtml = "";
+      resto.comments.forEach(function (c) {
+        commentsHtml += `
+          <div class="resto-comment-item">
+            <strong>${escapeHtml(c.user)}:</strong> ${escapeHtml(c.text)}
+          </div>
+        `;
+      });
+
+      const cardHtml = `
+        <article class="resto-card" data-id="${resto.id}">
+          <div class="resto-card-header">
+            <div>
+              <h4 class="resto-card-title">${escapeHtml(resto.name)}</h4>
+              <p class="resto-card-location"><i class='bx bx-map'></i> ${escapeHtml(resto.location)}</p>
+            </div>
+            <div class="resto-rating-badge">
+              <i class='bx bxs-star'></i> ${resto.rating}
+            </div>
+          </div>
+
+          <div class="resto-card-actions">
+            <button type="button" class="resto-action-btn r-like-btn" data-id="${resto.id}">
+              <i class='bx bx-heart'></i> <span class="r-like-count">${resto.likes}</span> Suka
+            </button>
+            <button type="button" class="resto-action-btn r-comment-btn" data-id="${resto.id}">
+              <i class='bx bx-comment'></i> <span class="r-comment-count">${resto.comments.length}</span> Komentar
+            </button>
+          </div>
+
+          <div class="resto-comments-box" id="resto-comments-${resto.id}">
+            <div class="resto-comment-list">${commentsHtml}</div>
+            <form class="resto-comment-form" data-id="${resto.id}">
+              <input type="text" class="resto-comment-input" placeholder="Tulis komentar..." required>
+              <button type="submit" class="resto-comment-submit"><i class='bx bx-send'></i></button>
+            </form>
+          </div>
+        </article>
+      `;
+
+      $grid.append(cardHtml);
+    });
+  }
+
+  renderRestoDirectory();
+
+  // Interaksi Like Resto
+  $(document).on("click", ".r-like-btn", function (e) {
+    e.preventDefault();
+    const $btn =$(this);
+    const $count =$btn.find(".r-like-count");
+    let currentLikes = parseInt($count.text(), 10) || 0;
+
+    if ($btn.hasClass("active")) {
+      $btn.removeClass("active");
+      $btn.find("i").removeClass("bxs-heart").addClass("bx-heart");
+      $count.text(currentLikes - 1);     } else {$btn.addClass("active");
+      $btn.find("i").removeClass("bx-heart").addClass("bxs-heart");
+      $count.text(currentLikes + 1);
+    }
+  });
+
+  // Toggle Komentar Resto
+  $(document).on("click", ".r-comment-btn", function (e) {
+    e.preventDefault();
+    const id = $(this).data("id");
+    $(`#resto-comments-${id}`).toggleClass("open");
+  });
+
+  // Submit Komentar Resto Baru
+  $(document).on("submit", ".resto-comment-form", function (e) {
+    e.preventDefault();
+    const $form =$(this);
+    const $input =$form.find(".resto-comment-input");
+    const text = $input.val().trim();
+
+    if (!text) return;
+
+    const $list =$form.siblings(".resto-comment-list");
+    $list.append(`
+      <div class="resto-comment-item">
+        <strong>Pengunjung:</strong> ${escapeHtml(text)}
+      </div>
+    `);
+
+    $input.val("");
+
+    const $count =$form.closest(".resto-card").find(".r-comment-count");
+    let currentCount = parseInt($count.text(), 10) || 0;
+    $count.text(currentCount + 1);
+  });
+
   // Back to top
   $(window).on("scroll", function () {
-    if ($(this).scrollTop() > 300) {
-      $("#backToTop").fadeIn(300);
+    if ($(this).scrollTop() > 300) {$("#backToTop").fadeIn(300);
     } else {
       $("#backToTop").fadeOut(300);
     }
