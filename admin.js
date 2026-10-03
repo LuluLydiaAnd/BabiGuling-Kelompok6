@@ -63,6 +63,10 @@ $(document).ready(function () {
             renderAdminRestaurants();
             renderAdminRestaurantComments();
         }
+
+        if (target === "messageSection") {
+            renderContactMessages();
+        }
     }
 
     const sidebar = document.querySelector(".admin-sidebar");
@@ -333,6 +337,126 @@ $(document).ready(function () {
             </div>
         `;
     }
+
+    // Pesan masuk
+    function getContactMessages() {
+        try {
+            return JSON.parse(
+                localStorage.getItem("contactMessages")
+            ) || [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function renderContactMessages() {
+        const container = $("#adminMessages");
+
+        if (!container.length) return;
+
+        const messages = getContactMessages();
+
+        container.empty();
+
+        if (messages.length === 0) {
+            container.html(`
+                <div class="empty-section">
+                    <i class='bx bx-envelope-open'></i>
+                    <h3>Belum ada pesan</h3>
+                    <p>Pesan yang dikirim user akan muncul di sini.</p>
+                </div>
+            `);
+            return;
+        }
+
+        [...messages].reverse().forEach(function (message) {
+            const name = escapeHtml(message.nama || "User");
+            const email = escapeHtml(message.email || "-");
+            const subject = escapeHtml(
+                message.subjek || "Tanpa subjek"
+            );
+            const text = escapeHtml(message.pesan || "");
+
+            const date = message.createdAt
+                ? new Date(message.createdAt).toLocaleString("id-ID")
+                : "";
+
+            const isRead = message.status === "dibaca";
+
+            container.append(`
+                <div class="comment-item">
+                    <div class="comment-avatar">
+                        ${name.charAt(0).toUpperCase()}
+                    </div>
+
+                    <div class="comment-content">
+                        <strong>${name}</strong>
+
+                        <small>
+                            ${email}
+                            ${date ? " • " + date : ""}
+                        </small>
+
+                        <p>
+                            <b>${subject}</b>
+                        </p>
+
+                        <p>${text}</p>
+
+                        <div class="mt-2">
+                            <span class="badge ${isRead ? "bg-secondary" : "bg-danger"}">
+                                ${isRead ? "Sudah dibaca" : "Baru"}
+                            </span>
+
+                            ${
+                                isRead
+                                    ? ""
+                                    : `
+                                        <button
+                                            type="button"
+                                            class="btn btn-sm btn-outline-secondary btn-read-message ms-2"
+                                            data-id="${message.id}"
+                                        >
+                                            <i class='bx bx-check'></i>
+                                            Tandai sudah dibaca
+                                        </button>
+                                    `
+                            }
+                        </div>
+                    </div>
+                </div>
+            `);
+        });
+    }
+
+    $(document).on("click", ".btn-read-message", function () {
+        const messageId = Number($(this).data("id"));
+
+        let messages = getContactMessages();
+
+        messages = messages.map(function (message) {
+            if (Number(message.id) === messageId) {
+                return {
+                    ...message,
+                    status: "dibaca"
+                };
+            }
+
+            return message;
+        });
+
+        localStorage.setItem(
+            "contactMessages",
+            JSON.stringify(messages)
+        );
+
+        renderContactMessages();
+
+        showAdminToast(
+            "Pesan ditandai",
+            "Pesan berhasil ditandai sudah dibaca."
+        );
+    });
 
     // Restoran
     let restaurantSearchKeyword = "";
@@ -992,6 +1116,7 @@ $(document).ready(function () {
     renderAdminRestaurants();
     renderAdminRestaurantComments();
     renderDashboardRestaurants();
+    renderContactMessages();
 
     window.addEventListener("storage", function (event) {
         if (!event.key) return;
@@ -1014,6 +1139,10 @@ $(document).ready(function () {
             renderAdminRestaurants();
             renderAdminRestaurantComments();
             renderDashboardRestaurants();
+        }
+
+        if (event.key === "contactMessages") {
+            renderContactMessages();
         }
     });
 

@@ -156,6 +156,15 @@
                 <a
                     href="#"
                     class="sidebar-link"
+                    data-target="messageSection"
+                >
+                    <i class='bx bx-envelope'></i>
+                    <span>Pesan Masuk</span>
+                </a>
+
+                <a
+                    href="#"
+                    class="sidebar-link"
                     data-target="restaurantSection"
                 >
                     <i class='bx bx-trophy'></i>
@@ -522,6 +531,28 @@
                             Komentar dan rating user akan muncul di sini.
                         </p>
                     </div>
+                </div>
+            </section>
+
+            <!-- Pesan Masuk -->
+            <section
+                id="messageSection"
+                class="admin-page d-none"
+            >
+                <div class="page-title">
+                    <h1>Pesan Masuk</h1>
+                    <p>Pesan yang dikirim user melalui halaman Contact.</p>
+                </div>
+
+                <div class="dashboard-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Pesan User</h3>
+                            <p>Semua pesan dari form Contact akan muncul di sini.</p>
+                        </div>
+                        <i class='bx bx-envelope card-header-icon'></i>
+                    </div>
+                    <div id="adminMessages"></div>
                 </div>
             </section>
 

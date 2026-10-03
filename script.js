@@ -251,6 +251,34 @@ $(document).ready(function () {
             return;
         }
 
+        const newMessage = {
+            id: Date.now(),
+            nama: $("#cfNama").val().trim(),
+            email: $("#cfEmail").val().trim(),
+            subjek: $("#cfSubjek").val().trim(),
+            pesan: $("#cfPesan").val().trim(),
+            createdAt: new Date().toISOString(),
+            status: "baru"
+        };
+
+        let messages = [];
+
+        try {
+            messages =
+                JSON.parse(
+                    localStorage.getItem("contactMessages")
+                ) || [];
+        } catch (e) {
+            messages = [];
+        }
+
+        messages.push(newMessage);
+
+        localStorage.setItem(
+            "contactMessages",
+            JSON.stringify(messages)
+        );
+
         const $btn = $("#cfBtn");
 
         $btn
@@ -271,7 +299,7 @@ $(document).ready(function () {
             setTimeout(function () {
                 $("#cfSuccess").fadeOut(300);
             }, 4000);
-        }, 1200);
+        }, 500);
     });
 
     // Salin email / telepon
@@ -1138,6 +1166,7 @@ $(document).ready(function () {
                     </div>
                 </article>
             `;
+
             $grid.append(cardHTML);
         });
     }
