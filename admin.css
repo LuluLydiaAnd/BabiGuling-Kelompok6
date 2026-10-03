@@ -1613,3 +1613,131 @@ a {
         width: auto;
     }
 }
+
+/* ===== FIX DAFTAR USER ===== */
+
+#userSection .user-search {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    max-width: none !important;
+    height: 45px !important;
+    margin: 20px 0 8px !important;
+    padding: 0 12px !important;
+    border: 1px solid #e5e0dd !important;
+    border-radius: 10px !important;
+    background: #faf9f8 !important;
+    box-sizing: border-box !important;
+}
+
+#userSection .user-search > i {
+    display: block !important;
+    margin-right: 10px !important;
+    font-size: 20px !important;
+    color: #7b241c !important;
+}
+
+#userSection .user-search input {
+    display: block !important;
+    flex: 1 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    outline: none !important;
+    background: transparent !important;
+    font-size: 14px !important;
+    color: #3e2723 !important;
+}
+
+#userSection .user-search button {
+    display: none;
+    width: 30px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    background: #eee !important;
+    color: #555 !important;
+}
+
+#userSection .user-search-info {
+    margin: 0 0 12px !important;
+    font-size: 12px !important;
+    color: #999 !important;
+}
+
+#userSection #adminUserList {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    border-top: 1px solid #eee !important;
+}
+
+#userSection .user-item {
+    display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    min-height: 70px !important;
+    padding: 12px 5px !important;
+    border-bottom: 1px solid #eee !important;
+    box-sizing: border-box !important;
+}
+
+#userSection .user-avatar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    width: 44px !important;
+    height: 44px !important;
+    margin-right: 14px !important;
+    border-radius: 50% !important;
+    background: #7b241c !important;
+    color: #fff !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+}
+
+#userSection .user-info {
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+    gap: 3px !important;
+    min-width: 0 !important;
+}
+
+#userSection .user-info strong {
+    display: block !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    color: #3e2723 !important;
+}
+
+#userSection .user-info span {
+    display: block !important;
+    margin: 0 !important;
+    font-size: 12px !important;
+    color: #777 !important;
+}
+
+#userSection .user-info small {
+    display: flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+    margin: 0 !important;
+    font-size: 11px !important;
+    color: #aaa !important;
+}
+
+#userSection .user-role {
+    display: block !important;
+    margin-left: 20px !important;
+}
+
+#userSection .user-role .badge {
+    padding: 6px 11px !important;
+    border-radius: 20px !important;
+    font-size: 10px !important;
+}

@@ -38,6 +38,11 @@ $(document).ready(function () {
     // Galeri
     const $items = $(".g-item");
 
+    localStorage.setItem(
+        "galleryCount",
+        $(".gallery-mosaic .g-item").length
+    );
+
     $items.each(function () {
         const $item = $(this);
         const $img = $item.find("img");

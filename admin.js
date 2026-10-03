@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     // Login
     const session = JSON.parse(sessionStorage.getItem("loggedIn") || "null");
     const validUser = "admin";
@@ -67,6 +68,10 @@ $(document).ready(function () {
         if (target === "messageSection") {
             renderContactMessages();
         }
+
+        if (target === "userSection") {
+            renderAdminUsers($("#userSearch").val() || "");
+        }
     }
 
     const sidebar = document.querySelector(".admin-sidebar");
@@ -111,6 +116,148 @@ $(document).ready(function () {
             .replace(/'/g, "&#039;");
     }
 
+    function getStorageArray(key) {
+        try {
+            const data = JSON.parse(localStorage.getItem(key));
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            return [];
+        }
+    }
+
+    // User
+    function getTotalUsers() {
+        return getStorageArray("users").filter(function (user) {
+            return user.role === "user";
+        }).length;
+    }
+
+    function getAdminUsers() {
+        return getStorageArray("users").filter(function (user) {
+            return user.role === "user";
+        });
+    }
+
+    function renderAdminUsers(keyword = "") {
+        const container = $("#adminUserList");
+
+        if (!container.length) return;
+
+        const users = getAdminUsers();
+        const search = keyword.trim().toLowerCase();
+
+        const filteredUsers = users.filter(function (user) {
+            const nama = (user.nama || "").toLowerCase();
+            const username = (user.username || "").toLowerCase();
+            const email = (user.email || "").toLowerCase();
+
+            return (
+                nama.includes(search) ||
+                username.includes(search) ||
+                email.includes(search)
+            );
+        });
+
+        container.empty();
+
+        if (filteredUsers.length === 0) {
+            container.html(`
+                <div class="empty-section">
+                    <i class='bx bx-user-x'></i>
+                    <h3>${search ? "User tidak ditemukan" : "Belum ada user"}</h3>
+                    <p>
+                        ${
+                            search
+                                ? "Coba gunakan nama, username, atau email yang berbeda."
+                                : "User yang terdaftar akan muncul di sini."
+                        }
+                    </p>
+                </div>
+            `);
+
+            $("#userSearchInfo").text(
+                search
+                    ? "Tidak ada user yang cocok"
+                    : "Belum ada user"
+            );
+
+            return;
+        }
+
+        $("#userSearchInfo").text(
+            search
+                ? `Menampilkan ${filteredUsers.length} user dari ${users.length}`
+                : `Menampilkan ${users.length} user`
+        );
+
+        filteredUsers.forEach(function (user) {
+            const nama = escapeHtml(user.nama || "User");
+            const username = escapeHtml(user.username || "-");
+            const email = escapeHtml(user.email || "-");
+
+            const initial = (user.nama || user.username || "U")
+                .charAt(0)
+                .toUpperCase();
+
+            container.append(`
+                <div class="user-item">
+                    <div class="user-avatar">
+                        ${escapeHtml(initial)}
+                    </div>
+
+                    <div class="user-info">
+                        <strong>${nama}</strong>
+
+                        <span>@${username}</span>
+
+                        <small>
+                            <i class='bx bx-envelope'></i>
+                            ${email}
+                        </small>
+                    </div>
+
+                    <div class="user-role">
+                        <span class="badge bg-secondary">
+                            User
+                        </span>
+                    </div>
+                </div>
+            `);
+        });
+    }
+
+    $("#userSearch").on("input", function () {
+        renderAdminUsers($(this).val());
+    });
+
+    $("#clearUserSearch").on("click", function () {
+        $("#userSearch").val("");
+        renderAdminUsers();
+        $("#userSearch").focus();
+    });
+
+    // Gallery
+    function getTotalGallery() {
+        const savedCount = localStorage.getItem("galleryCount");
+
+        if (savedCount !== null) {
+            return Number(savedCount);
+        }
+
+        return 12;
+    }
+
+    function renderDashboardStats() {
+        const totalUsers = getTotalUsers();
+
+        $("#totalUser").text(totalUsers);
+        $("#userTotal").text(totalUsers);
+        $("#totalGallery").text(getTotalGallery());
+
+        renderAdminUsers($("#userSearch").val() || "");
+    }
+
+    // Review helper
     function getReviewName(review) {
         return review.name ||
             review.username ||
@@ -188,6 +335,8 @@ $(document).ready(function () {
 
     // Komentar dan rating
     function getReviews() {
+        let reviews = [];
+
         const possibleKeys = [
             "reviews",
             "ratings",
@@ -196,23 +345,40 @@ $(document).ready(function () {
             "babiguling_reviews"
         ];
 
-        for (const key of possibleKeys) {
+        possibleKeys.forEach(function (key) {
             const data = localStorage.getItem(key);
 
-            if (!data) continue;
+            if (!data) return;
 
             try {
                 const parsed = JSON.parse(data);
 
                 if (Array.isArray(parsed)) {
-                    return parsed;
+                    reviews = reviews.concat(parsed);
                 }
             } catch (error) {
                 console.log("Data localStorage tidak valid:", key);
             }
-        }
+        });
 
-        return [];
+        const restoComments = getRestoComments();
+
+        restoComments.forEach(function (comment) {
+            reviews.push({
+                name: comment.userName || "User",
+                comment: comment.text || "",
+                rating: Number(
+                    comment.rating ||
+                    comment.stars ||
+                    comment.nilai ||
+                    0
+                ),
+                createdAt: comment.createdAt || null,
+                restoId: comment.restoId
+            });
+        });
+
+        return reviews;
     }
 
     function renderComments() {
@@ -290,7 +456,10 @@ $(document).ready(function () {
 
         $(".rating-row").each(function () {
             const row = $(this);
-            const rating = Number(row.find("span").text().charAt(0));
+            const rating = Number(
+                row.find("span").text().charAt(0)
+            );
+
             const count = ratingTotals[rating] || 0;
 
             const percentage = totalRatings > 0
@@ -302,17 +471,23 @@ $(document).ready(function () {
                 percentage + "%"
             );
 
-            row.find("strong").text(percentage + "%");
+            row.find("strong").text(
+                percentage + "%"
+            );
         });
 
         const sortedReviews = [...reviews].reverse();
 
         sortedReviews.slice(0, 2).forEach(function (review) {
-            dashboardComments.append(createCommentHTML(review));
+            dashboardComments.append(
+                createCommentHTML(review)
+            );
         });
 
         sortedReviews.forEach(function (review) {
-            allComments.append(createCommentHTML(review));
+            allComments.append(
+                createCommentHTML(review)
+            );
         });
     }
 
@@ -320,6 +495,7 @@ $(document).ready(function () {
         const name = escapeHtml(getReviewName(review));
         const comment = escapeHtml(getReviewComment(review));
         const rating = getReviewRating(review);
+
         const firstLetter = name.charAt(0).toUpperCase();
         const stars = createStars(rating);
 
@@ -366,6 +542,7 @@ $(document).ready(function () {
                     <p>Pesan yang dikirim user akan muncul di sini.</p>
                 </div>
             `);
+
             return;
         }
 
@@ -431,7 +608,6 @@ $(document).ready(function () {
 
     $(document).on("click", ".btn-read-message", function () {
         const messageId = Number($(this).data("id"));
-
         let messages = getContactMessages();
 
         messages = messages.map(function (message) {
@@ -492,7 +668,9 @@ $(document).ready(function () {
     }
 
     function renderAdminRestaurants() {
-        const container = document.getElementById("adminRestaurantList");
+        const container = document.getElementById(
+            "adminRestaurantList"
+        );
 
         if (!container) return;
 
@@ -500,17 +678,28 @@ $(document).ready(function () {
         const likes = getRestoLikes();
         const comments = getRestoComments();
 
-        const keyword = restaurantSearchKeyword.toLowerCase().trim();
+        const keyword = restaurantSearchKeyword
+            .toLowerCase()
+            .trim();
 
-        const filteredRestaurants = restaurants.filter(function (restaurant) {
-            const name = (restaurant.name || "").toLowerCase();
-            const location = (restaurant.location || "").toLowerCase();
+        const filteredRestaurants = restaurants.filter(
+            function (restaurant) {
+                const name = (restaurant.name || "")
+                    .toLowerCase();
 
-            return name.includes(keyword) ||
-                location.includes(keyword);
-        });
+                const location = (restaurant.location || "")
+                    .toLowerCase();
 
-        const searchInfo = document.getElementById("restaurantSearchInfo");
+                return (
+                    name.includes(keyword) ||
+                    location.includes(keyword)
+                );
+            }
+        );
+
+        const searchInfo = document.getElementById(
+            "restaurantSearchInfo"
+        );
 
         if (searchInfo) {
             if (keyword) {
@@ -527,73 +716,89 @@ $(document).ready(function () {
                 <div class="restaurant-no-result">
                     <i class='bx bx-search-alt-2'></i>
                     <h4>Restoran tidak ditemukan</h4>
-                    <p>Coba cari menggunakan nama atau lokasi restoran.</p>
+                    <p>
+                        Coba cari menggunakan nama atau lokasi restoran.
+                    </p>
                 </div>
             `;
+
             return;
         }
 
-        container.innerHTML = filteredRestaurants.map(function (restaurant) {
-            const likeCount = likes.filter(function (like) {
-                return String(like.restoId) === String(restaurant.id);
-            }).length;
+        container.innerHTML = filteredRestaurants.map(
+            function (restaurant) {
+                const likeCount = likes.filter(
+                    function (like) {
+                        return String(like.restoId) ===
+                            String(restaurant.id);
+                    }
+                ).length;
 
-            const commentCount = comments.filter(function (comment) {
-                return String(comment.restoId) === String(restaurant.id);
-            }).length;
+                const commentCount = comments.filter(
+                    function (comment) {
+                        return String(comment.restoId) ===
+                            String(restaurant.id);
+                    }
+                ).length;
 
-            return `
-                <div class="admin-restaurant-card">
-                    <div class="admin-restaurant-icon">
-                        <i class='bx bx-store'></i>
-                    </div>
-
-                    <div class="admin-restaurant-info">
-                        <h4>${escapeHtml(restaurant.name)}</h4>
-                        <p>
-                            <i class='bx bx-map'></i>
-                            ${escapeHtml(restaurant.location)}
-                        </p>
-                    </div>
-
-                    <div class="admin-restaurant-meta">
-                        <div class="admin-restaurant-rating">
-                            ⭐ ${Number(restaurant.rating || 0).toFixed(1)}
+                return `
+                    <div class="admin-restaurant-card">
+                        <div class="admin-restaurant-icon">
+                            <i class='bx bx-store'></i>
                         </div>
 
-                        <div class="admin-restaurant-stat">
-                            <i class='bx bx-heart'></i>
-                            ${likeCount}
+                        <div class="admin-restaurant-info">
+                            <h4>
+                                ${escapeHtml(restaurant.name)}
+                            </h4>
+
+                            <p>
+                                <i class='bx bx-map'></i>
+                                ${escapeHtml(restaurant.location)}
+                            </p>
                         </div>
 
-                        <div class="admin-restaurant-stat">
-                            <i class='bx bx-comment'></i>
-                            ${commentCount}
+                        <div class="admin-restaurant-meta">
+                            <div class="admin-restaurant-rating">
+                                ⭐ ${Number(
+                                    restaurant.rating || 0
+                                ).toFixed(1)}
+                            </div>
+
+                            <div class="admin-restaurant-stat">
+                                <i class='bx bx-heart'></i>
+                                ${likeCount}
+                            </div>
+
+                            <div class="admin-restaurant-stat">
+                                <i class='bx bx-comment'></i>
+                                ${commentCount}
+                            </div>
+                        </div>
+
+                        <div class="admin-restaurant-actions">
+                            <button
+                                type="button"
+                                class="admin-restaurant-edit btn-edit-restaurant"
+                                data-id="${restaurant.id}"
+                                title="Edit restoran"
+                            >
+                                <i class='bx bx-edit'></i>
+                            </button>
+
+                            <button
+                                type="button"
+                                class="admin-restaurant-delete btn-delete-restaurant"
+                                data-id="${restaurant.id}"
+                                title="Hapus restoran"
+                            >
+                                <i class='bx bx-trash'></i>
+                            </button>
                         </div>
                     </div>
-
-                    <div class="admin-restaurant-actions">
-                        <button
-                            type="button"
-                            class="admin-restaurant-edit btn-edit-restaurant"
-                            data-id="${restaurant.id}"
-                            title="Edit restoran"
-                        >
-                            <i class='bx bx-edit'></i>
-                        </button>
-
-                        <button
-                            type="button"
-                            class="admin-restaurant-delete btn-delete-restaurant"
-                            data-id="${restaurant.id}"
-                            title="Hapus restoran"
-                        >
-                            <i class='bx bx-trash'></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }).join("");
+                `;
+            }
+        ).join("");
     }
 
     function renderDashboardRestaurants() {
@@ -619,9 +824,12 @@ $(document).ready(function () {
 
         const sortedRestaurants = [...restaurants]
             .map(function (restaurant) {
-                const likeCount = likes.filter(function (like) {
-                    return Number(like.restoId) === Number(restaurant.id);
-                }).length;
+                const likeCount = likes.filter(
+                    function (like) {
+                        return Number(like.restoId) ===
+                            Number(restaurant.id);
+                    }
+                ).length;
 
                 return {
                     ...restaurant,
@@ -633,29 +841,33 @@ $(document).ready(function () {
             })
             .slice(0, 3);
 
-        sortedRestaurants.forEach(function (restaurant, index) {
-            container.append(`
-                <div class="restaurant-item">
-                    <div class="restaurant-number">
-                        ${index + 1}
-                    </div>
+        sortedRestaurants.forEach(
+            function (restaurant, index) {
+                container.append(`
+                    <div class="restaurant-item">
+                        <div class="restaurant-number">
+                            ${index + 1}
+                        </div>
 
-                    <div class="restaurant-info">
-                        <strong>
-                            ${escapeHtml(restaurant.name)}
-                        </strong>
+                        <div class="restaurant-info">
+                            <strong>
+                                ${escapeHtml(restaurant.name)}
+                            </strong>
 
-                        <span>
-                            ${restaurant.likeCount} like
-                        </span>
-                    </div>
+                            <span>
+                                ${restaurant.likeCount} like
+                            </span>
+                        </div>
 
-                    <div class="restaurant-rating">
-                        ⭐ ${Number(restaurant.rating || 0).toFixed(1)}
+                        <div class="restaurant-rating">
+                            ⭐ ${Number(
+                                restaurant.rating || 0
+                            ).toFixed(1)}
+                        </div>
                     </div>
-                </div>
-            `);
-        });
+                `);
+            }
+        );
     }
 
     function renderAdminRestaurantComments() {
@@ -682,9 +894,12 @@ $(document).ready(function () {
         const sortedComments = [...comments].reverse();
 
         sortedComments.forEach(function (comment) {
-            const restaurant = restaurants.find(function (item) {
-                return Number(item.id) === Number(comment.restoId);
-            });
+            const restaurant = restaurants.find(
+                function (item) {
+                    return Number(item.id) ===
+                        Number(comment.restoId);
+                }
+            );
 
             if (!restaurant) return;
 
@@ -697,7 +912,9 @@ $(document).ready(function () {
             );
 
             const date = comment.createdAt
-                ? new Date(comment.createdAt).toLocaleString("id-ID")
+                ? new Date(
+                    comment.createdAt
+                ).toLocaleString("id-ID")
                 : "";
 
             container.append(`
@@ -740,33 +957,43 @@ $(document).ready(function () {
                 "Nama dan lokasi restoran wajib diisi.",
                 "warning"
             );
+
             return;
         }
 
-        if (rating < 0 || rating > 5 || Number.isNaN(rating)) {
+        if (
+            rating < 0 ||
+            rating > 5 ||
+            Number.isNaN(rating)
+        ) {
             showAdminToast(
                 "Rating tidak valid",
                 "Rating harus berada di antara 0 sampai 5.",
                 "warning"
             );
+
             return;
         }
 
         let restaurants = getRestaurants();
 
         if (id) {
-            restaurants = restaurants.map(function (restaurant) {
-                if (Number(restaurant.id) === Number(id)) {
-                    return {
-                        ...restaurant,
-                        name: name,
-                        location: location,
-                        rating: rating
-                    };
-                }
+            restaurants = restaurants.map(
+                function (restaurant) {
+                    if (
+                        Number(restaurant.id) === Number(id)
+                    ) {
+                        return {
+                            ...restaurant,
+                            name: name,
+                            location: location,
+                            rating: rating
+                        };
+                    }
 
-                return restaurant;
-            });
+                    return restaurant;
+                }
+            );
 
             localStorage.setItem(
                 "restaurants",
@@ -804,106 +1031,138 @@ $(document).ready(function () {
     });
 
     // Edit restoran
-    $(document).on("click", ".btn-edit-restaurant", function () {
-        const id = Number($(this).data("id"));
-        const restaurants = getRestaurants();
+    $(document).on(
+        "click",
+        ".btn-edit-restaurant",
+        function () {
+            const id = Number($(this).data("id"));
+            const restaurants = getRestaurants();
 
-        const restaurant = restaurants.find(function (item) {
-            return Number(item.id) === id;
-        });
-
-        if (!restaurant) {
-            showAdminToast(
-                "Restoran tidak ditemukan",
-                "Data restoran sudah tidak tersedia.",
-                "error"
+            const restaurant = restaurants.find(
+                function (item) {
+                    return Number(item.id) === id;
+                }
             );
-            return;
+
+            if (!restaurant) {
+                showAdminToast(
+                    "Restoran tidak ditemukan",
+                    "Data restoran sudah tidak tersedia.",
+                    "error"
+                );
+
+                return;
+            }
+
+            $("#restaurantId").val(restaurant.id);
+            $("#restaurantName").val(restaurant.name);
+            $("#restaurantLocation").val(
+                restaurant.location
+            );
+            $("#restaurantRating").val(
+                restaurant.rating
+            );
+
+            $("#restaurantSubmitText").text(
+                "Simpan Perubahan"
+            );
+
+            $("#cancelRestaurantEdit")
+                .removeClass("d-none");
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
         }
-
-        $("#restaurantId").val(restaurant.id);
-        $("#restaurantName").val(restaurant.name);
-        $("#restaurantLocation").val(restaurant.location);
-        $("#restaurantRating").val(restaurant.rating);
-
-        $("#restaurantSubmitText").text("Simpan Perubahan");
-        $("#cancelRestaurantEdit").removeClass("d-none");
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-    });
+    );
 
     // Hapus restoran
-    $(document).on("click", ".btn-delete-restaurant", function () {
-        const id = Number($(this).data("id"));
-        const restaurants = getRestaurants();
+    $(document).on(
+        "click",
+        ".btn-delete-restaurant",
+        function () {
+            const id = Number($(this).data("id"));
+            const restaurants = getRestaurants();
 
-        const restaurant = restaurants.find(function (item) {
-            return Number(item.id) === id;
-        });
-
-        if (!restaurant) {
-            showAdminToast(
-                "Restoran tidak ditemukan",
-                "Data restoran sudah tidak tersedia.",
-                "error"
+            const restaurant = restaurants.find(
+                function (item) {
+                    return Number(item.id) === id;
+                }
             );
-            return;
+
+            if (!restaurant) {
+                showAdminToast(
+                    "Restoran tidak ditemukan",
+                    "Data restoran sudah tidak tersedia.",
+                    "error"
+                );
+
+                return;
+            }
+
+            const confirmed = confirm(
+                `Yakin ingin menghapus "${restaurant.name}"?\n\nData like dan review restoran ini juga akan dihapus.`
+            );
+
+            if (!confirmed) return;
+
+            let updatedRestaurants =
+                restaurants.filter(
+                    function (item) {
+                        return Number(item.id) !== id;
+                    }
+                );
+
+            localStorage.setItem(
+                "restaurants",
+                JSON.stringify(updatedRestaurants)
+            );
+
+            let likes = getRestoLikes();
+
+            likes = likes.filter(
+                function (like) {
+                    return Number(like.restoId) !== id;
+                }
+            );
+
+            localStorage.setItem(
+                "restoLikes",
+                JSON.stringify(likes)
+            );
+
+            let comments = getRestoComments();
+
+            comments = comments.filter(
+                function (comment) {
+                    return Number(comment.restoId) !== id;
+                }
+            );
+
+            localStorage.setItem(
+                "restoComments",
+                JSON.stringify(comments)
+            );
+
+            resetRestaurantForm();
+            renderAdminRestaurants();
+            renderAdminRestaurantComments();
+            renderDashboardRestaurants();
+
+            showAdminToast(
+                "Restoran dihapus",
+                `"${restaurant.name}" berhasil dihapus dari daftar.`
+            );
         }
+    );
 
-        const confirmed = confirm(
-            `Yakin ingin menghapus "${restaurant.name}"?\n\nData like dan review restoran ini juga akan dihapus.`
-        );
-
-        if (!confirmed) return;
-
-        let updatedRestaurants = restaurants.filter(function (item) {
-            return Number(item.id) !== id;
-        });
-
-        localStorage.setItem(
-            "restaurants",
-            JSON.stringify(updatedRestaurants)
-        );
-
-        let likes = getRestoLikes();
-
-        likes = likes.filter(function (like) {
-            return Number(like.restoId) !== id;
-        });
-
-        localStorage.setItem(
-            "restoLikes",
-            JSON.stringify(likes)
-        );
-
-        let comments = getRestoComments();
-
-        comments = comments.filter(function (comment) {
-            return Number(comment.restoId) !== id;
-        });
-
-        localStorage.setItem(
-            "restoComments",
-            JSON.stringify(comments)
-        );
-
-        resetRestaurantForm();
-        renderAdminRestaurants();
-        renderAdminRestaurantComments();
-        renderDashboardRestaurants();
-
-        showAdminToast(
-            "Restoran dihapus",
-            `"${restaurant.name}" berhasil dihapus dari daftar.`
-        );
-    });
-
-    $("#cancelRestaurantEdit").on("click", function () {
-        resetRestaurantForm();
-    });
+    $("#cancelRestaurantEdit").on(
+        "click",
+        function () {
+            resetRestaurantForm();
+        }
+    );
 
     function resetRestaurantForm() {
         const form = $("#restaurantForm")[0];
@@ -914,15 +1173,19 @@ $(document).ready(function () {
 
         $("#restaurantId").val("");
         $("#restaurantRating").val("5");
-        $("#restaurantSubmitText").text("Tambah Restoran");
-        $("#cancelRestaurantEdit").addClass("d-none");
+        $("#restaurantSubmitText").text(
+            "Tambah Restoran"
+        );
+        $("#cancelRestaurantEdit")
+            .addClass("d-none");
     }
 
     // Search restoran
     $("#restaurantSearch").on("input", function () {
         restaurantSearchKeyword = $(this).val();
 
-        const hasKeyword = restaurantSearchKeyword.trim() !== "";
+        const hasKeyword =
+            restaurantSearchKeyword.trim() !== "";
 
         $("#clearRestaurantSearch").css(
             "display",
@@ -932,25 +1195,31 @@ $(document).ready(function () {
         renderAdminRestaurants();
     });
 
-    $("#clearRestaurantSearch").on("click", function () {
-        $("#restaurantSearch").val("");
-        restaurantSearchKeyword = "";
+    $("#clearRestaurantSearch").on(
+        "click",
+        function () {
+            $("#restaurantSearch").val("");
+            restaurantSearchKeyword = "";
 
-        $(this).css("display", "none");
+            $(this).css("display", "none");
 
-        renderAdminRestaurants();
+            renderAdminRestaurants();
 
-        $("#restaurantSearch").focus();
-    });
+            $("#restaurantSearch").focus();
+        }
+    );
 
     // Post
     $("#postForm").on("submit", function (event) {
         event.preventDefault();
 
         const title = $("#postTitle").val().trim();
-        const description = $("#postDescription").val().trim();
-        const category = $("#postCategory").val().trim();
-        const imageFile = $("#postImage")[0].files[0];
+        const description =
+            $("#postDescription").val().trim();
+        const category =
+            $("#postCategory").val().trim();
+        const imageFile =
+            $("#postImage")[0].files[0];
 
         if (!title || !description || !category) {
             showAdminToast(
@@ -958,6 +1227,7 @@ $(document).ready(function () {
                 "Semua field post wajib diisi.",
                 "warning"
             );
+
             return;
         }
 
@@ -967,6 +1237,7 @@ $(document).ready(function () {
                 "Silakan pilih gambar untuk post.",
                 "warning"
             );
+
             return;
         }
 
@@ -983,9 +1254,10 @@ $(document).ready(function () {
                 image: image
             };
 
-            let posts = JSON.parse(
-                localStorage.getItem("posts")
-            ) || [];
+            let posts =
+                JSON.parse(
+                    localStorage.getItem("posts")
+                ) || [];
 
             posts.push(post);
 
@@ -1000,10 +1272,12 @@ $(document).ready(function () {
                     "Ukuran gambar terlalu besar. Coba gunakan gambar yang lebih kecil.",
                     "error"
                 );
+
                 return;
             }
 
             $("#postForm")[0].reset();
+
             loadPosts();
 
             showAdminToast(
@@ -1016,9 +1290,10 @@ $(document).ready(function () {
     });
 
     function loadPosts() {
-        const posts = JSON.parse(
-            localStorage.getItem("posts")
-        ) || [];
+        const posts =
+            JSON.parse(
+                localStorage.getItem("posts")
+            ) || [];
 
         $("#postList").empty();
 
@@ -1026,13 +1301,15 @@ $(document).ready(function () {
             $("#postList").html(
                 `<p class="text-muted">No posts available.</p>`
             );
+
             return;
         }
 
         posts.forEach(function (post) {
-            const description = convertLinks(
-                post.description || ""
-            );
+            const description =
+                convertLinks(
+                    post.description || ""
+                );
 
             const postHTML = `
                 <div class="admin-post-item">
@@ -1071,39 +1348,49 @@ $(document).ready(function () {
         });
     }
 
-    $(document).on("click", ".btn-delete-post", function () {
-        const postId = Number($(this).data("id"));
+    $(document).on(
+        "click",
+        ".btn-delete-post",
+        function () {
+            const postId =
+                Number($(this).data("id"));
 
-        const confirmDelete = confirm(
-            "Are you sure you want to delete this post?"
-        );
+            const confirmDelete = confirm(
+                "Are you sure you want to delete this post?"
+            );
 
-        if (!confirmDelete) return;
+            if (!confirmDelete) return;
 
-        let posts = JSON.parse(
-            localStorage.getItem("posts")
-        ) || [];
+            let posts =
+                JSON.parse(
+                    localStorage.getItem("posts")
+                ) || [];
 
-        posts = posts.filter(function (post) {
-            return post.id !== postId;
-        });
+            posts = posts.filter(
+                function (post) {
+                    return post.id !== postId;
+                }
+            );
 
-        localStorage.setItem(
-            "posts",
-            JSON.stringify(posts)
-        );
+            localStorage.setItem(
+                "posts",
+                JSON.stringify(posts)
+            );
 
-        loadPosts();
+            loadPosts();
 
-        showAdminToast(
-            "Post dihapus",
-            "Post berhasil dihapus dari website."
-        );
-    });
+            showAdminToast(
+                "Post dihapus",
+                "Post berhasil dihapus dari website."
+            );
+        }
+    );
 
     function convertLinks(text) {
         const escapedText = escapeHtml(text);
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+        const urlRegex =
+            /(https?:\/\/[^\s]+)/g;
 
         return escapedText.replace(
             urlRegex,
@@ -1112,39 +1399,50 @@ $(document).ready(function () {
     }
 
     // Initial render
+    renderDashboardStats();
     renderComments();
     renderAdminRestaurants();
     renderAdminRestaurantComments();
     renderDashboardRestaurants();
     renderContactMessages();
 
-    window.addEventListener("storage", function (event) {
-        if (!event.key) return;
+    window.addEventListener(
+        "storage",
+        function (event) {
+            if (!event.key) return;
 
-        if (
-            event.key === "reviews" ||
-            event.key === "ratings" ||
-            event.key === "comments" ||
-            event.key === "userReviews" ||
-            event.key === "babiguling_reviews"
-        ) {
-            renderComments();
-        }
+            if (
+                event.key === "reviews" ||
+                event.key === "ratings" ||
+                event.key === "comments" ||
+                event.key === "userReviews" ||
+                event.key === "babiguling_reviews"
+            ) {
+                renderComments();
+            }
 
-        if (
-            event.key === "restaurants" ||
-            event.key === "restoLikes" ||
-            event.key === "restoComments"
-        ) {
-            renderAdminRestaurants();
-            renderAdminRestaurantComments();
-            renderDashboardRestaurants();
-        }
+            if (
+                event.key === "restaurants" ||
+                event.key === "restoLikes" ||
+                event.key === "restoComments"
+            ) {
+                renderAdminRestaurants();
+                renderAdminRestaurantComments();
+                renderDashboardRestaurants();
+            }
 
-        if (event.key === "contactMessages") {
-            renderContactMessages();
+            if (event.key === "contactMessages") {
+                renderContactMessages();
+            }
+
+            if (
+                event.key === "users" ||
+                event.key === "galleryCount"
+            ) {
+                renderDashboardStats();
+            }
         }
-    });
+    );
 
     if (session && session.role === "admin") {
         loadPosts();

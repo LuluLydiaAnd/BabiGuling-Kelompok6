@@ -274,7 +274,7 @@
                         <div>
                             <span>Total User</span>
 
-                            <h2>245</h2>
+                            <h2 id="totalUser">0</h2>
 
                             <small>
                                 User terdaftar
@@ -290,7 +290,7 @@
                         <div>
                             <span>Foto Galeri</span>
 
-                            <h2>36</h2>
+                            <h2 id="totalGallery">0</h2>
 
                             <small>
                                 Foto yang ditampilkan
@@ -723,15 +723,13 @@
 
             </section>
 
-            <!-- User -->
+            <!-- user -->
             <section
                 id="userSection"
                 class="admin-page d-none"
             >
-
                 <div class="page-title">
                     <h1>User</h1>
-
                     <p>
                         Informasi pengguna website.
                     </p>
@@ -740,15 +738,58 @@
                 <div class="dashboard-card">
 
                     <div class="empty-section">
-
                         <i class='bx bx-group'></i>
 
-                        <h3>Total User: 245</h3>
+                        <h3>
+                            Total User: <span id="userTotal">0</span>
+                        </h3>
 
                         <p>
-                            Data user akan ditampilkan di sini.
+                            User yang terdaftar di website.
                         </p>
                     </div>
+
+                </div>
+
+                <div class="dashboard-card mt-4">
+
+                    <div class="card-header">
+                        <div>
+                            <h3>Daftar User</h3>
+                            <p>
+                                Semua user yang sudah terdaftar.
+                            </p>
+                        </div>
+
+                        <i class='bx bx-group card-header-icon'></i>
+                    </div>
+
+                    <div class="user-search">
+                        <i class='bx bx-search'></i>
+
+                        <input
+                            type="text"
+                            id="userSearch"
+                            placeholder="Cari nama, username, atau email..."
+                        >
+
+                        <button
+                            type="button"
+                            id="clearUserSearch"
+                            title="Hapus pencarian"
+                        >
+                            <i class='bx bx-x'></i>
+                        </button>
+                    </div>
+
+                    <div class="user-search-info">
+                        <span id="userSearchInfo">
+                            Menampilkan semua user
+                        </span>
+                    </div>
+
+                    <div id="adminUserList"></div>
+
                 </div>
             </section>
 
