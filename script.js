@@ -1321,3 +1321,51 @@ $(document).ready(function () {
         );
     });
 });
+
+function updateAuthNavbar() {
+    const session = sessionStorage.getItem("loggedIn");
+    const $authNav = $("#authNav");
+
+    if (!$authNav.length) {
+        return;
+    }
+
+    if (!session) {
+        $authNav.html(`
+            <a class="nav-link login-link" href="login.html">
+                Log In / Daftar
+            </a>
+        `);
+        return;
+    }
+
+    let user;
+
+    try {
+        user = JSON.parse(session);
+    } catch (error) {
+        sessionStorage.removeItem("loggedIn");
+        $authNav.html(`
+            <a class="nav-link login-link" href="login.html">
+                Log In / Daftar
+            </a>
+        `);
+        return;
+    }
+
+    if (!user || user.role !== "user") {
+        return;
+    }
+
+    const nama = user.nama || user.username || "User";
+
+    $authNav.html(`
+        <a class="nav-link login-link" href="user-dashboard.html">
+            <i class='bx bx-user'></i> ${nama}
+        </a>
+    `);
+}
+
+$(document).ready(function () {
+    updateAuthNavbar();
+});
