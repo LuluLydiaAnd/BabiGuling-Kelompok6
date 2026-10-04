@@ -1,0 +1,144 @@
+body {
+  background: #f0f2f5;
+  font-family: Helvetica, Arial, sans-serif;
+  color: #050505;
+}
+.fb-nav {
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.fb-logo {
+  color: #1877f2;
+  font-weight: 800;
+  font-size: 2rem;
+  text-decoration: none;
+  letter-spacing: -1px;
+}
+.cover {
+  height: 300px;
+  border-radius: 0 0 12px 12px;
+  background: linear-gradient(135deg, #5a140d, #a52a1a 55%, #d4a017);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 6rem;
+}
+.profile-wrap {
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+.profile-pic {
+  width: 168px;
+  height: 168px;
+  border-radius: 50%;
+  border: 5px solid #fff;
+  background: #7a1f16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.5rem;
+  margin-top: -84px;
+}
+.btn-fb {
+  background: #1877f2;
+  color: #fff;
+  font-weight: 600;
+  border: 0;
+}
+.btn-fb:hover {
+  background: #166fe5;
+  color: #fff;
+}
+.btn-fb-gray {
+  background: #e4e6eb;
+  font-weight: 600;
+  border: 0;
+}
+.btn-fb-gray:hover {
+  background: #d8dadf;
+}
+.btn-fb.liked {
+  background: #e7f3ff;
+  color: #1877f2;
+}
+.tabs-fb {
+  border-top: 1px solid #ced0d4;
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+}
+.tabs-fb a {
+  padding: 14px 16px;
+  color: #65676b;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  font-size: 0.9rem;
+}
+.tabs-fb a.active {
+  color: #1877f2;
+  border-bottom: 3px solid #1877f2;
+}
+.cardx {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.mini-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #7a1f16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.post-img {
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  margin: 0 -16px;
+}
+.action-btn {
+  flex: 1;
+  border: 0;
+  background: none;
+  padding: 8px;
+  border-radius: 6px;
+  color: #65676b;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.action-btn:hover {
+  background: #f2f2f2;
+}
+.action-btn.liked {
+  color: #1877f2;
+}
+.comment-bubble {
+  background: #f0f2f5;
+  border-radius: 18px;
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+@media (max-width: 576px) {
+  .cover {
+    height: 180px;
+    font-size: 4rem;
+  }
+  .profile-pic {
+    width: 110px;
+    height: 110px;
+    margin-top: -55px;
+    font-size: 3rem;
+  }
+}

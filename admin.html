@@ -3,75 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Admin Panel — Babi Guling</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+        rel="stylesheet"
+    >
+
     <link rel="stylesheet" href="admin.css">
 </head>
 
 <body class="admin-body">
 
+    <!-- Login -->
     <div class="admin-login-wrap" id="loginWrap">
         <div class="admin-login-card">
+
             <a href="index.html" class="admin-back">
-                <i class="bx bx-arrow-back"></i>
+                <i class='bx bx-arrow-back'></i>
                 Kembali ke Beranda
             </a>
 
-            <div class="login-logo">
-                <i class="bx bxs-food-menu"></i>
-            </div>
-
             <h1 class="admin-title">Admin Panel</h1>
-            <p class="admin-subtitle">Login untuk mengelola website Babi Guling</p>
+
+            <p class="admin-subtitle">
+                Login untuk mengelola website Babi Guling
+            </p>
 
             <form id="loginForm" class="admin-form">
+
                 <div class="mb-3">
-                    <label class="form-label" for="username">Username</label>
+                    <label class="form-label" for="username">
+                        Username
+                    </label>
+
                     <div class="input-icon">
-                        <i class="bx bx-user"></i>
-                        <input type="text" id="username" class="form-control" placeholder="Masukkan username" required>
+                        <i class='bx bx-user'></i>
+
+                        <input
+                            type="text"
+                            id="username"
+                            class="form-control"
+                            placeholder="Masukkan username"
+                            required
+                        >
                     </div>
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label" for="password">Password</label>
+                    <label class="form-label" for="password">
+                        Password
+                    </label>
+
                     <div class="input-icon">
-                        <i class="bx bx-lock-alt"></i>
-                        <input type="password" id="password" class="form-control" placeholder="Masukkan password" required>
+                        <i class='bx bx-lock-alt'></i>
+
+                        <input
+                            type="password"
+                            id="password"
+                            class="form-control"
+                            placeholder="Masukkan password"
+                            required
+                        >
                     </div>
                 </div>
 
                 <div id="loginError" class="login-error d-none">
-                    <i class="bx bx-error-circle"></i>
+                    <i class='bx bx-error-circle'></i>
                     Username atau password salah.
                 </div>
 
                 <button type="submit" class="btn btn-admin-login">
                     Masuk
-                    <i class="bx bx-log-in"></i>
+                    <i class='bx bx-log-in'></i>
                 </button>
 
                 <p class="admin-hint">
-                    <i class="bx bx-info-circle"></i>
-                    Demo login: <b>admin</b> / <b>admin123</b>
+                    <i class='bx bx-info-circle'></i>
+                    Demo login:
+                    <b>admin</b> /
+                    <b>admin123</b>
                 </p>
+
             </form>
         </div>
     </div>
 
+    <!-- Dashboard -->
     <div id="dashboard" class="admin-dashboard d-none">
 
-        <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Toggle sidebar">
-            <i class="bx bx-chevron-left"></i>
+        <button
+            id="sidebarToggle"
+            class="sidebar-toggle"
+            type="button"
+            aria-label="Toggle sidebar"
+        >
+            <i class='bx bx-chevron-left'></i>
         </button>
 
         <aside class="admin-sidebar">
+
             <div class="sidebar-brand">
                 <div class="sidebar-logo">
-                    <i class="bx bxs-food-menu"></i>
+                    <i class='bx bxs-food-menu'></i>
                 </div>
+
                 <div>
                     <h3>Babi Guling</h3>
                     <span>Admin Panel</span>
@@ -79,52 +121,93 @@
             </div>
 
             <nav class="sidebar-nav">
-                <a href="#" class="sidebar-link active" data-target="dashboardSection">
-                    <i class="bx bxs-dashboard"></i>
+
+                <a
+                    href="#"
+                    class="sidebar-link active"
+                    data-target="dashboardSection"
+                >
+                    <i class='bx bxs-dashboard'></i>
                     <span>Dashboard</span>
                 </a>
 
-                <a href="#" class="sidebar-link" data-target="commentSection">
-                    <i class="bx bx-comment-detail"></i>
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="commentSection"
+                >
+                    <i class='bx bx-comment-detail'></i>
                     <span>Komentar & Rating</span>
                 </a>
 
-                <a href="#" class="sidebar-link" data-target="messageSection">
-                    <i class="bx bx-envelope"></i>
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="messageSection"
+                >
+                    <i class='bx bx-envelope'></i>
                     <span>Pesan Masuk</span>
                 </a>
 
-                <a href="#" class="sidebar-link" data-target="restaurantSection">
-                    <i class="bx bx-trophy"></i>
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="restaurantSection"
+                >
+                    <i class='bx bx-trophy'></i>
                     <span>Resto Terfavorit</span>
                 </a>
 
-                <a href="#" class="sidebar-link" data-target="userSection">
-                    <i class="bx bx-user"></i>
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="userSection"
+                >
+                    <i class='bx bx-user'></i>
                     <span>User</span>
                 </a>
+
+                <a
+                    href="#"
+                    class="sidebar-link"
+                    data-target="articleSection"
+                >
+                    <i class='bx bx-news'></i>
+                    <span>Artikel</span>
+                </a>
+
             </nav>
 
-            <button id="logoutBtn" class="sidebar-logout" type="button">
-                <i class="bx bx-log-out"></i>
+            <button
+                id="logoutBtn"
+                class="sidebar-logout"
+                type="button"
+            >
+                <i class='bx bx-log-out'></i>
                 <span>Logout</span>
             </button>
+
         </aside>
 
         <main class="admin-main">
 
+            <!-- Dashboard -->
             <section id="dashboardSection" class="admin-page">
 
                 <div class="admin-header">
                     <div>
-                        <p class="admin-welcome">Selamat datang kembali 👋</p>
+                        <p class="admin-welcome">
+                            Selamat datang kembali 👋
+                        </p>
+
                         <h1>Dashboard Admin</h1>
                     </div>
 
                     <div class="admin-profile">
                         <div class="profile-icon">
-                            <i class="bx bx-user"></i>
+                            <i class='bx bx-user'></i>
                         </div>
+
                         <div>
                             <strong>Admin</strong>
                             <span>Administrator</span>
@@ -136,107 +219,284 @@
 
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="bx bx-comment"></i>
+                            <i class='bx bxs-star'></i>
                         </div>
+
+                        <div>
+                            <span>Rating Resto</span>
+
+                            <h2 id="averageRating">
+                                4.8
+                            </h2>
+
+                            <small>
+                                Rata-rata rating resto
+                            </small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class='bx bx-comment'></i>
+                        </div>
+
                         <div>
                             <span>Komentar</span>
-                            <h2 id="commentCount">0</h2>
-                            <small>Total komentar user</small>
+
+                            <h2 id="commentCount">
+                                0
+                            </h2>
+
+                            <small>
+                                Total komentar user
+                            </small>
                         </div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="bx bx-group"></i>
+                            <i class='bx bx-group'></i>
                         </div>
+
                         <div>
                             <span>Total User</span>
+
                             <h2 id="totalUser">0</h2>
-                            <small>User terdaftar</small>
+
+                            <small>
+                                User terdaftar
+                            </small>
                         </div>
                     </div>
 
                     <div class="stat-card">
                         <div class="stat-icon">
-                            <i class="bx bx-image"></i>
+                            <i class='bx bx-image'></i>
                         </div>
+
                         <div>
                             <span>Foto Galeri</span>
+
                             <h2 id="totalGallery">0</h2>
-                            <small>Foto yang ditampilkan</small>
+
+                            <small>
+                                Foto yang ditampilkan
+                            </small>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="dashboard-grid">
 
+                    <!-- Statistik rating -->
                     <div class="dashboard-card">
+
+                        <div class="card-header">
+                            <div>
+                                <h3>Statistik Rating</h3>
+
+                                <p>
+                                    Rating yang diberikan user
+                                </p>
+                            </div>
+
+                            <i class='bx bxs-star card-header-icon'></i>
+                        </div>
+
+                        <div class="rating-list">
+
+                            <div class="rating-row">
+                                <span>5 ⭐</span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 0%;"></div>
+                                </div>
+
+                                <strong>0%</strong>
+                            </div>
+
+                            <div class="rating-row">
+                                <span>4 ⭐</span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 0%;"></div>
+                                </div>
+
+                                <strong>0%</strong>
+                            </div>
+
+                            <div class="rating-row">
+                                <span>3 ⭐</span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 0%;"></div>
+                                </div>
+
+                                <strong>0%</strong>
+                            </div>
+
+                            <div class="rating-row">
+                                <span>2 ⭐</span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 0%;"></div>
+                                </div>
+
+                                <strong>0%</strong>
+                            </div>
+
+                            <div class="rating-row">
+                                <span>1 ⭐</span>
+
+                                <div class="rating-bar">
+                                    <div style="width: 0%;"></div>
+                                </div>
+
+                                <strong>0%</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resto favorit -->
+                    <div class="dashboard-card">
+
                         <div class="card-header">
                             <div>
                                 <h3>Resto Terfavorit</h3>
-                                <p>Berdasarkan jumlah like</p>
+
+                                <p>
+                                    Berdasarkan jumlah like
+                                </p>
                             </div>
-                            <i class="bx bx-trophy card-header-icon"></i>
+
+                            <i class='bx bx-trophy card-header-icon'></i>
                         </div>
 
-                        <div class="restaurant-list" id="dashboardRestaurantList"></div>
-                    </div>
-
-                    <div class="dashboard-card dashboard-comment-preview">
-                        <div class="card-header">
-                            <div>
-                                <h3>Komentar Terbaru</h3>
-                                <p>Komentar yang diberikan user</p>
-                            </div>
-                            <i class="bx bx-comment-detail card-header-icon"></i>
+                        <div
+                            class="restaurant-list"
+                            id="dashboardRestaurantList"
+                        >
                         </div>
-
-                        <div id="dashboardComments" class="comment-list"></div>
                     </div>
-
                 </div>
 
+                <!-- Komentar terbaru -->
+                <div class="dashboard-card dashboard-comment-preview">
+
+                    <div class="card-header">
+                        <div>
+                            <h3>Komentar Terbaru</h3>
+
+                            <p>
+                                Komentar yang diberikan user
+                            </p>
+                        </div>
+
+                        <i class='bx bx-comment-detail card-header-icon'></i>
+                    </div>
+
+                    <div
+                        id="dashboardComments"
+                        class="comment-list"
+                    >
+                        <div class="empty-section small-empty">
+
+                            <i class='bx bx-message-x'></i>
+
+                            <h3>Belum ada komentar</h3>
+
+                            <p>
+                                Komentar user akan muncul di sini.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Galeri -->
                 <div class="dashboard-card">
+
                     <div class="card-header">
                         <div>
                             <h3>Galeri Terbaru</h3>
-                            <p>Foto yang ditampilkan pada website</p>
+
+                            <p>
+                                Foto yang ditampilkan pada website
+                            </p>
                         </div>
-                        <i class="bx bx-image card-header-icon"></i>
+
+                        <i class='bx bx-image card-header-icon'></i>
                     </div>
 
                     <div class="admin-gallery">
+
                         <div class="admin-gallery-item">
-                            <img src="lengkap1.jpg" alt="Babi Guling">
+                            <img
+                                src="lengkap1.jpg"
+                                alt="Babi Guling"
+                            >
                         </div>
+
                         <div class="admin-gallery-item">
-                            <img src="nascam.jpg" alt="Nasi Campur">
+                            <img
+                                src="nascam.jpg"
+                                alt="Nasi Campur"
+                            >
                         </div>
+
                         <div class="admin-gallery-item">
-                            <img src="babimatah.jpg" alt="Babi Matah">
+                            <img
+                                src="babimatah.jpg"
+                                alt="Babi Matah"
+                            >
                         </div>
+
                         <div class="admin-gallery-item">
-                            <img src="dishfull.jpg" alt="Hidangan Babi Guling">
+                            <img
+                                src="dishfull.jpg"
+                                alt="Hidangan Babi Guling"
+                            >
                         </div>
                     </div>
                 </div>
-
             </section>
 
-            <section id="commentSection" class="admin-page d-none">
+            <!-- Komentar -->
+            <section
+                id="commentSection"
+                class="admin-page d-none"
+            >
 
                 <div class="page-title">
                     <h1>Komentar & Rating</h1>
-                    <p>Semua komentar dan rating dari user.</p>
+
+                    <p>
+                        Semua komentar dan rating dari user.
+                    </p>
                 </div>
 
-                <div id="allComments" class="dashboard-card"></div>
+                <div
+                    id="allComments"
+                    class="dashboard-card"
+                >
 
+                    <div class="empty-section">
+
+                        <i class='bx bx-message-x'></i>
+
+                        <h3>Belum ada komentar</h3>
+
+                        <p>
+                            Komentar dan rating user akan muncul di sini.
+                        </p>
+                    </div>
+                </div>
             </section>
 
-            <section id="messageSection" class="admin-page d-none">
-
+            <!-- Pesan Masuk -->
+            <section
+                id="messageSection"
+                class="admin-page d-none"
+            >
                 <div class="page-title">
                     <h1>Pesan Masuk</h1>
                     <p>Pesan yang dikirim user melalui halaman Contact.</p>
@@ -248,70 +508,134 @@
                             <h3>Pesan User</h3>
                             <p>Semua pesan dari form Contact akan muncul di sini.</p>
                         </div>
-                        <i class="bx bx-envelope card-header-icon"></i>
+                        <i class='bx bx-envelope card-header-icon'></i>
                     </div>
-
                     <div id="adminMessages"></div>
                 </div>
-
             </section>
 
-            <section id="restaurantSection" class="admin-page d-none">
+            <!-- Restoran -->
+            <section
+                id="restaurantSection"
+                class="admin-page d-none"
+            >
 
                 <div class="page-title">
                     <h1>Kelola Restoran</h1>
-                    <p>Tambah, edit, hapus restoran dan lihat interaksi user.</p>
+
+                    <p>
+                        Tambah, edit, hapus restoran dan lihat interaksi user.
+                    </p>
                 </div>
 
+                <!-- Form restoran -->
                 <div class="dashboard-card">
 
                     <div class="card-header">
                         <div>
                             <h3>Tambah Restoran</h3>
-                            <p>Restoran yang ditambahkan akan muncul di halaman user.</p>
+
+                            <p>
+                                Restoran yang ditambahkan akan muncul di halaman user.
+                            </p>
                         </div>
-                        <i class="bx bx-store card-header-icon"></i>
                     </div>
 
                     <form id="restaurantForm">
 
-                        <input type="hidden" id="restaurantId">
+                        <input
+                            type="hidden"
+                            id="restaurantId"
+                        >
 
                         <div class="row g-3">
 
                             <div class="col-md-5">
-                                <label for="restaurantName" class="form-label">Nama Restoran</label>
-                                <input type="text" id="restaurantName" class="form-control" placeholder="Contoh: Babi Guling Pak Made" required>
+
+                                <label
+                                    for="restaurantName"
+                                    class="form-label"
+                                >
+                                    Nama Restoran
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="restaurantName"
+                                    class="form-control"
+                                    placeholder="Contoh: Babi Guling Pak Made"
+                                    required
+                                >
+
                             </div>
 
                             <div class="col-md-4">
-                                <label for="restaurantLocation" class="form-label">Lokasi</label>
-                                <input type="text" id="restaurantLocation" class="form-control" placeholder="Contoh: Denpasar" required>
+
+                                <label
+                                    for="restaurantLocation"
+                                    class="form-label"
+                                >
+                                    Lokasi
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="restaurantLocation"
+                                    class="form-control"
+                                    placeholder="Contoh: Denpasar"
+                                    required
+                                >
+
                             </div>
 
                             <div class="col-md-3">
-                                <label for="restaurantRating" class="form-label">Rating</label>
-                                <input type="number" id="restaurantRating" class="form-control" min="0" max="5" step="0.1" value="5" required>
+
+                                <label
+                                    for="restaurantRating"
+                                    class="form-label"
+                                >
+                                    Rating
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="restaurantRating"
+                                    class="form-control"
+                                    min="0"
+                                    max="5"
+                                    step="0.1"
+                                    value="5"
+                                    required
+                                >
+
                             </div>
-
                         </div>
-
                         <div class="mt-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bx bx-plus"></i>
-                                <span id="restaurantSubmitText">Tambah Restoran</span>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                <i class='bx bx-plus'></i>
+
+                                <span id="restaurantSubmitText">
+                                    Tambah Restoran
+                                </span>
                             </button>
 
-                            <button type="button" id="cancelRestaurantEdit" class="btn btn-secondary d-none">
+                            <button
+                                type="button"
+                                id="cancelRestaurantEdit"
+                                class="btn btn-secondary d-none"
+                            >
                                 Batal Edit
                             </button>
                         </div>
-
                     </form>
                 </div>
 
+                <!-- Daftar restoran -->
                 <div class="dashboard-card mt-4">
-
                     <div class="card-header">
                         <div>
                             <h3>Daftar Restoran</h3>
@@ -320,10 +644,14 @@
                     </div>
 
                     <div class="restaurant-search">
-                        <i class="bx bx-search"></i>
-                        <input type="text" id="restaurantSearch" placeholder="Cari nama atau lokasi restoran...">
+                        <i class='bx bx-search'></i>
+                        <input
+                            type="text"
+                            id="restaurantSearch"
+                            placeholder="Cari nama atau lokasi restoran..."
+                        >
                         <button type="button" id="clearRestaurantSearch" title="Hapus pencarian">
-                            <i class="bx bx-x"></i>
+                            <i class='bx bx-x'></i>
                         </button>
                     </div>
 
@@ -332,17 +660,19 @@
                     </div>
 
                     <div id="adminRestaurantList"></div>
-
                 </div>
 
+                <!-- Review restoran -->
                 <div class="dashboard-card mt-4">
 
                     <div class="card-header">
                         <div>
                             <h3>Review User</h3>
-                            <p>Review yang diberikan user pada restoran.</p>
+
+                            <p>
+                                Review yang diberikan user pada restoran.
+                            </p>
                         </div>
-                        <i class="bx bx-star card-header-icon"></i>
                     </div>
 
                     <div id="adminRestaurantComments"></div>
@@ -351,24 +681,32 @@
 
             </section>
 
-            <section id="userSection" class="admin-page d-none">
-
+            <!-- user -->
+            <section
+                id="userSection"
+                class="admin-page d-none"
+            >
                 <div class="page-title">
                     <h1>User</h1>
-                    <p>Informasi pengguna website.</p>
+                    <p>
+                        Informasi pengguna website.
+                    </p>
                 </div>
 
                 <div class="dashboard-card">
-                    <div class="user-total-card">
-                        <div class="user-total-icon">
-                            <i class="bx bx-group"></i>
-                        </div>
-                        <div>
-                            <span>Total User</span>
-                            <h2 id="userTotal">0</h2>
-                            <p>User yang terdaftar di website.</p>
-                        </div>
+
+                    <div class="empty-section">
+                        <i class='bx bx-group'></i>
+
+                        <h3>
+                            Total User: <span id="userTotal">0</span>
+                        </h3>
+
+                        <p>
+                            User yang terdaftar di website.
+                        </p>
                     </div>
+
                 </div>
 
                 <div class="dashboard-card mt-4">
@@ -376,37 +714,77 @@
                     <div class="card-header">
                         <div>
                             <h3>Daftar User</h3>
-                            <p>Semua user yang sudah terdaftar.</p>
+                            <p>
+                                Semua user yang sudah terdaftar.
+                            </p>
                         </div>
-                        <i class="bx bx-group card-header-icon"></i>
+
+                        <i class='bx bx-group card-header-icon'></i>
                     </div>
 
                     <div class="user-search">
-                        <i class="bx bx-search"></i>
+                        <i class='bx bx-search'></i>
 
-                        <input type="text" id="userSearch" placeholder="Cari nama, username, atau email...">
+                        <input
+                            type="text"
+                            id="userSearch"
+                            placeholder="Cari nama, username, atau email..."
+                        >
 
-                        <button type="button" id="clearUserSearch" title="Hapus pencarian">
-                            <i class="bx bx-x"></i>
+                        <button
+                            type="button"
+                            id="clearUserSearch"
+                            title="Hapus pencarian"
+                        >
+                            <i class='bx bx-x'></i>
                         </button>
                     </div>
 
                     <div class="user-search-info">
-                        <span id="userSearchInfo">Menampilkan semua user</span>
+                        <span id="userSearchInfo">
+                            Menampilkan semua user
+                        </span>
                     </div>
 
                     <div id="adminUserList"></div>
 
                 </div>
-
             </section>
 
+            <!-- Artikel -->
+            <section
+                id="articleSection"
+                class="admin-page d-none"
+            >
+
+                <div class="page-title">
+                    <h1>Artikel</h1>
+
+                    <p>
+                        Kelola artikel Babi Guling.
+                    </p>
+                </div>
+
+                <div class="dashboard-card">
+
+                    <div class="empty-section">
+
+                        <i class='bx bx-news'></i>
+
+                        <h3>Kelola Artikel</h3>
+
+                        <p>
+                            Artikel website akan dikelola di sini.
+                        </p>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
 
     <div id="adminToast" class="admin-toast">
         <div class="admin-toast-icon">
-            <i class="bx bx-check"></i>
+            <i class='bx bx-check'></i>
         </div>
 
         <div class="admin-toast-content">
@@ -415,12 +793,14 @@
         </div>
 
         <button type="button" id="adminToastClose">
-            <i class="bx bx-x"></i>
+            <i class='bx bx-x'></i>
         </button>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script src="admin.js"></script>
 
 </body>
