@@ -1,5 +1,5 @@
-# Babi Guling - Proyek UTS Frontend Programming Kelompok 6
-## Anggota Kelompok
+# Babi Guling - Project UTS Front-End Programming
+## Anggota Kelompok 6 :
 535250053 - Wilbert Alan Muljadi
 
 535250061 - Lulu Lydia Andrean
