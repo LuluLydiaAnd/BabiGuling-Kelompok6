@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-    // Tab
     $(".tab-link").on("click", function (event) {
         event.preventDefault();
 
@@ -13,7 +12,6 @@ $(document).ready(function () {
         $("#tab-" + targetTab).addClass("active");
     });
 
-    // Smooth scroll navbar
     $('.navbar-nav a[href^="#"]').on("click", function (event) {
         const targetHash = $(this).attr("href");
 
@@ -35,7 +33,6 @@ $(document).ready(function () {
         }
     });
 
-    // Galeri
     const $items = $(".g-item");
 
     localStorage.setItem(
@@ -85,7 +82,6 @@ $(document).ready(function () {
         });
     });
 
-    // Lightbox
     $("body").append(
         "<div class='lightbox' id='lightbox'>" +
         "<button class='lb-btn lb-close'><i class='bx bx-x'></i></button>" +
@@ -185,7 +181,6 @@ $(document).ready(function () {
         }
     });
 
-    // Form kontak
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const $fields = $("#cfNama, #cfEmail, #cfSubjek, #cfPesan");
 
@@ -307,7 +302,6 @@ $(document).ready(function () {
         }, 500);
     });
 
-    // Salin email / telepon
     function tampilToast(teks) {
         $("#cfToast")
             .text(teks)
@@ -340,7 +334,6 @@ $(document).ready(function () {
         }
     });
 
-    // Status jam layanan
     (function () {
         const now = new Date();
         const hari = now.getDay();
@@ -359,7 +352,6 @@ $(document).ready(function () {
             .toggleClass("open", buka);
     })();
 
-    // Postingan
     let postFilter = "all";
 
     function escapeHtml(text) {
@@ -679,7 +671,8 @@ $(document).ready(function () {
             event.originalEvent.key === "favorites" ||
             event.originalEvent.key === "restaurants" ||
             event.originalEvent.key === "restoLikes" ||
-            event.originalEvent.key === "restoComments"
+            event.originalEvent.key === "restoComments" ||
+            event.originalEvent.key === "restoFavorites"
         ) {
             renderPosts();
             renderRestoDirectory();
@@ -688,7 +681,6 @@ $(document).ready(function () {
 
     renderPosts();
 
-    // Interaksi postingan
     function requireLogin() {
         if (!getSession()) {
             alert("Silakan login dulu untuk berinteraksi.");
@@ -727,7 +719,8 @@ $(document).ready(function () {
         } else {
             likes.push({
                 postId: postId,
-                userId: userId
+                userId: userId,
+                createdAt: new Date().toISOString()
             });
         }
 
@@ -773,7 +766,8 @@ $(document).ready(function () {
         } else {
             favorites.push({
                 postId: postId,
-                userId: userId
+                userId: userId,
+                createdAt: new Date().toISOString()
             });
         }
 
@@ -897,7 +891,6 @@ $(document).ready(function () {
         renderPosts(openMap);
     });
 
-    // Data awal restoran
     const defaultRestaurants = [
         "Babi Guling Bunderan Renon - Denpasar",
         "Babi Guling Candra - Denpasar",
@@ -1007,6 +1000,18 @@ $(document).ready(function () {
         }
     }
 
+    function getRestoFavorites() {
+        try {
+            return (
+                JSON.parse(
+                    localStorage.getItem("restoFavorites")
+                ) || []
+            );
+        } catch (e) {
+            return [];
+        }
+    }
+
     function getRestoUser() {
         return getSession();
     }
@@ -1021,6 +1026,7 @@ $(document).ready(function () {
         const restaurants = getRestaurants();
         const likes = getRestoLikes();
         const comments = getRestoComments();
+        const favorites = getRestoFavorites();
         const session = getRestoUser();
 
         $grid.empty();
@@ -1057,6 +1063,17 @@ $(document).ready(function () {
                 restoLikes.some(function (like) {
                     return (
                         String(like.userId) ===
+                        String(session.id)
+                    );
+                });
+
+            const userFavorited =
+                session &&
+                favorites.some(function (fav) {
+                    return (
+                        Number(fav.restoId) ===
+                        Number(restaurant.id) &&
+                        String(fav.userId) ===
                         String(session.id)
                     );
                 });
@@ -1145,6 +1162,19 @@ $(document).ready(function () {
 
                             Komentar
                         </button>
+
+                        <button
+                            type="button"
+                            class="resto-action-btn r-fav-btn ${userFavorited ? "active" : ""}"
+                        >
+                            <i class='bx ${
+                                userFavorited
+                                    ? "bxs-bookmark"
+                                    : "bx-bookmark"
+                            }'></i>
+
+                            Favorit
+                        </button>
                     </div>
 
                     <div class="resto-comments-box">
@@ -1179,7 +1209,6 @@ $(document).ready(function () {
     initializeRestaurants();
     renderRestoDirectory();
 
-    // Like restoran
     $(document).on("click", ".r-like-btn", function (event) {
         event.preventDefault();
 
@@ -1228,7 +1257,54 @@ $(document).ready(function () {
         renderRestoDirectory();
     });
 
-    // Buka komentar restoran
+    $(document).on("click", ".r-fav-btn", function (event) {
+        event.preventDefault();
+
+        if (!requireLogin()) {
+            return;
+        }
+
+        const session = getRestoUser();
+        const $button = $(this);
+        const $card = $button.closest(".resto-card");
+
+        const restoId =
+            Number($card.data("resto-id"));
+
+        let favorites = getRestoFavorites();
+
+        const index = favorites.findIndex(function (fav) {
+            return (
+                Number(fav.restoId) === restoId &&
+                String(fav.userId) ===
+                    String(session.id)
+            );
+        });
+
+        if (index !== -1) {
+            favorites.splice(index, 1);
+        } else {
+            favorites.push({
+                id: Date.now(),
+                restoId: restoId,
+                userId: session.id,
+                userName:
+                    session.nama ||
+                    session.username ||
+                    session.name ||
+                    "Pengguna",
+                createdAt: new Date().toISOString()
+            });
+        }
+
+        localStorage.setItem(
+            "restoFavorites",
+            JSON.stringify(favorites)
+        );
+
+        renderRestoDirectory();
+    });
+
     $(document).on("click", ".r-comment-btn", function (event) {
         event.preventDefault();
 
@@ -1240,7 +1316,6 @@ $(document).ready(function () {
             .toggleClass("open");
     });
 
-    // Tambah komentar restoran
     $(document).on(
         "submit",
         ".resto-comment-form",
@@ -1303,7 +1378,6 @@ $(document).ready(function () {
         }
     );
 
-    // Back to top
     $(window).on("scroll", function () {
         if ($(this).scrollTop() > 300) {
             $("#backToTop").fadeIn(300);
