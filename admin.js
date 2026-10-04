@@ -1,76 +1,353 @@
 $(document).ready(function () {
+    // AUTO-LOGIN
+    const session = JSON.parse(sessionStorage.getItem("loggedIn") || "null");
 
-    // LOGIN ADMIN
-    const validUser = 'admin';
-    const validPass = 'admin123';
+    if (session && session.role === "admin") {
+        $("#loginWrap").addClass("d-none");
+        $("#dashboard").removeClass("d-none");
+    }
 
-    $('#loginForm').on('submit', function (event) {
+    // LOGIN
+    const validUser = "admin";
+    const validPass = "admin123";
 
+    $("#loginForm").on("submit", function (event) {
         event.preventDefault();
 
-        const inputUser = $('#username').val().trim();
-        const inputPass = $('#password').val().trim();
+        const inputUser = $("#username").val().trim();
+        const inputPass = $("#password").val().trim();
 
-        // Cek username dan password
         if (inputUser === validUser && inputPass === validPass) {
+            $("#loginWrap").addClass("d-none");
+            $("#dashboard").removeClass("d-none");
+            $("#loginError").addClass("d-none");
 
-            // Sembunyikan login
-            $('#loginWrap').addClass('d-none');
+            sessionStorage.setItem("loggedIn", JSON.stringify({
+                role: "admin"
+            }));
 
-            // Tampilkan dashboard
-            $('#dashboard').removeClass('d-none');
-
-            // Hilangkan pesan error
-            $('#loginError').addClass('d-none');
-
-            // Tampilkan postingan yang sudah tersimpan
+            showPage("dashboardSection");
             loadPosts();
-
         } else {
-
-            // Tampilkan pesan error
-            $('#loginError').removeClass('d-none');
-
+            $("#loginError").removeClass("d-none");
         }
     });
 
-    // LOGOUT
-    $('#logoutBtn').on('click', function () {
-
-        // Sembunyikan dashboard
-        $('#dashboard').addClass('d-none');
-
-        // Tampilkan kembali login
-        $('#loginWrap').removeClass('d-none');
-
-        // Reset form login
-        $('#loginForm')[0].reset();
-
-        // Hilangkan pesan error
-        $('#loginError').addClass('d-none');
-
-    });
-
-
-  
-    // POST
-    $('#postForm').on('submit', function (event) {
+    // SIDEBAR MENU
+    $(".sidebar-link").on("click", function (event) {
         event.preventDefault();
 
-        const title = $('#postTitle').val().trim();
-        const description = $('#postDescription').val().trim();
-        const category = $('#postCategory').val();
-        const imageFile = $('#postImage')[0].files[0];
+        const target = $(this).data("target");
 
-
-        if (!imageFile) {
-            alert('Please choose an image.');
+        if (!target) {
             return;
         }
+
+        $(".sidebar-link").removeClass("active");
+        $(this).addClass("active");
+        showPage(target);
+
+        if (window.innerWidth <= 992) {
+            $(".admin-sidebar").removeClass("mobile-open");
+        }
+    });
+
+    // FUNGSI PINDAH HALAMAN
+    function showPage(target) {
+        $(".admin-page").addClass("d-none");
+        $("#" + target).removeClass("d-none");
+        $(".admin-main").scrollTop(0);
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
+
+    // SIDEBAR TOGGLE
+    const sidebar = document.querySelector(".admin-sidebar");
+    const sidebarToggle = document.getElementById("sidebarToggle");
+
+    if (sidebar && sidebarToggle) {
+        sidebarToggle.addEventListener("click", function () {
+            if (window.innerWidth <= 992) {
+                sidebar.classList.toggle("mobile-open");
+            } else {
+                sidebar.classList.toggle("collapsed");
+            }
+        });
+    }
+
+    // LOGOUT
+    $("#logoutBtn").on("click", function () {
+        $("#dashboard").addClass("d-none");
+        $("#loginWrap").removeClass("d-none");
+        $("#loginForm")[0].reset();
+        $("#loginError").addClass("d-none");
+
+        sessionStorage.removeItem("loggedIn");
+
+        showPage("dashboardSection");
+
+        $(".sidebar-link").removeClass("active");
+        $('.sidebar-link[data-target="dashboardSection"]').addClass("active");
+
+        $(".admin-sidebar")
+            .removeClass("collapsed")
+            .removeClass("mobile-open");
+    });
+
+    // DATA KOMENTAR / RATING
+    function getReviews() {
+        const possibleKeys = [
+            "reviews",
+            "ratings",
+            "comments",
+            "userReviews",
+            "babiguling_reviews"
+        ];
+
+        for (const key of possibleKeys) {
+            const data = localStorage.getItem(key);
+
+            if (!data) {
+                continue;
+            }
+
+            try {
+                const parsed = JSON.parse(data);
+
+                if (Array.isArray(parsed)) {
+                    return parsed;
+                }
+            } catch (error) {
+                console.log("Data localStorage tidak valid:", key);
+            }
+        }
+
+        return [];
+    }
+
+    // ESCAPE HTML
+    function escapeHtml(text) {
+        return String(text ?? "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    // AMBIL NAMA USER
+    function getReviewName(review) {
+        return (
+            review.name ||
+            review.username ||
+            review.user ||
+            review.nama ||
+            "User"
+        );
+    }
+
+    // AMBIL KOMENTAR
+    function getReviewComment(review) {
+        return (
+            review.comment ||
+            review.review ||
+            review.message ||
+            review.text ||
+            review.komentar ||
+            ""
+        );
+    }
+
+    // AMBIL RATING
+    function getReviewRating(review) {
+        return Number(
+            review.rating ||
+            review.stars ||
+            review.nilai ||
+            0
+        );
+    }
+
+    // BUAT BINTANG
+    function createStars(rating) {
+        const roundedRating = Math.round(rating);
+
+        if (roundedRating <= 0) {
+            return "☆☆☆☆☆";
+        }
+
+        return "⭐".repeat(Math.min(roundedRating, 5));
+    }
+
+    // RENDER KOMENTAR
+    function renderComments() {
+        const reviews = getReviews();
+        const dashboardComments = $("#dashboardComments");
+        const allComments = $("#allComments");
+
+        dashboardComments.empty();
+        allComments.empty();
+
+        if (reviews.length === 0) {
+            const emptyHTML = `
+                <div class="empty-section small-empty">
+                    <i class='bx bx-message-x'></i>
+                    <h3>Belum ada komentar</h3>
+                    <p>Komentar dan rating user akan muncul di sini.</p>
+                </div>
+            `;
+
+            dashboardComments.html(emptyHTML);
+
+            allComments.html(`
+                <div class="empty-section">
+                    <i class='bx bx-message-x'></i>
+                    <h3>Belum ada komentar</h3>
+                    <p>Komentar dan rating user akan muncul di sini.</p>
+                </div>
+            `);
+
+            $("#commentCount").text("0");
+            $("#averageRating").text("0");
+
+            return;
+        }
+
+        let totalRating = 0;
+        let ratingCount = 0;
+
+        reviews.forEach(function (review) {
+            const rating = getReviewRating(review);
+
+            if (rating > 0) {
+                totalRating += rating;
+                ratingCount++;
+            }
+        });
+
+        const average = ratingCount > 0
+            ? (totalRating / ratingCount).toFixed(1)
+            : "0";
+
+        $("#averageRating").text(average);
+        $("#commentCount").text(reviews.length);
+
+        // STATISTIK RATING
+        const ratingTotals = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0
+        };
+
+        reviews.forEach(function (review) {
+            const rating = getReviewRating(review);
+
+            if (rating >= 1 && rating <= 5) {
+                ratingTotals[rating]++;
+            }
+        });
+
+        const totalRatings = reviews.length;
+
+        $(".rating-row").each(function () {
+            const row = $(this);
+            const rating = Number(
+                row.find("span").text().charAt(0)
+            );
+
+            const count = ratingTotals[rating] || 0;
+
+            const percentage = totalRatings > 0
+                ? Math.round((count / totalRatings) * 100)
+                : 0;
+
+            row.find(".rating-bar div").css(
+                "width",
+                percentage + "%"
+            );
+
+            row.find("strong").text(percentage + "%");
+        });
+
+        // URUTKAN TERBARU
+        const sortedReviews = [...reviews].reverse();
+
+        // DASHBOARD - CUMA 2 KOMENTAR
+        sortedReviews
+            .slice(0, 2)
+            .forEach(function (review) {
+                dashboardComments.append(
+                    createCommentHTML(review)
+                );
+            });
+
+        // HALAMAN KOMENTAR - TAMPIL SEMUA
+        sortedReviews.forEach(function (review) {
+            allComments.append(
+                createCommentHTML(review)
+            );
+        });
+    }
+
+    // HTML KOMENTAR
+    function createCommentHTML(review) {
+        const name = escapeHtml(getReviewName(review));
+        const comment = escapeHtml(getReviewComment(review));
+        const rating = getReviewRating(review);
+        const firstLetter = name.charAt(0).toUpperCase();
+        const stars = createStars(rating);
+
+        return `
+            <div class="comment-item">
+                <div class="comment-avatar">
+                    ${firstLetter}
+                </div>
+                <div class="comment-content">
+                    <strong>${name}</strong>
+                    <div class="comment-rating">
+                        ${stars}
+                    </div>
+                    <p>${comment || "Tidak ada komentar."}</p>
+                </div>
+            </div>
+        `;
+    }
+
+    renderComments();
+
+    window.addEventListener("storage", function () {
+        renderComments();
+    });
+
+    // POST
+    $("#postForm").on("submit", function (event) {
+        event.preventDefault();
+
+        const title = $("#postTitle").val().trim();
+        const description = $("#postDescription").val().trim();
+        const category = $("#postCategory").val().trim();
+        const imageFile = $("#postImage")[0].files[0];
+
+        if (!title || !description || !category) {
+            alert("Please fill in all fields.");
+            return;
+        }
+
+        if (!imageFile) {
+            alert("Please choose an image.");
+            return;
+        }
+
         const reader = new FileReader();
 
         reader.onload = function (event) {
             const image = event.target.result;
+
             const post = {
                 id: Date.now(),
                 title: title,
@@ -79,51 +356,75 @@ $(document).ready(function () {
                 image: image
             };
 
-            let posts = JSON.parse(localStorage.getItem('posts')) || [];
+            let posts = JSON.parse(
+                localStorage.getItem("posts")
+            ) || [];
+
             posts.push(post);
 
             try {
-                localStorage.setItem('posts', JSON.stringify(posts));
-            } catch (err) {
-                alert('Gagal menyimpan, ukuran gambar terlalu besar. Coba gambar yang lebih kecil.');
+                localStorage.setItem(
+                    "posts",
+                    JSON.stringify(posts)
+                );
+            } catch (error) {
+                alert(
+                    "Gagal menyimpan, ukuran gambar terlalu besar. Coba gambar yang lebih kecil."
+                );
                 return;
             }
-            // Reset form
-            $('#postForm')[0].reset();
-            // Tampilkan postingan
+
+            $("#postForm")[0].reset();
             loadPosts();
-            alert('Post successfully added');
+
+            alert("Post successfully added");
         };
+
         reader.readAsDataURL(imageFile);
     });
-  
-    // LOAD POSTS
+
+    // TAMPILKAN LIST POSTINGAN
     function loadPosts() {
-        const posts =
-            JSON.parse(localStorage.getItem('posts')) || [];
-        $('#postList').empty();
+        const posts = JSON.parse(
+            localStorage.getItem("posts")
+        ) || [];
+
+        $("#postList").empty();
 
         if (posts.length === 0) {
-            $('#postList').html(`
-                <p class="text-muted">No posts available.</p>`
+            $("#postList").html(
+                `<p class="text-muted">No posts available.</p>`
             );
-
             return;
         }
 
         posts.forEach(function (post) {
-            const title = escapeHtml(post.title || '');
-            const description = convertLinks(post.description || '');
-            const category = escapeHtml(post.category || 'Lainnya');
-            const image = post.image || '';
+            const description = convertLinks(
+                post.description || ""
+            );
+
             const postHTML = `
                 <div class="admin-post-item">
-                    <img src="${post.image}" alt="${escapeHtml(post.title)}" class="admin-post-image">
+                    <img
+                        src="${post.image}"
+                        alt="${escapeHtml(post.title)}"
+                        class="admin-post-image"
+                    >
                     <div class="admin-post-content">
-                        <span class="admin-post-category">${escapeHtml(post.category)}</span>
-                        <h4 class="admin-post-title">${escapeHtml(post.title)}</h4>
-                        <div class="admin-post-description">${description}</div>
-                        <button type="button"class="btn-delete-post" data-id="${post.id}">
+                        <span class="admin-post-category">
+                            ${escapeHtml(post.category)}
+                        </span>
+                        <h4 class="admin-post-title">
+                            ${escapeHtml(post.title)}
+                        </h4>
+                        <div class="admin-post-description">
+                            ${description}
+                        </div>
+                        <button
+                            type="button"
+                            class="btn-delete-post"
+                            data-id="${post.id}"
+                        >
                             <i class='bx bx-trash'></i>
                             Delete
                         </button>
@@ -131,34 +432,39 @@ $(document).ready(function () {
                 </div>
             `;
 
-            $('#postList').append(postHTML);
+            $("#postList").append(postHTML);
         });
     }
 
     // DELETE POST
-    $(document).on(
-        'click',
-        '.btn-delete-post',
-        function () {
-            const postId = Number($(this).data('id'));
-            const confirmDelete = confirm('Are you sure you want to delete this post?');
+    $(document).on("click", ".btn-delete-post", function () {
+        const postId = Number($(this).data("id"));
 
-            if (!confirmDelete) {
-                return;
-            }
+        const confirmDelete = confirm(
+            "Are you sure you want to delete this post?"
+        );
 
-            let posts =
-                JSON.parse(localStorage.getItem('posts')) || [];
-            posts = posts.filter(function (post) {
-                return post.id !== postId;
-            });
-
-            localStorage.setItem('posts', JSON.stringify(posts));
-            loadPosts();
+        if (!confirmDelete) {
+            return;
         }
-    );
 
-    // LINK
+        let posts = JSON.parse(
+            localStorage.getItem("posts")
+        ) || [];
+
+        posts = posts.filter(function (post) {
+            return post.id !== postId;
+        });
+
+        localStorage.setItem(
+            "posts",
+            JSON.stringify(posts)
+        );
+
+        loadPosts();
+    });
+
+    // UBAH URL JADI CLICKABLE LINK
     function convertLinks(text) {
         const escapedText = escapeHtml(text);
         const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -169,36 +475,8 @@ $(document).ready(function () {
         );
     }
 
-
-    // ========================================
-    // ESCAPE HTML
-    // ========================================
-
-    function escapeHtml(text) {
-        return String(text ?? '')
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+    // LOAD POST SAAT HALAMAN DIBUKA
+    if (session && session.role === "admin") {
+        loadPosts();
     }
-
-
-    // ========================================
-    // SIDEBAR MENU
-    // ========================================
-
-    $('.sidebar-link').on('click', function (event) {
-
-        // Supaya link "#" tidak reload / loncat ke atas
-        event.preventDefault();
-
-        // Hapus active dari semua menu
-        $('.sidebar-link').removeClass('active');
-
-        // Tambahkan active ke menu yang diklik
-        $(this).addClass('active');
-
-    });
-
 });
