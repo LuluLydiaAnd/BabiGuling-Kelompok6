@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,151 +13,197 @@
 
 <body class="admin-body">
     <div id="dashboard" class="admin-dashboard">
-    <aside class="admin-sidebar">
-        <div class="sidebar-brand">
-            <div class="user-brand-avatar" id="sidebarAvatar">
-                <i class='bx bx-user'></i>
-            </div>
-            <div class="sidebar-user-info">
-                <h3 id="sidebarName">User</h3>
-                <span id="sidebarUsername">@user</span>
-            </div>
-        </div>
-
-        <nav class="sidebar-nav">
-        <a href="#" class="sidebar-link active" data-panel="dashboard">
-            <i class='bx bxs-dashboard'></i><span>Dashboard</span>
-        </a>
-        <a href="#" class="sidebar-link" data-panel="profil">
-            <i class='bx bx-user-circle'></i><span>Profil Saya</span>
-        </a>
-        <a href="#" class="sidebar-link" data-panel="disukai">
-            <i class='bx bxs-heart'></i><span>Postingan Disukai</span>
-        </a>
-        <a href="#" class="sidebar-link" data-panel="komentar">
-            <i class='bx bx-comment-detail'></i><span>Komentar Saya</span>
-        </a>
-        <a href="#" class="sidebar-link" data-panel="favorit">
-            <i class='bx bxs-bookmark'></i><span>Favorit Saya</span>
-        </a>
-        <a href="index.html" class="sidebar-link">
-            <i class='bx bx-home'></i><span>Lihat Situs</span>
-        </a>
-        </nav>
-
-        <button id="userLogoutBtn" class="sidebar-logout">
-        <i class='bx bx-log-out'></i><span>Logout</span>
-        </button>
-    </aside>
-
-    <main class="admin-main">
-
-        <header class="admin-header">
-        <div>
-            <p class="admin-welcome">Halo, selamat datang 👋</p>
-            <h1 id="welcomeName">Dashboard</h1>
-            <p>Kelola aktivitas, favorit, dan komentar kamu di sini.</p>
-        </div>
-        <div class="admin-profile">
-            <div class="profile-icon"><i class='bx bx-user'></i></div>
-            <div>
-            <strong id="profileName">User</strong>
-            <span>Member</span>
-            </div>
-        </div>
-        </header>
-
-        <!-- Dashboard panel -->
-        <section class="user-panel active" id="panel-dashboard">
-        <div class="admin-stats">
-            <div class="stat-card">
-            <div class="stat-icon"><i class='bx bxs-heart'></i></div>
-            <div><span>Total Likes</span><h2 id="statLikes">0</h2><small>Postingan yang disukai</small></div>
-            </div>
-            <div class="stat-card">
-            <div class="stat-icon"><i class='bx bx-comment'></i></div>
-            <div><span>Komentar</span><h2 id="statComments">0</h2><small>Komentar kamu</small></div>
-            </div>
-            <div class="stat-card">
-            <div class="stat-icon"><i class='bx bxs-bookmark'></i></div>
-            <div><span>Favorit</span><h2 id="statFavs">0</h2><small>Postingan tersimpan</small></div>
-            </div>
-            <div class="stat-card">
-            <div class="stat-icon"><i class='bx bx-news'></i></div>
-            <div><span>Postingan</span><h2 id="statPosts">0</h2><small>Total postingan admin</small></div>
-            </div>
-        </div>
-
-        <div class="dashboard-card full-card">
-            <div class="card-header">
-            <div><h3>Postingan Terbaru</h3><p>Yang lagi ramai dibahas</p></div>
-            <i class='bx bx-news card-header-icon'></i>
-            </div>
-            <div id="recentPostsMini" class="user-post-list"></div>
-        </div>
-        </section>
-
-        <!-- Panel profil -->
-        <section class="user-panel" id="panel-profil">
-        <div class="dashboard-card full-card">
-            <div class="card-header">
-            <div><h3>Profil Saya</h3><p>Informasi akun kamu</p></div>
-            <i class='bx bx-user-circle card-header-icon'></i>
-            </div>
-
-            <div class="profile-grid">
-            <div class="text-center">
-                <div class="profile-avatar-big" id="bigAvatar">
+        <aside class="admin-sidebar">
+            <div class="sidebar-brand">
+                <div class="user-brand-avatar" id="sidebarAvatar">
                     <i class='bx bx-user'></i>
                 </div>
-            </div>
-            <div>
-                <div class="profile-info-row"><strong>Nama</strong><span id="pNama">-</span></div>
-                <div class="profile-info-row"><strong>Username</strong><span id="pUsername">-</span></div>
-                <div class="profile-info-row"><strong>Email</strong><span id="pEmail">-</span></div>
-                <div class="profile-info-row"><strong>Role</strong><span id="pRole">User</span></div>
-                <div class="profile-info-row"><strong>Bio</strong><span id="pBio">-</span></div>
-            </div>
-            </div>
-        </div>
-        </section>
 
-        <!-- Panel liked -->
-        <section class="user-panel" id="panel-disukai">
-        <div class="dashboard-card full-card">
-            <div class="card-header">
-            <div><h3>Postingan yang Disukai</h3><p>Kamu pernah like postingan ini</p></div>
-            <i class='bx bxs-heart card-header-icon'></i>
+                <div class="sidebar-user-info">
+                    <h3 id="sidebarName">User</h3>
+                    <span id="sidebarUsername">@user</span>
+                </div>
             </div>
-            <div id="likedList" class="user-post-list"></div>
-        </div>
-        </section>
 
-        <!-- Panel komentar-->
-        <section class="user-panel" id="panel-komentar">
-        <div class="dashboard-card full-card">
-            <div class="card-header">
-            <div><h3>History Komentar</h3><p>Semua komentar yang pernah kamu buat</p></div>
-            <i class='bx bx-comment-detail card-header-icon'></i>
-            </div>
-            <div id="commentHistory"></div>
-        </div>
-        </section>
+            <nav class="sidebar-nav">
+                <a href="#" class="sidebar-link active" data-panel="dashboard">
+                    <i class='bx bxs-dashboard'></i>
+                    <span>Dashboard</span>
+                </a>
 
-        <!-- Panel favorit -->
-        <section class="user-panel" id="panel-favorit">
-        <div class="dashboard-card full-card">
-            <div class="card-header">
-            <div><h3>Favorit Saya</h3><p>Postingan yang kamu simpan</p></div>
-            <i class='bx bxs-bookmark card-header-icon'></i>
-            </div>
-            <div id="favList" class="user-post-list"></div>
-        </div>
-        </section>
-    </main>
+                <a href="#" class="sidebar-link" data-panel="profil">
+                    <i class='bx bx-user-circle'></i>
+                    <span>Profil Saya</span>
+                </a>
+
+                <a href="#" class="sidebar-link" data-panel="komentar">
+                    <i class='bx bx-comment-detail'></i>
+                    <span>Komentar Saya</span>
+                </a>
+
+                <a href="#" class="sidebar-link" data-panel="favorit">
+                    <i class='bx bxs-bookmark'></i>
+                    <span>Favorit Saya</span>
+                </a>
+
+                <a href="index.html" class="sidebar-link">
+                    <i class='bx bx-home'></i>
+                    <span>Lihat Situs</span>
+                </a>
+            </nav>
+
+            <button id="userLogoutBtn" class="sidebar-logout">
+                <i class='bx bx-log-out'></i>
+                <span>Logout</span>
+            </button>
+        </aside>
+
+        <main class="admin-main">
+            <header class="admin-header">
+                <div>
+                    <p class="admin-welcome">Halo, selamat datang 👋</p>
+                    <h1 id="welcomeName">Dashboard</h1>
+                    <p>Kelola aktivitas, favorit, dan komentar kamu di sini.</p>
+                </div>
+
+                <div class="admin-profile">
+                    <div class="profile-icon">
+                        <i class='bx bx-user'></i>
+                    </div>
+
+                    <div>
+                        <strong id="profileName">User</strong>
+                        <span>Member</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard -->
+            <section class="user-panel active" id="panel-dashboard">
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class='bx bx-comment'></i>
+                        </div>
+
+                        <div>
+                            <span>Komentar</span>
+                            <h2 id="statComments">0</h2>
+                            <small>Komentar kamu</small>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class='bx bxs-bookmark'></i>
+                        </div>
+
+                        <div>
+                            <span>Favorit</span>
+                            <h2 id="statFavs">0</h2>
+                            <small>Restoran tersimpan</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-card full-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Aktivitas Terbaru</h3>
+                            <p>Aktivitas kamu di situs</p>
+                        </div>
+
+                        <i class='bx bx-history card-header-icon'></i>
+                    </div>
+
+                    <div id="recentActivity" class="user-post-list"></div>
+                </div>
+            </section>
+
+            <!-- Profil -->
+            <section class="user-panel" id="panel-profil">
+                <div class="dashboard-card full-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Profil Saya</h3>
+                            <p>Informasi akun kamu</p>
+                        </div>
+
+                        <i class='bx bx-user-circle card-header-icon'></i>
+                    </div>
+
+                    <div class="profile-grid">
+                        <div class="text-center">
+                            <div class="profile-avatar-big" id="bigAvatar">
+                                <i class='bx bx-user'></i>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="profile-info-row">
+                                <strong>Nama</strong>
+                                <span id="pNama">-</span>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <strong>Username</strong>
+                                <span id="pUsername">-</span>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <strong>Email</strong>
+                                <span id="pEmail">-</span>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <strong>Role</strong>
+                                <span id="pRole">User</span>
+                            </div>
+
+                            <div class="profile-info-row">
+                                <strong>Bio</strong>
+                                <span id="pBio">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Komentar -->
+            <section class="user-panel" id="panel-komentar">
+                <div class="dashboard-card full-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>History Komentar</h3>
+                            <p>Semua komentar yang pernah kamu buat</p>
+                        </div>
+
+                        <i class='bx bx-comment-detail card-header-icon'></i>
+                    </div>
+
+                    <div id="commentHistory"></div>
+                </div>
+            </section>
+
+            <!-- Favorit -->
+            <section class="user-panel" id="panel-favorit">
+                <div class="dashboard-card full-card">
+                    <div class="card-header">
+                        <div>
+                            <h3>Favorit Saya</h3>
+                            <p>Restoran yang kamu simpan</p>
+                        </div>
+
+                        <i class='bx bxs-bookmark card-header-icon'></i>
+                    </div>
+
+                    <div id="favList" class="user-post-list"></div>
+                </div>
+            </section>
+        </main>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="user-dashboard.js?v=2"></script>
+    <script src="user-dashboard.js?v=3"></script>
 </body>
 </html>

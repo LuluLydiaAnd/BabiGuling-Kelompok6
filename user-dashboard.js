@@ -1,83 +1,59 @@
 $(document).ready(function () {
-    const SESSION_KEY = 'loggedIn';
-    const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+    const SESSION_KEY = "loggedIn";
+    const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || "null");
 
-    if (!session || session.role !== 'user') {
-        window.location.href = 'login.html';
+    if (!session || session.role !== "user") {
+        window.location.href = "login.html";
         return;
     }
 
     const user = session;
 
-    const initial = (user.nama || user.username || 'U').charAt(0).toUpperCase();
+    const initial = (
+        user.nama ||
+        user.username ||
+        "U"
+    ).charAt(0).toUpperCase();
 
-    $('#sidebarAvatar').text(initial);
-    $('#bigAvatar').text(initial);
-    $('#sidebarName').text(user.nama || user.username);
-    $('#sidebarUsername').text('@' + user.username);
-    $('#welcomeName').text('Halo, ' + (user.nama || user.username));
-    $('#profileName').text(user.nama || user.username);
+    $("#sidebarAvatar").text(initial);
+    $("#bigAvatar").text(initial);
+    $("#sidebarName").text(user.nama || user.username);
+    $("#sidebarUsername").text("@" + user.username);
+    $("#welcomeName").text("Halo, " + (user.nama || user.username));
+    $("#profileName").text(user.nama || user.username);
 
-    $('#pNama').text(user.nama || '-');
-    $('#pUsername').text(user.username || '-');
-    $('#pEmail').text(user.email || '-');
-    $('#pRole').text(user.role === 'admin' ? 'Administrator' : 'Member');
-    $('#pBio').text(user.bio || '-');
+    $("#pNama").text(user.nama || "-");
+    $("#pUsername").text(user.username || "-");
+    $("#pEmail").text(user.email || "-");
+    $("#pRole").text(user.role === "admin" ? "Administrator" : "Member");
+    $("#pBio").text(user.bio || "-");
 
-    $('.sidebar-link[data-panel]').on('click', function (e) {
+    $(".sidebar-link[data-panel]").on("click", function (e) {
         e.preventDefault();
 
-        const panel = $(this).data('panel');
+        const panel = $(this).data("panel");
 
-        $('.sidebar-link[data-panel]').removeClass('active');
-        $(this).addClass('active');
+        $(".sidebar-link[data-panel]").removeClass("active");
+        $(this).addClass("active");
 
-        $('.user-panel').removeClass('active');
-        $('#panel-' + panel).addClass('active');
+        $(".user-panel").removeClass("active");
+        $("#panel-" + panel).addClass("active");
     });
 
-    $('#userLogoutBtn').on('click', function () {
-        if (!confirm('Yakin ingin logout?')) return;
+    $("#userLogoutBtn").on("click", function () {
+        if (!confirm("Yakin ingin logout?")) {
+            return;
+        }
 
         sessionStorage.removeItem(SESSION_KEY);
-        window.location.href = 'index.html';
+        window.location.href = "index.html";
     });
-
-    function getPosts() {
-        try {
-            return JSON.parse(localStorage.getItem('posts')) || [];
-        } catch (e) {
-            return [];
-        }
-    }
-
-    function getLikes() {
-        try {
-            return JSON.parse(localStorage.getItem('likes')) || [];
-        } catch (e) {
-            return [];
-        }
-    }
-
-    function getComments() {
-        try {
-            return JSON.parse(localStorage.getItem('comments')) || [];
-        } catch (e) {
-            return [];
-        }
-    }
-
-    function getFavs() {
-        try {
-            return JSON.parse(localStorage.getItem('favorites')) || [];
-        } catch (e) {
-            return [];
-        }
-    }
 
     function getRestoComments() {
         try {
-            return JSON.parse(localStorage.getItem('restoComments')) || [];
+            return JSON.parse(
+                localStorage.getItem("restoComments")
+            ) || [];
         } catch (e) {
             return [];
         }
@@ -85,167 +61,76 @@ $(document).ready(function () {
 
     function getRestaurants() {
         try {
-            return JSON.parse(localStorage.getItem('restaurants')) || [];
+            return JSON.parse(
+                localStorage.getItem("restaurants")
+            ) || [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function getRestoLikes() {
+        try {
+            return JSON.parse(
+                localStorage.getItem("restoLikes")
+            ) || [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function getRestoFavorites() {
+        try {
+            return JSON.parse(
+                localStorage.getItem("restoFavorites")
+            ) || [];
         } catch (e) {
             return [];
         }
     }
 
     function escapeHtml(text) {
-        return String(text == null ? '' : text)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+        return String(text == null ? "" : text)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
-    function renderMiniPostList($el, posts) {
-        $el.empty();
+    function renderActivity(comments) {
+        const $activity = $("#recentActivity").empty();
 
-        if (posts.length === 0) {
-            $el.html(`
-                <div class="empty-state" style="grid-column:1/-1">
-                    <i class='bx bx-inbox'></i>
-                    Belum ada postingan.
+        if (comments.length === 0) {
+            $activity.html(`
+                <div class="empty-state">
+                    <i class='bx bx-history'></i>
+                    <div>Belum ada aktivitas.</div>
                 </div>
             `);
+
             return;
         }
 
-        posts.forEach(function (p) {
-            $el.append(`
-                <div class="user-post-item">
-                    ${p.image ? `<img src="${p.image}" alt="${escapeHtml(p.title)}">` : ''}
-                    <div class="body">
-                        <span class="badge-cat">
-                            ${escapeHtml(p.category || 'Lainnya')}
-                        </span>
-                        <h5>${escapeHtml(p.title)}</h5>
-                        <p>
-                            ${escapeHtml((p.description || '').slice(0, 90))}
-                            ${(p.description || '').length > 90 ? '…' : ''}
-                        </p>
-                    </div>
-                </div>
-            `);
-        });
-    }
-
-    function loadAll() {
-        const posts = getPosts();
-        const likes = getLikes();
-        const comments = getComments();
-        const favs = getFavs();
-        const restoComments = getRestoComments();
-        const restaurants = getRestaurants();
-
-        const myLikes = likes.filter(function (like) {
-            return String(like.userId) === String(user.id);
-        });
-
-        const myComments = comments.filter(function (comment) {
-            return String(comment.userId) === String(user.id);
-        });
-
-        const myRestoComments = restoComments.filter(function (comment) {
-            return String(comment.userId) === String(user.id);
-        });
-
-        const myFavs = favs.filter(function (favorite) {
-            return String(favorite.userId) === String(user.id);
-        });
-
-        $('#statLikes').text(myLikes.length);
-        $('#statComments').text(myComments.length + myRestoComments.length);
-        $('#statFavs').text(myFavs.length);
-        $('#statPosts').text(posts.length);
-
-        const recent = posts.slice().reverse().slice(0, 6);
-        renderMiniPostList($('#recentPostsMini'), recent);
-
-        const likedPosts = posts.filter(function (post) {
-            return myLikes.some(function (like) {
-                return String(like.postId) === String(post.id);
-            });
-        });
-
-        renderMiniPostList($('#likedList'), likedPosts);
-
-        const favPosts = posts.filter(function (post) {
-            return myFavs.some(function (favorite) {
-                return String(favorite.postId) === String(post.id);
-            });
-        });
-
-        renderMiniPostList($('#favList'), favPosts);
-
-        const $ch = $('#commentHistory').empty();
-
-        const allMyComments = [];
-
-        myComments.forEach(function (comment) {
-            const post = posts.find(function (post) {
-                return String(post.id) === String(comment.postId);
-            });
-
-            allMyComments.push({
-                type: 'post',
-                text: comment.text || '',
-                title: post
-                    ? post.title
-                    : '(postingan sudah dihapus)',
-                createdAt: comment.createdAt || null
-            });
-        });
-
-        myRestoComments.forEach(function (comment) {
-            const restaurant = restaurants.find(function (resto) {
-                return String(resto.id) === String(comment.restoId);
-            });
-
-            allMyComments.push({
-                type: 'resto',
-                text: comment.text || '',
-                title: restaurant
-                    ? restaurant.name
-                    : '(restoran tidak ditemukan)',
-                createdAt: comment.createdAt || null
-            });
-        });
-
-        allMyComments.sort(function (a, b) {
-            return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
-        });
-
-        if (allMyComments.length === 0) {
-            $ch.html(`
-                <div class="empty-state">
-                    <i class='bx bx-comment-x'></i>
-                    <div>Kamu belum pernah berkomentar.</div>
-                </div>
-            `);
-        } else {
-            allMyComments.forEach(function (comment) {
+        comments
+            .slice()
+            .sort(function (a, b) {
+                return new Date(b.createdAt || 0) -
+                    new Date(a.createdAt || 0);
+            })
+            .slice(0, 5)
+            .forEach(function (comment) {
                 const date = comment.createdAt
-                    ? new Date(comment.createdAt).toLocaleString('id-ID')
-                    : '';
+                    ? new Date(comment.createdAt).toLocaleString("id-ID")
+                    : "";
 
-                const icon = comment.type === 'resto'
-                    ? 'bx-store-alt'
-                    : 'bx-news';
-
-                const label = comment.type === 'resto'
-                    ? 'Restoran'
-                    : 'Postingan';
-
-                $ch.append(`
+                $activity.append(`
                     <div class="comment-history-item">
                         <span class="time">${escapeHtml(date)}</span>
 
                         <div class="ctx">
-                            <i class='bx ${icon}'></i>
-                            ${label}:
+                            <i class='bx bx-store-alt'></i>
+                            Restoran:
                             <strong>${escapeHtml(comment.title)}</strong>
                         </div>
 
@@ -255,20 +140,139 @@ $(document).ready(function () {
                     </div>
                 `);
             });
+    }
+
+    function loadAll() {
+        const restoComments = getRestoComments();
+        const restaurants = getRestaurants();
+        const restoLikes = getRestoLikes();
+        const restoFavorites = getRestoFavorites();
+
+        const myComments = restoComments.filter(function (comment) {
+            return String(comment.userId) === String(user.id);
+        });
+
+        const myLikes = restoLikes.filter(function (like) {
+            return String(like.userId) === String(user.id);
+        });
+
+        const myFavorites = restoFavorites.filter(function (favorite) {
+            return String(favorite.userId) === String(user.id);
+        });
+
+        $("#statComments").text(myComments.length);
+        $("#statFavs").text(myFavorites.length);
+
+        const allMyComments = myComments.map(function (comment) {
+            const restaurant = restaurants.find(function (resto) {
+                return String(resto.id) === String(comment.restoId);
+            });
+
+            return {
+                text: comment.text || "",
+                title: restaurant
+                    ? restaurant.name
+                    : "(restoran tidak ditemukan)",
+                createdAt: comment.createdAt || null
+            };
+        });
+
+        const $commentHistory = $("#commentHistory").empty();
+
+        if (allMyComments.length === 0) {
+            $commentHistory.html(`
+                <div class="empty-state">
+                    <i class='bx bx-comment-x'></i>
+                    <div>Kamu belum pernah berkomentar.</div>
+                </div>
+            `);
+        } else {
+            allMyComments
+                .slice()
+                .sort(function (a, b) {
+                    return new Date(b.createdAt || 0) -
+                        new Date(a.createdAt || 0);
+                })
+                .forEach(function (comment) {
+                    const date = comment.createdAt
+                        ? new Date(comment.createdAt).toLocaleString("id-ID")
+                        : "";
+
+                    $commentHistory.append(`
+                        <div class="comment-history-item">
+                            <span class="time">${escapeHtml(date)}</span>
+
+                            <div class="ctx">
+                                <i class='bx bx-store-alt'></i>
+                                Restoran:
+                                <strong>${escapeHtml(comment.title)}</strong>
+                            </div>
+
+                            <div class="txt">
+                                "${escapeHtml(comment.text)}"
+                            </div>
+                        </div>
+                    `);
+                });
+        }
+
+        renderActivity(allMyComments);
+
+        const $favList = $("#favList").empty();
+
+        if (myFavorites.length === 0) {
+            $favList.html(`
+                <div class="empty-state">
+                    <i class='bx bx-bookmark'></i>
+                    <div>Belum ada restoran favorit.</div>
+                </div>
+            `);
+        } else {
+            myFavorites.forEach(function (favorite) {
+                const restaurant = restaurants.find(function (resto) {
+                    return String(resto.id) === String(favorite.restoId);
+                });
+
+                if (!restaurant) {
+                    return;
+                }
+
+                const likeCount = restoLikes.filter(function (like) {
+                    return String(like.restoId) === String(restaurant.id);
+                }).length;
+
+                $favList.append(`
+                    <div class="user-post-item">
+                        <div class="body">
+                            <span class="badge-cat">Restoran Favorit</span>
+
+                            <h5>${escapeHtml(restaurant.name)}</h5>
+
+                            <p>
+                                <i class='bx bx-map'></i>
+                                ${escapeHtml(restaurant.location || "Bali")}
+                            </p>
+
+                            <small>
+                                <i class='bx bxs-heart'></i>
+                                ${likeCount} suka
+                            </small>
+                        </div>
+                    </div>
+                `);
+            });
         }
     }
 
     loadAll();
 
-    $(window).on('storage', function (e) {
+    $(window).on("storage", function (e) {
         if (
             [
-                'posts',
-                'likes',
-                'comments',
-                'favorites',
-                'restoComments',
-                'restaurants'
+                "restoComments",
+                "restaurants",
+                "restoLikes",
+                "restoFavorites"
             ].includes(e.originalEvent.key)
         ) {
             loadAll();
