@@ -95,6 +95,76 @@
                 <button class="g-filter" data-filter="upacara">Upacara</button>
             </div>
 
+            <div class="tab-content" id="tab-resep">
+            <div class="recipe-header">
+                <p class="recipe-label">RESEP TRADISIONAL BALI</p>
+                <h2>Resep Babi Guling</h2>
+                <p>
+                    Babi guling merupakan hidangan khas Bali yang menggunakan
+                    babi muda dengan bumbu rempah atau <em>base genep</em>.
+                    Bumbu dimasukkan ke bagian dalam babi, kemudian dipanggang
+                    sambil diputar hingga matang merata.
+                </p>-
+            </div>
+
+            <div class="recipe-box">
+                <h3>Bahan Utama</h3>
+                <ul>
+                    <li>1 ekor babi muda, sekitar 8–12 kg</li>
+                    <li>2 sdm garam kasar</li>
+                    <li>2 sdm air jeruk nipis</li>
+                    <li>200 ml minyak kelapa atau minyak goreng</li>
+                    <li>1 ikat daun singkong atau daun pepaya (opsional)</li>
+                </ul>
+            </div>
+
+            <div class="recipe-box">
+                <h3>Bumbu Base Genep</h3>
+                <ul>
+                    <li>15 siung bawang merah</li>
+                    <li>10 siung bawang putih</li>
+                    <li>10 cabai merah keriting</li>
+                    <li>8 cabai rawit</li>
+                    <li>6 butir kemiri sangrai</li>
+                    <li>6 cm kunyit</li>
+                    <li>6 cm jahe</li>
+                    <li>6 cm lengkuas</li>
+                    <li>3 batang serai</li>
+                    <li>1 sdm ketumbar bubuk</li>
+                    <li>1 sdt merica bubuk</li>
+                    <li>6 lembar daun jeruk</li>
+                    <li>2 sdm gula merah</li>
+                    <li>3 sdm garam</li>
+                </ul>
+            </div>
+
+            <div class="recipe-box">
+                <h3>Cara Membuat</h3>
+                <ol>
+                    <li>Haluskan bumbu <em>base genep</em>, kemudian tumis dengan sedikit minyak hingga harum dan matang.</li>
+                    <li>Lumuri bagian dalam babi dengan bumbu yang telah ditumis dan masukkan sisa bumbu ke dalam rongga perut.</li>
+                    <li>Bersihkan dan keringkan bagian kulit, kemudian lumuri dengan garam kasar dan air jeruk nipis.</li>
+                    <li>Panggang babi sambil diputar secara konstan agar matang secara merata.</li>
+                    <li>Olesi dengan minyak secara berkala selama proses pemanggangan.</li>
+                    <li>Panggang hingga kulit menjadi renyah dan berwarna kecokelatan, kemudian diamkan sebentar sebelum dipotong dan disajikan.</li>
+                </ol>
+            </div>
+
+            <div class="recipe-source">
+            <span>Sumber resep</span>
+            <a href="https://masakapa.id/resep/babi-guling/e0449e60-d28b-44f5-af8f-8ef6e982406a" target="_blank">
+                MasakApa — Resep Babi Guling
+                <i class='bx bx-link-external'></i>
+            </a>
+            </div>
+                <div class="tab-photos">
+                    <figure><img src="base-genep-final.jpg" alt="Bumbu base genep" onerror="this.closest('figure').remove()"><figcaption>Bumbu base genep</figcaption></figure>
+                </div>
+
+            <div class="tab-photos">
+                <figure>
+                    <img src="base-genep-final.jpg" alt="Bumbu base genep" onerror="this.closest('figure').remove()">
+                    <figcaption>Bumbu base genep</figcaption>
             <div class="gallery-mosaic">
                 <figure class="g-item g-big" data-cat="proses" data-icon="bxs-flame">
                     <img src="sejarah-babi-guling-1.jpeg" alt="Proses memanggang babi guling">
@@ -424,9 +494,9 @@
                         </li>
                     </ul>
 
-                    <div class="contact-social">
-                        <a href="#"><i class='bx bxl-instagram'></i></a>
-                        <a href="#"><i class='bx bxl-facebook'></i></a>
+                  <div class="contact-social">
+                        <a href="instagram.html" target="_blank"><i class='bx bxl-instagram'></i></a>
+                        <a href="facebook.html" target="_blank"><i class='bx bxl-facebook'></i></a>
                     </div>
                 </div>
 
@@ -506,10 +576,10 @@
             <div class="footer-content">
                 <h3>Babi Guling</h3>
                 <p>Mengenal lebih dekat salah satu kuliner tradisional khas Bali.</p>
-                <div class="footer-social">
-                    <a href="#"><i class='bx bxl-instagram'></i></a>
-                    <a href="#"><i class='bx bxl-facebook'></i></a>
-                </div>
+              <div class="footer-social">
+            <a href="instagram.html" target="_blank"><i class='bx bxl-instagram'></i></a>
+            <a href="facebook.html" target="_blank"><i class='bx bxl-facebook'></i></a>
+        </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 Babi Guling — Frontend Programming Kelompok 6</p>
@@ -522,5 +592,32 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+
+        <script src="script.js"></script>
+
+    <script>
+    $('#contactForm').on('submit', function () {
+        const nama   = $('#cfNama').val().trim();
+        const email  = $('#cfEmail').val().trim();
+        const subjek = $('#cfSubjek').val();
+        const isi    = $('#cfPesan').val().trim();
+
+        // skip kalau belum valid (biar sama kayak validasi yang udah ada)
+        if (!nama || !email.includes('@') || !subjek || !isi) return;
+
+        const data = JSON.parse(localStorage.getItem('pesanMasuk') || '[]');
+        data.unshift({
+            id: Date.now(),
+            nama: nama,
+            email: email,
+            subjek: subjek,
+            isi: isi,
+            waktu: new Date().toLocaleString('id-ID')
+        });
+        localStorage.setItem('pesanMasuk', JSON.stringify(data));
+    });
+    </script>
+</body>
+</html>
 </body>
 </html>
