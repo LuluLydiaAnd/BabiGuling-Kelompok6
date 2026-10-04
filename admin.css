@@ -507,16 +507,6 @@ a {
     color: var(--primary);
 }
 
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
-}
-
-.dashboard-grid .dashboard-card {
-    margin-bottom: 0;
-}
-
 .page-title {
     margin-bottom: 24px;
 }
@@ -1073,7 +1063,7 @@ a {
 
 @media (max-width: 1000px) {
     .admin-stats {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
     }
 }
 
@@ -1242,3 +1232,4 @@ a {
         grid-row: 3;
     }
 }
+
