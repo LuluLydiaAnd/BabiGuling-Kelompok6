@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    localStorage.removeItem("posts");
     const validUser = "admin";
     const validPass = "admin123";
     const session = JSON.parse(sessionStorage.getItem("loggedIn") || "null");
@@ -54,6 +53,10 @@ $(document).ready(function () {
 
         if (target === "commentSection") {
             renderComments();
+        }
+
+        if (target === "articleSection") {
+            renderPosts();
         }
     }
 
@@ -1045,6 +1048,191 @@ $(document).ready(function () {
         $("#restaurantSearch").focus();
     });
 
+    function getPosts() {
+        return getStorageArray("posts");
+    }
+
+    function renderPosts() {
+        const container = $("#postList");
+
+        if (!container.length) return;
+
+        const posts = getPosts();
+
+        container.empty();
+
+        if (posts.length === 0) {
+            container.html(`
+                <div class="empty-section small-empty">
+                    <i class='bx bx-news'></i>
+                    <h3>Belum ada postingan</h3>
+                    <p>Postingan yang kamu buat akan muncul di sini.</p>
+                </div>
+            `);
+
+            return;
+        }
+
+        posts
+            .slice()
+            .reverse()
+            .forEach(function (post) {
+                const date = post.createdAt
+                    ? new Date(post.createdAt).toLocaleString("id-ID")
+                    : "";
+
+                const badgeClass =
+                    post.category === "Promotions" ? "bg-warning text-dark" :
+                    post.category === "Reccomendation" ? "bg-success" :
+                    "bg-secondary";
+
+                container.append(`
+                    <div class="comment-item">
+                        ${post.image
+                            ? `<img src="${post.image}" alt="${escapeHtml(post.title)}" style="width:80px;height:80px;object-fit:cover;border-radius:10px;flex-shrink:0;">`
+                            : `<div class="comment-avatar"><i class='bx bx-news'></i></div>`
+                        }
+
+                        <div class="comment-content">
+                            <div class="comment-top">
+                                <strong>${escapeHtml(post.title || "")}</strong>
+                                ${date ? `<small>${escapeHtml(date)}</small>` : ""}
+                            </div>
+
+                            <div class="comment-rating">
+                                <span class="badge ${badgeClass}">${escapeHtml(post.category || "Lainnya")}</span>
+                            </div>
+
+                            <p>${escapeHtml(post.description || "")}</p>
+
+                            <div class="message-status">
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-danger btn-delete-post"
+                                    data-id="${escapeHtml(post.id)}"
+                                >
+                                    <i class="bx bx-trash"></i>
+                                    Hapus
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `);
+            });
+    }
+
+    $("#postForm").on("submit", function (event) {
+        event.preventDefault();
+
+        const title = $("#postTitle").val().trim();
+        const description = $("#postDescription").val().trim();
+        const category = $("#postCategory").val();
+        const fileInput = document.getElementById("postImage");
+        const file = fileInput.files && fileInput.files[0];
+
+        if (!title || !description || !category) {
+            showAdminToast(
+                "Data belum lengkap",
+                "Judul, deskripsi, dan kategori wajib diisi.",
+                "warning"
+            );
+
+            return;
+        }
+
+        if (!file) {
+            showAdminToast(
+                "Gambar belum dipilih",
+                "Silakan pilih gambar untuk postingan.",
+                "warning"
+            );
+
+            return;
+        }
+
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const posts = getPosts();
+
+            posts.push({
+                id: Date.now(),
+                title: title,
+                description: description,
+                category: category,
+                image: e.target.result,
+                createdAt: new Date().toISOString()
+            });
+
+            localStorage.setItem("posts", JSON.stringify(posts));
+
+            $("#postForm")[0].reset();
+
+            renderPosts();
+
+            showAdminToast(
+                "Postingan dibuat",
+                "Postingan baru berhasil ditambahkan."
+            );
+        };
+
+        reader.readAsDataURL(file);
+    });
+
+    $(document).on("click", ".btn-delete-post", function () {
+        const id = Number($(this).data("id"));
+        const posts = getPosts();
+
+        const post = posts.find(function (item) {
+            return Number(item.id) === id;
+        });
+
+        if (!post) {
+            showAdminToast(
+                "Postingan tidak ditemukan",
+                "Data postingan sudah tidak tersedia.",
+                "error"
+            );
+
+            return;
+        }
+
+        if (!confirm(`Yakin ingin menghapus postingan "${post.title}"?`)) {
+            return;
+        }
+
+        const updated = posts.filter(function (item) {
+            return Number(item.id) !== id;
+        });
+
+        localStorage.setItem("posts", JSON.stringify(updated));
+
+        const likes = getStorageArray("likes").filter(function (like) {
+            return Number(like.postId) !== id;
+        });
+
+        localStorage.setItem("likes", JSON.stringify(likes));
+
+        const comments = getStorageArray("comments").filter(function (comment) {
+            return Number(comment.postId) !== id;
+        });
+
+        localStorage.setItem("comments", JSON.stringify(comments));
+
+        const favorites = getStorageArray("favorites").filter(function (fav) {
+            return Number(fav.postId) !== id;
+        });
+
+        localStorage.setItem("favorites", JSON.stringify(favorites));
+
+        renderPosts();
+
+        showAdminToast(
+            "Postingan dihapus",
+            `"${post.title}" berhasil dihapus.`
+        );
+    });
+
     function initialRender() {
         renderDashboardStats();
         renderComments();
@@ -1052,6 +1240,7 @@ $(document).ready(function () {
         renderAdminRestaurantComments();
         renderDashboardRestaurants();
         renderContactMessages();
+        renderPosts();
     }
 
     window.addEventListener("storage", function (event) {
@@ -1088,6 +1277,10 @@ $(document).ready(function () {
             event.key === "galleryCount"
         ) {
             renderDashboardStats();
+        }
+
+        if (event.key === "posts") {
+            renderPosts();
         }
     });
 
