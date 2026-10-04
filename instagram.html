@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Babi Guling (@babiguling.id) • Instagram</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="instagram.css" />
+  </head>
+  <body>
+    <nav class="ig-nav">
+      <div
+        class="d-flex align-items-center justify-content-between"
+        style="max-width: 975px; margin: 0 auto; padding: 10px 15px"
+      >
+        <a href="#" class="ig-logo">Instagram</a>
+        <div class="d-none d-md-block">
+          <input
+            type="text"
+            class="form-control form-control-sm bg-light border-0"
+            placeholder="Cari"
+            style="width: 220px"
+            disabled
+          />
+        </div>
+        <div class="d-flex gap-3 fs-4">
+          <a href="index.html" class="text-dark" title="Kembali ke website"
+            ><i class="bx bx-home"></i
+          ></a>
+          <i class="bx bx-heart"></i>
+          <i class="bx bx-send"></i>
+        </div>
+      </div>
+    </nav>
+
+    <div class="ig-container">
+      <!-- HEADER PROFIL -->
+      <div class="row align-items-center mb-4">
+        <div class="col-4 col-md-4 d-flex justify-content-center">
+          <div class="avatar-ring"><div class="avatar">🐖</div></div>
+        </div>
+        <div class="col-8 col-md-8">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            <h5 class="mb-0 fw-normal me-2">babiguling.id</h5>
+            <button id="followBtn" class="btn btn-follow btn-sm">Ikuti</button>
+            <button class="btn btn-gray btn-sm">Kirim pesan</button>
+          </div>
+          <div class="d-flex gap-4 mb-3">
+            <span><b>6</b> kiriman</span>
+            <span><b id="followerCount">12,4 rb</b> pengikut</span>
+            <span><b>48</b> diikuti</span>
+          </div>
+          <div>
+            <div class="fw-semibold">Ensiklopedia Babi Guling</div>
+            <div class="text-secondary" style="font-size: 0.9rem">
+              Kuliner &amp; Budaya
+            </div>
+            <div style="font-size: 0.9rem">
+              🇮🇩 Mengenal kuliner khas Bali dari tradisi sampai resep<br />📍
+              Bali, Indonesia<br />🕘 Senin – Sabtu, 09.00 – 17.00
+            </div>
+            <a
+              href="index.html"
+              class="text-decoration-none fw-semibold"
+              style="font-size: 0.9rem; color: #00376b"
+              >babiguling-kelompok6.example.com</a
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- HIGHLIGHT -->
+      <div class="d-flex gap-3 mb-3 overflow-auto">
+        <div class="highlight">
+          <div class="circle"><div>🔥</div></div>
+          <small>Resep</small>
+        </div>
+        <div class="highlight">
+          <div class="circle"><div>🎎</div></div>
+          <small>Tradisi</small>
+        </div>
+        <div class="highlight">
+          <div class="circle"><div>📸</div></div>
+          <small>Galeri</small>
+        </div>
+        <div class="highlight">
+          <div class="circle"><div>❓</div></div>
+          <small>FAQ</small>
+        </div>
+      </div>
+
+      <!-- TAB -->
+      <div class="tabs-ig">
+        <span class="active"><i class="bx bx-grid-alt"></i> KIRIMAN</span>
+        <span><i class="bx bx-movie-play"></i> REELS</span>
+        <span><i class="bx bx-user-pin"></i> DITANDAI</span>
+      </div>
+
+      <!-- GRID POST -->
+      <div class="grid" id="postGrid"></div>
+    </div>
+
+    <!-- MODAL POST -->
+    <div class="modal fade" id="postModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content overflow-hidden">
+          <div class="row g-0">
+            <div
+              class="col-md-7 d-flex align-items-center justify-content-center"
+              id="modalImg"
+              style="min-height: 360px; font-size: 6rem"
+            ></div>
+            <div
+              class="col-md-5 d-flex flex-column p-3"
+              style="min-height: 360px"
+            >
+              <div class="d-flex align-items-center gap-2 pb-2 border-bottom">
+                <div
+                  style="
+                    width: 32px;
+                    height: 32px;
+                    border-radius: 50%;
+                    background: #7a1f16;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                  "
+                >
+                  🐖
+                </div>
+                <b style="font-size: 0.9rem">babiguling.id</b>
+                <button
+                  type="button"
+                  class="btn-close ms-auto"
+                  data-bs-dismiss="modal"
+                ></button>
+              </div>
+              <div
+                class="comment-list flex-grow-1 py-3"
+                id="commentList"
+                style="font-size: 0.9rem"
+              ></div>
+              <div class="border-top pt-2">
+                <div class="d-flex gap-3 align-items-center mb-1">
+                  <i class="bx bx-heart like-btn" id="likeBtn"></i>
+                  <i class="bx bx-comment fs-3"></i>
+                  <i class="bx bx-send fs-3"></i>
+                </div>
+                <div class="fw-semibold" style="font-size: 0.9rem">
+                  <span id="likeCount">0</span> suka
+                </div>
+                <div
+                  class="text-secondary"
+                  style="font-size: 0.7rem"
+                  id="postDate"
+                ></div>
+                <div class="input-group input-group-sm mt-2">
+                  <input
+                    type="text"
+                    id="commentInput"
+                    class="form-control border-0 bg-light"
+                    placeholder="Tambahkan komentar..."
+                  />
+                  <button class="btn text-primary fw-semibold" id="commentBtn">
+                    Kirim
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="instagram.js"></script>
+  </body>
+</html>

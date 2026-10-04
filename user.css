@@ -131,3 +131,10 @@
   display: block;
   margin-bottom: 0.5rem;
 }
+
+#sidebarUsername {
+    white-space: nowrap !important;
+}
+#sidebarUsername {
+    white-space: nowrap !important;
+}
