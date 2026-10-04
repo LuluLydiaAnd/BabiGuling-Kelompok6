@@ -78,7 +78,7 @@ Dua halaman ini adalah simulasi tampilan profil Instagram dan Facebook dengan da
 Alurnya kurang lebih sama di semua halaman. Halaman membaca data dari storage, lalu menampilkannya dengan jQuery. Setiap aksi user, misalnya like atau komentar, disimpan kembali ke storage lalu tampilan dirender ulang. Teks yang diinput user selalu diproses dengan fungsi escapeHtml supaya aman dari XSS.
 
 - Keterbatasan :
-Karena tidak ada backend, data hanya ada di browser masing-masing dan tidak dibagikan antar perangkat. Password disimpan apa adanya di localStorage, jadi ini hanya cocok untuk keperluan demo. Ukuran gambar postingan dibatasi oleh kuota localStorage sekitar 5 MB. Akun admin bawaan juga tertulis langsung di kode.
+Karena tidak ada backend, data hanya ada di browser masing-masing dan tidak dibagikan antar perangkat. Password disimpan apa adanya di localStorage. Akun admin bawaan juga tertulis langsung di kode.
 
 - Sumber dan Referensi  :
 Resep: MasakApa, Resep Babi Guling (https://masakapa.id/resep/babi-guling/e0449e60-d28b-44f5-af8f-8ef6e982406a)
