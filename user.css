@@ -138,3 +138,93 @@
 #sidebarUsername {
     white-space: nowrap !important;
 }
+
+.sidebar-user-info {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+}
+.sidebar-user-info h3 {
+    font-size: 15px;
+    margin: 0;
+    font-weight: 800;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#sidebarUsername {
+    display: block;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.55);
+    margin-top: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media (max-width: 1000px) {
+    .admin-stats {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .admin-stats .stat-card {
+        max-width: 100%;
+        flex: 1 1 220px;
+    }
+}
+
+@media (max-width: 992px) {
+    .admin-sidebar.mobile-open {
+        transform: translateX(0);
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.25);
+    }
+    .admin-sidebar.mobile-open .sidebar-brand {
+        justify-content: flex-start;
+        padding: 0 22px;
+    }
+}
+
+@media (max-width: 700px) {
+    .admin-stats {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .admin-stats .stat-card {
+        max-width: 100%;
+        width: 100%;
+        min-height: auto;
+    }
+
+    .admin-header {
+        padding-left: 0;
+        padding-top: 55px;
+        gap: 12px;
+    }
+    .admin-header .admin-profile {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        text-align: center;
+    }
+    .profile-info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    .profile-info-row strong {
+        width: auto;
+    }
+}
+
+.user-panel {
+    min-width: 0;
+    overflow-x: hidden;
+}
+.comment-history-item {
+    word-break: break-word;
+}

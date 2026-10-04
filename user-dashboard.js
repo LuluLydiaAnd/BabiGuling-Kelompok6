@@ -38,6 +38,29 @@ $(document).ready(function () {
 
         $(".user-panel").removeClass("active");
         $("#panel-" + panel).addClass("active");
+
+        if (window.innerWidth <= 992) {
+            $(".admin-sidebar").removeClass("mobile-open");
+        }
+    });
+
+    const sidebarEl = document.querySelector(".admin-sidebar");
+    const sidebarToggleEl = document.getElementById("sidebarToggle");
+
+    if (sidebarEl && sidebarToggleEl) {
+        sidebarToggleEl.addEventListener("click", function () {
+            if (window.innerWidth <= 992) {
+                sidebarEl.classList.toggle("mobile-open");
+            } else {
+                sidebarEl.classList.toggle("collapsed");
+            }
+        });
+    }
+
+    $(window).on("resize", function () {
+        if (window.innerWidth > 992) {
+            $(".admin-sidebar").removeClass("mobile-open");
+        }
     });
 
     $("#userLogoutBtn").on("click", function () {

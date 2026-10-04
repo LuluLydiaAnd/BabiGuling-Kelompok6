@@ -1063,7 +1063,12 @@ a {
 
 @media (max-width: 1000px) {
     .admin-stats {
-        grid-template-columns: 1fr 1fr;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .admin-stats .stat-card {
+        max-width: 100%;
+        flex: 1 1 220px;
     }
 }
 
@@ -1155,7 +1160,12 @@ a {
     }
 
     .admin-stats {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .admin-stats .stat-card {
+        width: 100%;
+        max-width: 100%;
     }
 
     .dashboard-card,
@@ -1232,4 +1242,3 @@ a {
         grid-row: 3;
     }
 }
-
