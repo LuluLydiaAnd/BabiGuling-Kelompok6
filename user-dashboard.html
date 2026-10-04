@@ -13,6 +13,16 @@
 
 <body class="admin-body">
     <div id="dashboard" class="admin-dashboard">
+
+        <button
+            id="sidebarToggle"
+            class="sidebar-toggle"
+            type="button"
+            aria-label="Toggle sidebar"
+        >
+            <i class='bx bx-chevron-left'></i>
+        </button>
+
         <aside class="admin-sidebar">
             <div class="sidebar-brand">
                 <div class="user-brand-avatar" id="sidebarAvatar">
@@ -78,9 +88,20 @@
                 </div>
             </header>
 
-            <!-- Dashboard -->
             <section class="user-panel active" id="panel-dashboard">
                 <div class="admin-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class='bx bxs-heart'></i>
+                        </div>
+
+                        <div>
+                            <span>Suka</span>
+                            <h2 id="statLikes">0</h2>
+                            <small>Total suka kamu</small>
+                        </div>
+                    </div>
+
                     <div class="stat-card">
                         <div class="stat-icon">
                             <i class='bx bx-comment'></i>
@@ -89,7 +110,7 @@
                         <div>
                             <span>Komentar</span>
                             <h2 id="statComments">0</h2>
-                            <small>Komentar kamu</small>
+                            <small>Total komentar kamu</small>
                         </div>
                     </div>
 
@@ -101,7 +122,7 @@
                         <div>
                             <span>Favorit</span>
                             <h2 id="statFavs">0</h2>
-                            <small>Restoran tersimpan</small>
+                            <small>Total favorit kamu</small>
                         </div>
                     </div>
                 </div>
@@ -120,7 +141,6 @@
                 </div>
             </section>
 
-            <!-- Profil -->
             <section class="user-panel" id="panel-profil">
                 <div class="dashboard-card full-card">
                     <div class="card-header">
@@ -169,7 +189,6 @@
                 </div>
             </section>
 
-            <!-- Komentar -->
             <section class="user-panel" id="panel-komentar">
                 <div class="dashboard-card full-card">
                     <div class="card-header">
@@ -185,16 +204,32 @@
                 </div>
             </section>
 
-            <!-- Favorit -->
             <section class="user-panel" id="panel-favorit">
                 <div class="dashboard-card full-card">
                     <div class="card-header">
                         <div>
                             <h3>Favorit Saya</h3>
-                            <p>Restoran yang kamu simpan</p>
+                            <p>Postingan dan restoran yang kamu simpan</p>
                         </div>
 
                         <i class='bx bxs-bookmark card-header-icon'></i>
+                    </div>
+
+                    <div class="fav-filter">
+                        <button type="button" class="fav-filter-btn active" data-fav="all">
+                            <i class='bx bxs-bookmark'></i>
+                            Semua
+                        </button>
+
+                        <button type="button" class="fav-filter-btn" data-fav="post">
+                            <i class='bx bx-news'></i>
+                            Postingan
+                        </button>
+
+                        <button type="button" class="fav-filter-btn" data-fav="resto">
+                            <i class='bx bx-store-alt'></i>
+                            Restoran
+                        </button>
                     </div>
 
                     <div id="favList" class="user-post-list"></div>
@@ -204,6 +239,6 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="user-dashboard.js?v=3"></script>
+    <script src="user-dashboard.js?v=5"></script>
 </body>
 </html>

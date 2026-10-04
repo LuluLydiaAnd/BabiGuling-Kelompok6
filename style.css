@@ -1413,10 +1413,10 @@ h1, h2, h3, h4, h5 {
     white-space: nowrap;
 }
 
-/* --- like n komen--- */
 .resto-card-actions {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 8px;
     margin-top: 0.8rem;
     padding-top: 0.8rem;
     border-top: 1px solid #f0e8e3;
@@ -1425,13 +1425,13 @@ h1, h2, h3, h4, h5 {
 .resto-action-btn {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     background: #fefaf5;
     border: 1px solid #e3d3c6;
     color: var(--brown);
-    font-size: 0.83rem;
+    font-size: 0.78rem;
     font-weight: 600;
-    padding: 0.45rem 0.95rem;
+    padding: 0.4rem 0.8rem;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.25s ease;
@@ -1456,7 +1456,6 @@ h1, h2, h3, h4, h5 {
     color: #ffffff;
 }
 
-/* --- BUAT KOMEN DAN INPUT --- */
 .resto-comments-box {
     display: none;
     margin-top: 1rem;
