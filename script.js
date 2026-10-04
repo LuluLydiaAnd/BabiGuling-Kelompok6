@@ -471,10 +471,9 @@ $(document).ready(function () {
             .slice()
             .reverse()
             .filter(function (post) {
-                return (
-                    postFilter === "all" ||
-                    post.category === postFilter
-                );
+                return postFilter === "all" ||
+                    String(post.category || "").trim().toLowerCase() ===
+                    String(postFilter || "").trim().toLowerCase();
             });
 
         const $list = $("#publicPosts").empty();
