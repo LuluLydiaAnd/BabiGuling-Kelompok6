@@ -10,6 +10,8 @@
 
 535250091 - Dimas Pradana Siddharta Halim
 
+Link video presentasi : https://youtu.be/VmYLOQcUkWY
+
 Deskripsi Singkat :
 Website ini berisi informasi tentang babi guling, kuliner tradisional khas Bali, sekaligus daftar rekomendasi restoran babi guling di berbagai wilayah Bali. Pengunjung bisa membaca informasi, melihat galeri, dan membaca postingan dari admin. Kalau sudah login, user bisa memberi like, komentar, dan menyimpan favorit, lalu melihat riwayat aktivitasnya di dashboard. Admin bisa mengelola konten dan memantau interaksi dari user.
 
